@@ -41,7 +41,7 @@ int Fecha::getMes()
 int Fecha::getAnio()
 {
     return _anio;
-};
+}
 
 void Fecha::setDia(int d)
 {
@@ -54,7 +54,7 @@ void Fecha::setMes(int m)
 void Fecha::setAnio(int a)
 {
     _anio = a;
-};
+}
 
 string Fecha::toString()
 {
