@@ -5,6 +5,7 @@ using namespace std;
 
 int main()
 {
+    int a;
     Fecha f;
     f.agregarDias(-10);
     cout << "test";
