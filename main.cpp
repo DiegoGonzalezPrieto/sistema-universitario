@@ -2,6 +2,7 @@
 
 using namespace std;
 #include "Fecha.h"
+#include "Materia.h"
 
 int main()
 {
