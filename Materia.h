@@ -1,6 +1,8 @@
 #ifndef MATERIA_H
 #define MATERIA_H
 
+const int CANTMATERIAS = 10;
+const int LONGMAX = 30;
 
 class Materia
 {
@@ -8,24 +10,22 @@ class Materia
         Materia();
 
         void setNombreMateria(const char* nombre);
-        void setIdMateria(int idMateria);
-        void setIdMateriasRequeridas(int* idMateriasRequeridas, int cantMateriasRequeridas);
-        void setIdMateriasRequeridas(int pos, int idMateriaRequerida);
+        void setIdMateria(const char* idMateria);
+        void setIdMateriasRequeridas(int pos, const char* idMateriaRequerida);
         void setCuatrimestreSugerido(int cuatrimestreSugerido);
         void setCuatrimestreDeDuracion(int cuatrimestreDeDuracion);
 
         const char* getNombreMateria() const;
-        int getIdMateria() const;
-        int* getMateriasRequeridas();
-        int getMateriasRequeridas(int pos) const;
+        const char* getIdMateria() const;
+        const char* getIdMateriasRequeridas(int pos) const;
         int getCuatrimestreSugerido() const;
         int getCuatrimestreDeDuracion() const;
 
     private:
 
         char _nombre[30];
-        int _idMateria;
-        int _idMateriasRequeridas[10];
+        char _idMateria[LONGMAX];
+        char _idMateriasRequeridas[CANTMATERIAS][LONGMAX];
         int _cuatrimestreSugerido;
         int _cuatrimestresDeDuracion;
 };

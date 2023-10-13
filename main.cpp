@@ -6,11 +6,23 @@ using namespace std;
 
 int main()
 {
-    int a;
-    Fecha f;
-    int b;
-    f.agregarDias(-10);
-    cout << "test";
-    cout << f.toString();
+
+    Materia aux;
+    Materia prueba1, prueba2;
+
+    prueba1.setIdMateria("P512");
+    prueba2.setIdMateria("J444");
+
+    cout << prueba1.getIdMateria() << endl;
+    cout << prueba2.getIdMateria() << endl;
+
+    cout << "---------------" << endl;
+
+    aux.setIdMateriasRequeridas(0, prueba1.getIdMateria());
+    aux.setIdMateriasRequeridas(1, prueba2.getIdMateria());
+
+    cout << aux.getIdMateriasRequeridas(0) << endl;
+    cout << aux.getIdMateriasRequeridas(1) << endl;
+
     return 0;
 }

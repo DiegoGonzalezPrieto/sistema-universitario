@@ -13,22 +13,15 @@ void Materia::setNombreMateria(const char* nombre){
 }
 
 
-void Materia::setIdMateria(int idMateria){
+void Materia::setIdMateria(const char* idMateria){
 
-    _idMateria = idMateria;
+    strcpy(_idMateria, idMateria);
 }
 
-void Materia::setIdMateriasRequeridas(int* idMateriasRequeridas, int cantMateriasRequeridas){
 
-    for(int i = 0; i< cantMateriasRequeridas; i++){
+void Materia::setIdMateriasRequeridas(int pos, const char* idMateriaRequerida){
 
-        _idMateriasRequeridas[i] = idMateriasRequeridas[i];
-    }
-}
-
-void Materia::setIdMateriasRequeridas(int pos, int idMateriaRequerida){
-
-    _idMateriasRequeridas[pos] = idMateriaRequerida;
+    strcpy(_idMateriasRequeridas[pos], idMateriaRequerida);
 }
 
 
@@ -47,17 +40,13 @@ const char* Materia::getNombreMateria() const{
     return _nombre;
 }
 
-int Materia::getIdMateria() const{
+const char* Materia::getIdMateria() const{
 
     return _idMateria;
 }
 
-int* Materia::getMateriasRequeridas(){
 
-    return _idMateriasRequeridas;
-}
-
-int Materia::getMateriasRequeridas(int pos) const{
+const char* Materia::getIdMateriasRequeridas(int pos) const{
 
     return _idMateriasRequeridas[pos];
 }
