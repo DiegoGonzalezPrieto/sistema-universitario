@@ -1,15 +1,11 @@
 #include <iostream>
-
 using namespace std;
 #include "Fecha.h"
+#include "claseCarrera.h"
 
-int main()
-{
-    int a;
-    Fecha f;
-    int b;
-    f.agregarDias(-10);
-    cout << "test";
-    cout << f.toString();
+
+
+int main() {
+
     return 0;
 }
