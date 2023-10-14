@@ -1,15 +1,15 @@
 #include <iostream>
 
 using namespace std;
-#include "Fecha.h"
+#include "FechaHorario.h"
 
 int main()
 {
-    int a;
-    Fecha f;
-    int b;
-    f.agregarDias(-10);
-    cout << "test";
-    cout << f.toString();
+
+    FechaHorario aux(15,2,2018,0,0,12);
+
+    cout << aux.toString() << endl;
+
+    cout << aux.getFecha().getNombreDia(aux.getFecha());
     return 0;
 }
