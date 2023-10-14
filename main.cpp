@@ -2,14 +2,17 @@
 
 using namespace std;
 #include "Fecha.h"
+#include "Menu.h"
 
 int main()
 {
-    int a;
-    Fecha f;
-    int b;
+    /*Fecha f;
     f.agregarDias(-10);
     cout << "test";
-    cout << f.toString();
+    cout << f.toString();*/
+
+    Menu menu ;
+    menu.ejecutar() ;
+
     return 0;
 }
