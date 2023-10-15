@@ -6,13 +6,5 @@ using namespace std;
 
 int main()
 {
-    /*Fecha f;
-    f.agregarDias(-10);
-    cout << "test";
-    cout << f.toString();*/
-
-    Menu menu ;
-    menu.ejecutar() ;
-
     return 0;
 }
