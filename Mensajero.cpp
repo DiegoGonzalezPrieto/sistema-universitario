@@ -1,19 +1,19 @@
 #include <iostream>
-
+#include <cstring>
 
 using namespace std;
 
 #include "Mensajero.h"
 
-void Mensajero::mensajeAdvertencia(const char* mensaje)
+void Mensajero::mensajeAdvertencia(string mensaje)
 {
 cout << "ADVERTENCIA: " << mensaje << endl;
 }
-void Mensajero::mensajeInformacion(const char* mensaje)
+void Mensajero::mensajeInformacion(string mensaje)
 {
 cout << "INFORMACION: " << mensaje << endl;
 }
-void Mensajero::mensajeError(const char* mensaje)
+void Mensajero::mensajeError(string mensaje)
 {
 cout << "ERROR: " << mensaje << endl;
 }

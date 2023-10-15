@@ -5,9 +5,9 @@ class Mensajero
 {
 public:
     Mensajero() { }
-    void mensajeAdvertencia(const char* mensaje);
-    void mensajeInformacion(const char* mensaje);
-    void mensajeError(const char* mensaje) ;
+    void mensajeAdvertencia(string mensaje);
+    void mensajeInformacion(string mensaje);
+    void mensajeError(string mensaje) ;
 
 };
 
