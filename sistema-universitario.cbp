@@ -13,7 +13,6 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-
 					<Add directory="./" />
 				</Compiler>
 			</Target>
@@ -36,11 +35,18 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="Archivo.h" />
+		<Unit filename="DatosCursada.cpp" />
+		<Unit filename="DatosCursada.h" />
 		<Unit filename="Fecha.cpp" />
 		<Unit filename="Fecha.h" />
+		<Unit filename="FechaHorario.cpp" />
+		<Unit filename="FechaHorario.h" />
+		<Unit filename="Horario.cpp" />
+		<Unit filename="Horario.h" />
 		<Unit filename="Mensajero.cpp" />
 		<Unit filename="Mensajero.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="sistema-universitario.layout" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
