@@ -36,9 +36,9 @@
 		</Compiler>
 		<Unit filename="Fecha.cpp" />
 		<Unit filename="Fecha.h" />
-		<Unit filename="include/Mensajero.h" />
+		<Unit filename="Mensajero.cpp" />
+		<Unit filename="Mensajero.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="src/Mensajero.cpp" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
