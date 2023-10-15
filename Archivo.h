@@ -9,51 +9,50 @@ class Archivo
 public:
     Archivo(string nombre)
     {
-    setNombre(nombre);
-}
+        setNombre(nombre);
+    }
     std::string getNombre()
     {
-    string nombre(_nombre);
-    return string(nombre);
-}
+        string nombre(_nombre);
+        return string(nombre);
+    }
     void setNombre(string n)
     {
-    strcpy(_nombre, n.c_str());
-}
+        strcpy(_nombre, n.c_str());
+    }
 
     std::string getNombreBackup()
     {
-    return getNombre() + ".bup";
-}
+        return getNombre() + ".bup";
+    }
 
     bool crearArchivo()
     {
-    if (FILE* p = fopen(_nombre, "wb"))
-        {
-            fclose(p);
-            return true;
-        }
-    else
-        {
-            return false;
-        }
-}
+        if (FILE* p = fopen(_nombre, "wb"))
+            {
+                fclose(p);
+                return true;
+            }
+        else
+            {
+                return false;
+            }
+    }
 
     bool archivoExiste()
     {
-    if (FILE* p = fopen(_nombre, "rb"))
-        {
-            fclose(p);
-            return true;
-        }
-    else
-        {
-            return false;
-        }
-}
+        if (FILE* p = fopen(_nombre, "rb"))
+            {
+                fclose(p);
+                return true;
+            }
+        else
+            {
+                return false;
+            }
+    }
 
 
-//    template <typename T>
     bool leerRegistro(int pos, T& registro)
     {
         if (FILE* p = fopen(_nombre, "rb"))
@@ -69,7 +68,6 @@ public:
             }
     }
 
-//    template <typename T>
     int contarRegistros()
     {
         int tamanio;
@@ -87,11 +85,9 @@ public:
     }
 
 
-//    template <typename T>
     bool leerRegistros(vector<T>& registros)
     {
         T aux;
-//    int cant = contarRegistros<T>();
         int cant = contarRegistros();
         if (FILE* p = fopen(_nombre, "rb"))
             {
@@ -110,7 +106,6 @@ public:
     }
 
 
-//    template <typename T>
     bool agregarRegistro(T registro)
     {
         if (FILE* p = fopen(_nombre, "ab"))
@@ -125,23 +120,18 @@ public:
             }
     }
 
-//    template <typename T>
     bool borrarRegistro(int pos)
     {
-//        if (! Archivo::crearBackup<T>()) return false;
         if (! Archivo::crearBackup()) return false;
         T aux;
-//        int cantReg = contarRegistros<T>();
         int cantReg = contarRegistros();
+        if (cantReg < 1) return false;
         char nombreBup[35];
         string snom = getNombreBackup();
         strcpy(nombreBup, snom.c_str());
-        FILE* po = fopen(_nombre, "wb");
         FILE* pi = fopen(nombreBup, "rb");
-        if (pi == NULL || po == NULL || cantReg < 1)
-            {
-                return false;
-            }
+        FILE* po = fopen(_nombre, "wb");
+        if (pi == NULL || po == NULL) return false;
         for (int i=0; i<cantReg; i++)
             {
                 fread(&aux, sizeof(T), 1, pi);
@@ -152,7 +142,7 @@ public:
         fclose(pi);
         return true;
     }
-//    template <typename T>
+
     bool modificarRegistro(int pos, T registro)
     {
         if (FILE* p = fopen(_nombre, "rb+"))
@@ -168,21 +158,17 @@ public:
             }
     }
 
-//    template <typename T>
     bool crearBackup()
     {
         T aux;
-//        int cantReg = contarRegistros<T>();
         int cantReg = contarRegistros();
+        if (cantReg < 1) return false;
         char nombreBup[35];
         string snom = getNombreBackup();
         strcpy(nombreBup, snom.c_str());
         FILE* pi = fopen(_nombre, "rb");
         FILE* po = fopen(nombreBup, "wb");
-        if (pi == NULL || po == NULL || cantReg < 1)
-            {
-                return false;
-            }
+        if (pi == NULL || po == NULL) return false;
         for (int i=0; i<cantReg; i++)
             {
                 fread(&aux, sizeof(T), 1, pi);
