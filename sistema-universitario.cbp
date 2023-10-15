@@ -34,6 +34,8 @@
 		</Compiler>
 		<Unit filename="Fecha.cpp" />
 		<Unit filename="Fecha.h" />
+		<Unit filename="NotaFinal.cpp" />
+		<Unit filename="NotaFinal.h" />
 		<Unit filename="main.cpp" />
 		<Extensions />
 	</Project>

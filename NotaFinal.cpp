@@ -6,9 +6,9 @@ NotaFinal::NotaFinal()
     //ctor
 }
 
-void NotaFinal::setIdMateria(const char* idMateria){
+void NotaFinal::setIdMateria(const std::string& idMateria){
 
-    strcpy(_idMateria, idMateria);
+    strcpy(_idMateria, idMateria.c_str());
 }
 
 void NotaFinal::setNota(int nota){
@@ -21,7 +21,7 @@ void NotaFinal::setFecha(const Fecha& fecha){
     _fecha = fecha;
 }
 
-const char* NotaFinal::getIdMateria() const{
+std::string NotaFinal::getIdMateria() const{
 
     return _idMateria;
 }
@@ -34,4 +34,20 @@ int NotaFinal::getNota() const{
 Fecha NotaFinal::getFecha() const{
 
     return _fecha;
+}
+
+std::string NotaFinal::toString() const{
+
+    ///OBSERVACION: Como no hay datos por defecto en el constructor, si no seteamos datos en algún atributo toString() mostrará basura
+
+    std::string aux = "";
+
+    aux = getIdMateria();
+    aux += " ";
+    aux += std::to_string(getNota());
+    aux += " ";
+    aux += getFecha().toString();
+
+    return aux;
+
 }

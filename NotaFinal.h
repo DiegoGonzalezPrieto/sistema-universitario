@@ -1,6 +1,7 @@
 #ifndef NOTAFINAL_H
 #define NOTAFINAL_H
 
+#include <string>
 #include "Fecha.h"
 
 class NotaFinal
@@ -8,13 +9,15 @@ class NotaFinal
     public:
         NotaFinal();
 
-        void setIdMateria(const char* idMateria);
+        void setIdMateria(const std::string& idMateria);
         void setNota(int nota);
         void setFecha(const Fecha& fecha);
 
-        const char* getIdMateria() const;
+        std::string getIdMateria() const;
         int getNota() const;
         Fecha getFecha() const;
+
+        std::string toString() const;
 
     private:
 
