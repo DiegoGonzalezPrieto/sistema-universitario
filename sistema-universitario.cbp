@@ -34,6 +34,10 @@
 		</Compiler>
 		<Unit filename="Fecha.cpp" />
 		<Unit filename="Fecha.h" />
+		<Unit filename="FechaHorario.cpp" />
+		<Unit filename="FechaHorario.h" />
+		<Unit filename="Horario.cpp" />
+		<Unit filename="Horario.h" />
 		<Unit filename="main.cpp" />
 		<Extensions />
 	</Project>
