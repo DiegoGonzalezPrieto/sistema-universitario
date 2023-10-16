@@ -32,8 +32,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="Fecha.cpp" />
-		<Unit filename="Fecha.h" />
+		<Unit filename="Cuatrimestre.cpp" />
+		<Unit filename="Cuatrimestre.h" />
 		<Unit filename="main.cpp" />
 		<Extensions />
 	</Project>

@@ -13,20 +13,21 @@ class Cuatrimestre
 
         void setAnio(int anio);
         void setPeriodo(int periodo);
-        void setIdCursadaMateria(int pos, const char* idCursadaMateria);
+        void setIdCursadaMateria(std::string& nuevoIdMateria);
         void setFinalizado(bool finalizado);
 
         int getAnio() const;
         int getPeriodo() const;
-        const char* getIdsCursadaMateria(int pos) const;
+        std::string getIdsCursadaMateria(int pos) const;
         bool getFinalizado() const;
 
-        std::string getId() const;
+        std::string getIdCuatrimestre() const;
+        std::string toString() const;
 
     private:
         int _anio;
         int _periodo;
-        char _idsCursadaMateria[CANTMATERIAS][LONGMAX] ;
+        char _idsCursadaMateria[CANTMATERIAS][LONGMAX];
         bool _finalizado;
 };
 
