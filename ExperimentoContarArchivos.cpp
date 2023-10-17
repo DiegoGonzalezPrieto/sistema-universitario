@@ -3,6 +3,15 @@
 #include <iostream>
 #include <string>
 
+
+#ifdef _WIN32
+#define SISTEMA "Windows"
+#elif __linux__
+#define SISTEMA "Linux"
+#endif
+
+
+
 using namespace std;
 
 int main(){
@@ -21,7 +30,16 @@ int main(){
     DIR *directorio;
 
     /// Asignamos una ruta para trabajar, en este caso coloqué en donde se ejecuta el programa
-    string path = ".\\";
+    /// Debería adaptarse según si se compila desde Windows o Linux
+     #ifdef _WIN32
+
+        string path = ".\\";
+
+    #elif __linux__
+
+        string path = ".";
+
+    #endif // __linux__
 
 
     /// Abrimos el directorio a trabajar en la ruta deseada
