@@ -34,11 +34,9 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="Fecha.cpp" />
-		<Unit filename="Fecha.h" />
-		<Unit filename="include/Menu.h" />
+		<Unit filename="Menu.cpp" />
+		<Unit filename="Menu.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="src/Menu.cpp" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

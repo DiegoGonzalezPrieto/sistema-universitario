@@ -1,20 +1,16 @@
 #ifndef MENU_H
 #define MENU_H
 
+#include <vector>
+#include <string>
+
 class Menu
 {
 private:
-
-int numero[5] ;
-
+    vector<string> opciones;
 public:
-    Menu(){}
-    void mostrar();
-    void ejecutar();
-    void ejecutarOpcion(int numero) ;
-    void mostrarSubMenu(int numero);
-    void ejecutarSubMenu(int numero);
-    void ejecutarOpcionSubMenu (int numero) ;
+    Menu(const vector<string> &opciones);
+    int mostrar();
 };
 
 #endif // MENU_H
