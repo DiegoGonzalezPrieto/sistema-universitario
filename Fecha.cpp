@@ -6,18 +6,24 @@ using namespace std;
 
 Fecha::Fecha()
 {
-    setDia(1);
-    setMes(1);
-    setAnio(2023);
+    ///Creamos una variable del tipo time_T
+    ///Le asignamos nuestros datos del sistema con localtime
+    ///Creamos un struct tm para acceder a todas las funciones de <time.h>
+
+    time_t t = time(NULL);
+    localtime(&t);
+    struct tm date = *localtime(&t);
+
+    setDia(date.tm_mday);
+    setMes(date.tm_mon + 1); ///Los meses van de 0 a 11, como un array
+    setAnio(date.tm_year + 1900); ///Le sumamos 1900 para ubicarnos en el año actual
 }
 
 Fecha::Fecha(int dia, int mes, int anio)
 {
     if (!Fecha::esFechaValida(dia, mes, anio))
         {
-            setDia(1);
-            setMes(1);
-            setAnio(2023);
+            Fecha();
             return;
         }
     setDia(dia);
@@ -168,45 +174,18 @@ void Fecha::agregarDias(int dias)
     }
 }
 
-std::string Fecha::getNombreDia(const Fecha& fecha){
+std::string Fecha::getNombreDia(){
 
-    ///Tomamos como referencia el 01/01/1970 cuyo dia es un jueves
-    std::string vDiasSemana[7] = {"Jueves", "Viernes", "Sabado", "Domingo", "Lunes", "Martes", "Miercoles"};
-    int vCantDias[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
-    int totalDias = 0;
-
-    Fecha aux = fecha;
-
-    ///Contamos la cantidad de días transcurridos desde la fecha inicial hasta la fecha actual
-    for(int i = 1970; i <= aux.getAnio(); i++){
-
-        if((i % 4 == 0 && i % 100 != 0) || (i % 400 == 0)){
-
-            vCantDias[1]++;
-        }
-
-        for(int j = 1; j <= 12; j++){
-
-            if(!(aux.getAnio() <= i && aux.getMes() <= j)){
-
-                for(int k = 1; k <= vCantDias[j-1]; k++){
-
-                    if(aux.getDia() <= k){
-
-                        totalDias++;
-                    }
-
-                }
-            }
-        }
-
-        vCantDias[1] = 28;
-    }
-
-    ///cout << "Total de dias: " << totalDias << endl;
+    ///Este array sirve porque es el orden que maneja <ctime>
+    ///date.tm_wday devuelve un numero de 0 a 6 que representa cada dia de la semana
+    std::string vDiasSemana[7] = {"Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"};
 
 
-    ///El resto de la cantidad total de dias % 7 nos dará el día de la semana actual
-    return vDiasSemana[totalDias%7];
+    time_t t = time(NULL);
+    localtime(&t);
+    struct tm date = *localtime(&t);
+
+    std::string aux = vDiasSemana[date.tm_wday];
+
+    return aux;
 }
