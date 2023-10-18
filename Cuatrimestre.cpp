@@ -23,7 +23,7 @@ void Cuatrimestre::setPeriodo(int periodo){
     _periodo = periodo;
 }
 
-void Cuatrimestre::setIdCursadaMateria(std::string& nuevoIdMateria){
+void Cuatrimestre::setIdCursadaMateria(const std::string& nuevoIdMateria){
 
     // Buscar el primer espacio disponible
     int index = -1;
@@ -111,18 +111,32 @@ std::string Cuatrimestre::toString() const{
     aux += std::to_string(getPeriodo());
     aux += "\nID materias cursadas: ";
 
+    bool hayMaterias = false;
+
     for(int i = 0; i < CANTMATERIAS; i++){
 
-        if(i != CANTMATERIAS-1){
+        if(getIdsCursadaMateria(i) != "N/A"){
 
-            aux += getIdsCursadaMateria(i);
-            aux += ", ";
+            if(i != CANTMATERIAS-1){
+
+                aux += getIdsCursadaMateria(i);
+                aux += "    ";
+
+                if(hayMaterias == false){
+                    hayMaterias = true;
+                }
+            }
+            else{
+
+                aux += getIdsCursadaMateria(i);
+
+            }
         }
-        else{
+    }
 
-            aux += getIdsCursadaMateria(i);
+    if(hayMaterias == false){
 
-        }
+        aux += "no hay materias cursadas en este cuatrimestre";
     }
 
     return aux;

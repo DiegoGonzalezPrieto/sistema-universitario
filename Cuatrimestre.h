@@ -13,7 +13,7 @@ class Cuatrimestre
 
         void setAnio(int anio);
         void setPeriodo(int periodo);
-        void setIdCursadaMateria(std::string& nuevoIdMateria);
+        void setIdCursadaMateria(const std::string& nuevoIdMateria);
         void setFinalizado(bool finalizado);
 
         int getAnio() const;
