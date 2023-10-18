@@ -42,10 +42,11 @@ std::string NotaFinal::toString() const{
 
     std::string aux = "";
 
-    aux = getIdMateria();
-    aux += " ";
+    aux = "ID Materia: ";
+    aux += getIdMateria();
+    aux += " --- Nota: ";
     aux += std::to_string(getNota());
-    aux += " ";
+    aux += " --- Fecha: ";
     aux += getFecha().toString();
 
     return aux;
