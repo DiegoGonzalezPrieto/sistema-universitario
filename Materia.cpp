@@ -3,7 +3,10 @@
 
 Materia::Materia()
 {
-    //ctor
+    ///Le coloco un valor inicial a los códigos de materiasRequeridas para comparar en el setIdCursadaMateria contra este valor
+    for(int i = 0; i < CANTMATERIAS; i++){
+        strcpy(_idMateriasRequeridas[i], "N/A");
+    }
 }
 
 void Materia::setNombreMateria(const std::string& nombre){
@@ -68,19 +71,41 @@ std::string Materia::toString() const{
 
     std::string aux = "";
 
+    aux = "Materia: ";
     aux += getNombreMateria();
-    aux += " ";
+    aux += ", ID: ";
     aux += getIdMateria();
-    aux += " ";
 
-    for(int i = 0; i< CANTMATERIAS; i++){
+    bool hayCorrelativas = false;
 
-        aux += getIdMateriasRequeridas(i) + " ";
+    aux += "\nID materias correlativas: ";
+
+    for(int i = 0; i < CANTMATERIAS; i++){
+
+        if(getIdMateriasRequeridas(i) != "N/A"){
+
+            if(i != (CANTMATERIAS -1)){
+
+                aux += getIdMateriasRequeridas(i);
+                aux += "    ";
+                hayCorrelativas = true;
+            }
+            else{
+
+                aux += getIdMateriasRequeridas(i);
+            }
+        }
     }
 
-    aux += std::to_string(getCuatrimestreSugerido());
-    aux += " ";
-    aux += std::to_string(getCuatrimestreDeDuracion());
+    if(hayCorrelativas == false){
 
+        aux +="no tiene\n";
+    }
+
+    aux += "\nCuatrimestre sugerido: ";
+    aux += std::to_string(getCuatrimestreSugerido());
+    aux += ", la materia tiene una duracion de ";
+    aux += std::to_string(getCuatrimestreDeDuracion());
+    aux += " cuatrimestre/s";
     return aux;
 }
