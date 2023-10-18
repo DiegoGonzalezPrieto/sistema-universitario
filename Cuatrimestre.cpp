@@ -5,7 +5,6 @@
 
 Cuatrimestre::Cuatrimestre()
 {
-    ///TODO: Ver si tendrá valores por defecto
 
     ///Le coloco un valor inicial a los códigos de cursadaMateria para comparar en el setIdCursadaMateria contra este valor
     for(int i = 0; i < CANTMATERIAS; i++){
@@ -106,15 +105,24 @@ std::string Cuatrimestre::toString() const{
 
     std::string aux = "";
 
-    aux = std::to_string(getAnio());
-    aux += " ";
+    aux = "Anio: ";
+    aux += std::to_string(getAnio());
+    aux += ", periodo: ";
     aux += std::to_string(getPeriodo());
-    aux += " ";
+    aux += "\nID materias cursadas: ";
 
     for(int i = 0; i < CANTMATERIAS; i++){
 
-        aux += getIdsCursadaMateria(i);
-        aux += " ";
+        if(i != CANTMATERIAS-1){
+
+            aux += getIdsCursadaMateria(i);
+            aux += ", ";
+        }
+        else{
+
+            aux += getIdsCursadaMateria(i);
+
+        }
     }
 
     return aux;
