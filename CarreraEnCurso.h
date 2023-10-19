@@ -1,24 +1,29 @@
 #ifndef CARRERAENCURSO_H_INCLUDED
 #define CARRERAENCURSO_H_INCLUDED
-#include "claseCarrera.h"
+#include "CLASECARRERA.h"
+#include <string>
+#include <vector>
 
-class CarreraEnCurso : public claseCarrera {
+class CARRERAENCURSO : public CLASECARRERA
+{
 public:
-    CarreraEnCurso();  // Constructor
+    CARRERAENCURSO();  // Constructor
 
     // Métodos getter
-    const char* getLegajo() const;
-    const char* getNombreEstudiante() const;
-    const char* getIdCuatrimestre() const;
-    const char* getIdMateriaCursada(int index) const;
+    std::string getLegajo() const;
+    std::string getNombreEstudiante() const;
+    std::string getIdCuatrimestre() const;
+    std::string getIdMateriaCursada(int index) const;
+    void mostrarIdMateriasCursadas() const;
 
     // Métodos setter
-    void setLegajo(const char* nuevoLegajo);
-    void setNombreEstudiante(const char* nuevoNombre);
-    void setIdCuatrimestre(const char* nuevoIdCuatrimestre);
-   void setIdMateriaCursada(const char* nuevoIdMateria);
-    int buscarIndiceMateria(const char* idMateria);
-    void mostrarIdMateriasCursadas() const;
+
+    void setLegajo(const std::string& nuevoLegajo);
+    void setNombreEstudiante(const std::string& nuevoNombre);
+    void setIdCuatrimestre(const std::string& nuevoIdCuatrimestre);
+    void setIdMateriaCursada(const std::string& nuevoIdMateria);
+    void setIdMateriaCursada(const std::vector<std::string>& nuevoIdMaterias);
+
 private:
     char legajo[15];
     char _nombreestudiante[30];

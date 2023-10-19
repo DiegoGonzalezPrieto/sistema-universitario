@@ -34,12 +34,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="CarreraEnCurso.h" />
+		<Unit filename="CARRERAENCURSO.h" />
+		<Unit filename="CLASECARRERA.h" />
 		<Unit filename="CarreraEncurso.cpp" />
 		<Unit filename="Fecha.cpp" />
 		<Unit filename="Fecha.h" />
 		<Unit filename="claseCarrera.cpp" />
-		<Unit filename="claseCarrera.h" />
 		<Unit filename="main.cpp" />
 		<Extensions />
 	</Project>
