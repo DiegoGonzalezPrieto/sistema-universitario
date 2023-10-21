@@ -7,12 +7,11 @@ class Unidad
 {
     public:
         Unidad();
+        Unidad(string);
         string getRuta();
         void setRuta(string r);
 
-        float getPorcentajeCompletado();
-
-    protected:
+        string getRutaCompletado();
 
     private:
     char _ruta[100];

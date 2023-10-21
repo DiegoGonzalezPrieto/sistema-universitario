@@ -1,11 +1,17 @@
 #include <iostream>
 using namespace std;
 
+#include <filesystem>
 
 #include "Unidad.h"
 
 Unidad::Unidad()
 {}
+
+Unidad::Unidad(string ruta)
+{
+    setRuta(ruta);
+}
 
 string Unidad::getRuta()
 {
@@ -18,7 +24,7 @@ void Unidad::setRuta(string r)
     strcpy(_ruta, r.c_str());
 }
 
-float getPorcentajeCompletado(){
-    /// TODO
-    return 1.0f;
+string Unidad::getRutaCompletado()
+{
+    return getRuta() + "/completado";
 }
