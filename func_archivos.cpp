@@ -6,6 +6,7 @@ using namespace std;
 int contarArchivos(string ruta)
 {
     int archivos = 0;
+//    int punto = 0;
     try
         {
             const filesystem::path path{ruta};
@@ -13,6 +14,9 @@ int contarArchivos(string ruta)
                 {
                     if (item.is_regular_file())
                         {
+//                            string nombre(item.path());
+//                            punto = nombre.find_last_of(".");
+//                            cout << nombre.substr(punto+1) << endl;
                             archivos++;
                         }
                 }

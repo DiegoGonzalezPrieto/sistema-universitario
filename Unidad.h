@@ -2,6 +2,7 @@
 #define UNIDAD_H
 
 #include <cstring>
+using namespace std;
 
 class Unidad
 {
