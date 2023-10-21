@@ -13,7 +13,6 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-
 					<Add directory="./" />
 				</Compiler>
 			</Target>
@@ -36,6 +35,8 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="Archivo.h" />
+		<Unit filename="Evento.cpp" />
+		<Unit filename="Evento.h" />
 		<Unit filename="Fecha.cpp" />
 		<Unit filename="Fecha.h" />
 		<Unit filename="Mensajero.cpp" />
