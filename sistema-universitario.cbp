@@ -13,8 +13,12 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+<<<<<<< HEAD
 
 					<Add directory="./" />
+=======
+					<Add directory="include" />
+>>>>>>> clase-menu
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -24,7 +28,11 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+<<<<<<< HEAD
 					<Add directory="./" />
+=======
+					<Add directory="include" />
+>>>>>>> clase-menu
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -35,11 +43,16 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+<<<<<<< HEAD
 		<Unit filename="Archivo.h" />
 		<Unit filename="Fecha.cpp" />
 		<Unit filename="Fecha.h" />
 		<Unit filename="Mensajero.cpp" />
 		<Unit filename="Mensajero.h" />
+=======
+		<Unit filename="Menu.cpp" />
+		<Unit filename="Menu.h" />
+>>>>>>> clase-menu
 		<Unit filename="main.cpp" />
 		<Extensions />
 	</Project>
