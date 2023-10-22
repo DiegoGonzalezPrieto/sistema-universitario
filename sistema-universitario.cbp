@@ -38,8 +38,21 @@
 		</Compiler>
 		<Unit filename="Carrera.cpp" />
 		<Unit filename="Carrera.h" />
+		<Unit filename="Cuatrimestre.cpp" />
+		<Unit filename="Cuatrimestre.h" />
+		<Unit filename="Materia.cpp" />
+		<Unit filename="Materia.h" />
+		<Unit filename="Archivo.h" />
 		<Unit filename="Fecha.cpp" />
 		<Unit filename="Fecha.h" />
+		<Unit filename="Menu.cpp" />
+		<Unit filename="Menu.h" />
+		<Unit filename="Mensajero.cpp" />
+		<Unit filename="Mensajero.h" />
+		<Unit filename="Unidad.cpp" />
+		<Unit filename="Unidad.h" />
+		<Unit filename="func_archivos.cpp" />
+		<Unit filename="func_archivos.h" />
 		<Unit filename="main.cpp" />
 		<Extensions />
 	</Project>
