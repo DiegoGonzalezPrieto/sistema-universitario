@@ -1,6 +1,7 @@
 #ifndef FECHA_H
 #define FECHA_H
 #include <cstring>
+#include <string>
 
 class Fecha
 {
@@ -14,12 +15,13 @@ public:
     void setDia(int);
     void setMes(int);
     void setAnio(int);
-    string toString();
+    std::string toString();
     static bool esAnioBisiesto(int anio);
     bool esAnioBisiesto();
     static bool esFechaValida(int dia, int mes, int anio);
     bool esFechaValida();
     void agregarDias(int dias);
+    std::string getNombreDia(const Fecha& fecha);
 
 protected:
 

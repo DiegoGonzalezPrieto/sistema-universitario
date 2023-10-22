@@ -167,3 +167,46 @@ void Fecha::agregarDias(int dias)
             }
     }
 }
+
+std::string Fecha::getNombreDia(const Fecha& fecha){
+
+    ///Tomamos como referencia el 01/01/1970 cuyo dia es un jueves
+    std::string vDiasSemana[7] = {"Jueves", "Viernes", "Sabado", "Domingo", "Lunes", "Martes", "Miercoles"};
+    int vCantDias[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    int totalDias = 0;
+
+    Fecha aux = fecha;
+
+    ///Contamos la cantidad de días transcurridos desde la fecha inicial hasta la fecha actual
+    for(int i = 1970; i <= aux.getAnio(); i++){
+
+        if((i % 4 == 0 && i % 100 != 0) || (i % 400 == 0)){
+
+            vCantDias[1]++;
+        }
+
+        for(int j = 1; j <= 12; j++){
+
+            if(!(aux.getAnio() <= i && aux.getMes() <= j)){
+
+                for(int k = 1; k <= vCantDias[j-1]; k++){
+
+                    if(aux.getDia() <= k){
+
+                        totalDias++;
+                    }
+
+                }
+            }
+        }
+
+        vCantDias[1] = 28;
+    }
+
+    ///cout << "Total de dias: " << totalDias << endl;
+
+
+    ///El resto de la cantidad total de dias % 7 nos dará el día de la semana actual
+    return vDiasSemana[totalDias%7];
+}
