@@ -24,6 +24,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="include" />
 					<Add directory="./" />
 				</Compiler>
 				<Linker>
@@ -35,6 +36,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Carrera.cpp" />
+		<Unit filename="Carrera.h" />
 		<Unit filename="Cuatrimestre.cpp" />
 		<Unit filename="Cuatrimestre.h" />
 		<Unit filename="Materia.cpp" />
