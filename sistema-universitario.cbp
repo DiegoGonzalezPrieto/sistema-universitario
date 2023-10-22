@@ -45,6 +45,10 @@
 		<Unit filename="Archivo.h" />
 		<Unit filename="Fecha.cpp" />
 		<Unit filename="Fecha.h" />
+		<Unit filename="FechaHorario.cpp" />
+		<Unit filename="FechaHorario.h" />
+		<Unit filename="Horario.cpp" />
+		<Unit filename="Horario.h" />
 		<Unit filename="Menu.cpp" />
 		<Unit filename="Menu.h" />
 		<Unit filename="Mensajero.cpp" />
