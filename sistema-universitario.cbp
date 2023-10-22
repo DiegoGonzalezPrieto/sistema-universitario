@@ -25,7 +25,6 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add directory="./" />
-
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -47,6 +46,10 @@
 		<Unit filename="Menu.h" />
 		<Unit filename="Mensajero.cpp" />
 		<Unit filename="Mensajero.h" />
+		<Unit filename="Unidad.cpp" />
+		<Unit filename="Unidad.h" />
+		<Unit filename="func_archivos.cpp" />
+		<Unit filename="func_archivos.h" />
 		<Unit filename="main.cpp" />
 		<Extensions />
 	</Project>
