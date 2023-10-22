@@ -43,6 +43,8 @@
 		<Unit filename="Materia.cpp" />
 		<Unit filename="Materia.h" />
 		<Unit filename="Archivo.h" />
+		<Unit filename="Evento.cpp" />
+		<Unit filename="Evento.h" />
 		<Unit filename="Fecha.cpp" />
 		<Unit filename="Fecha.h" />
 		<Unit filename="FechaHorario.cpp" />
