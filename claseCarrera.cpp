@@ -1,7 +1,7 @@
 #include <iostream>
 #include "CLASECARRERA.h"
 #include <cstring>
-#include <vector>
+
 
 CLASECARRERA::CLASECARRERA()
 {
@@ -41,6 +41,26 @@ std::string CLASECARRERA::getIdMateria(int index) const
 }
 
 // Implementación de los métodos set
+
+
+
+//METODOS GET
+
+std::string CLASECARRERA::getLegajo() const
+{
+    return std::string(_legajo);
+}
+
+std::string CLASECARRERA::getNombreEstudiante() const
+{
+    return std::string(_nombreEstudiante);
+}
+
+
+
+//METODOS SET
+
+
 
 void CLASECARRERA::setNombreUniversidad(const std::string& nombreUniversidad)
 {
@@ -114,6 +134,18 @@ void CLASECARRERA::setIdMaterias(const std::vector<std::string>& nuevosIdMateria
             break;
         }
     }
+}
+
+void CLASECARRERA::setLegajo(const std::string& nuevoLegajo)
+{
+    strncpy(_legajo, nuevoLegajo.c_str(), sizeof(_legajo) - 1);
+    _legajo[sizeof(_legajo) - 1] = '\0';
+}
+
+void CLASECARRERA::setNombreEstudiante(const std::string& nuevoNombre)
+{
+    strncpy(_nombreEstudiante, nuevoNombre.c_str(), sizeof(_nombreEstudiante) - 1);
+    _nombreEstudiante[sizeof(_nombreEstudiante) - 1] = '\0';
 }
 
 

@@ -14,8 +14,11 @@ public:
     std::string getNombreUniversidad() const;
     std::string getNombreCarrera() const;
     std::string getIdMateria(int index) const;
+    std::string getLegajo() const;
+    std::string getNombreEstudiante() const;
 
-    // Métodos set
+    void setLegajo(const std::string& nuevoLegajo);
+    void setNombreEstudiante(const std::string& nuevoNombre);
     void setNombreUniversidad(const std::string& nombreUniversidad);
     void setNombreCarrera(const std::string& nombre);
     void setIdMateria(const std::string& idMateria);
@@ -25,6 +28,9 @@ private:
     char _nombreUniversidad[30];
     char _nombreCarrera[30];
     char _idMaterias[50][50];
+    char _legajo[15];
+    char _nombreEstudiante[30];
+
 };
 
 #endif // CLASECARRERA_H
