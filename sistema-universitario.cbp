@@ -36,6 +36,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Cuatrimestre.cpp" />
+		<Unit filename="Cuatrimestre.h" />
 		<Unit filename="Materia.cpp" />
 		<Unit filename="Materia.h" />
 		<Unit filename="Archivo.h" />
