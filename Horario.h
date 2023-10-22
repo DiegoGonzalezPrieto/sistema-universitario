@@ -2,6 +2,7 @@
 #define HORA_H
 
 #include <string>
+#include <time.h>
 
 class Horario
 {
