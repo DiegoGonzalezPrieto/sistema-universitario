@@ -4,13 +4,11 @@
 #include <cstring>
 #include <vector>
 
-class CLASECARRERA
+class Carrera
 {
 public:
     // Constructor
-    CLASECARRERA();
-    CLASECARRERA(const std::string& nombreUniversidad, const std::string& nombreCarrera);
-    // Métodos get
+    Carrera();
     std::string getNombreUniversidad() const;
     std::string getNombreCarrera() const;
     std::string getIdMateria(int index) const;
@@ -27,7 +25,7 @@ public:
 private:
     char _nombreUniversidad[30];
     char _nombreCarrera[30];
-    char _idMaterias[50][50];
+    char _idMaterias[50][10];
     char _legajo[15];
     char _nombreEstudiante[30];
 
