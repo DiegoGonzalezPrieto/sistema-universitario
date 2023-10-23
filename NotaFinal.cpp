@@ -1,5 +1,5 @@
 #include "NotaFinal.h"
-#include <cstring>
+
 
 NotaFinal::NotaFinal()
 {
