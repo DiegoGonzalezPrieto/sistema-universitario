@@ -3,6 +3,9 @@
 
 #include <string>
 #include "Fecha.h"
+#include "func_utiles.h"
+
+const int LONGMAX = 10;
 
 class NotaFinal
 {
@@ -21,7 +24,7 @@ class NotaFinal
 
     private:
 
-        char _idMateria[30];
+        char _idMateria[LONGMAX];
         int _nota;
         Fecha _fecha;
 };

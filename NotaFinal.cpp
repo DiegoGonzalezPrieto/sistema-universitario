@@ -8,7 +8,7 @@ NotaFinal::NotaFinal()
 
 void NotaFinal::setIdMateria(const std::string& idMateria){
 
-    strcpy(_idMateria, idMateria.c_str());
+    cargarCadenaConString(idMateria, _idMateria, LONGMAX);
 }
 
 void NotaFinal::setNota(int nota){
