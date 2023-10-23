@@ -3,6 +3,11 @@
 
 #include <string>
 #include "Fecha.h"
+#include "func_utiles.h"
+
+const int LONGMAXIDMATERIA = 10;
+const int LONGMAXDESCRIPCION = 50;
+const int LONGMAXINFORMACION = 250;
 
 class Evento
 {
@@ -29,9 +34,9 @@ class Evento
 
     private:
         Fecha _fecha;
-        char _descripcion[50];
-        char _informacion[250];
-        char _idCursadaMateria[30];
+        char _descripcion[LONGMAXDESCRIPCION];
+        char _informacion[LONGMAXINFORMACION];
+        char _idCursadaMateria[LONGMAXIDMATERIA];
         char _tipoEvento;
         bool _estado;
 

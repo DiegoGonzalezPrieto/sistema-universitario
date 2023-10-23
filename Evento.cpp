@@ -12,43 +12,43 @@ void Evento::setFecha(const Fecha& fecha){
 
 void Evento::setDescripcion(const std::string& descripcion){
 
-    strcpy(_descripcion, descripcion.c_str());
+    cargarCadenaConString(descripcion, _descripcion, LONGMAXDESCRIPCION);
 }
 
 void Evento::setInformacion(const std::string& informacion){
 
-    strcpy(_informacion, informacion.c_str());
+    cargarCadenaConString(informacion, _informacion, LONGMAXINFORMACION);
 }
 
 void Evento::setIdCursadaMateria(const std::string& idCursadaMateria){
 
-    strcpy(_idCursadaMateria, idCursadaMateria.c_str());
+    cargarCadenaConString(idCursadaMateria, _idCursadaMateria, LONGMAXIDMATERIA);
 }
 
 void Evento::setTipoEvento(char tipoEvento){
 
-    if(tipoEvento == 'e' || tipoEvento == 'E' || tipoEvento == 'o' || tipoEvento == 'O'){
+   switch(tipoEvento){
 
-        if(tipoEvento == 'E'){
-
-            _tipoEvento = 'e';
-        }
-        else if (tipoEvento == 'O'){
-
-            _tipoEvento = 'o';
-        }
-        else{
-
+        case 'e':
             _tipoEvento = tipoEvento;
-        }
-
-
+            break;
+        case 'E':
+            _tipoEvento = 'e';
+            break;
+        case 'o':
+            _tipoEvento = tipoEvento;
+            break;
+        case 'O':
+            _tipoEvento = 'o';
+            break;
+        default:
+            _tipoEvento = 'o';
+            break;
     }
-    else{
 
-        _tipoEvento = 'o';
-    }
+
 }
+
 
 void Evento::setEstado(bool estado){
 
@@ -89,13 +89,17 @@ std::string Evento::getCategoriaDeEvento() const{
 
     std::string categoriaDeEvento;
 
-    if(_tipoEvento == 'e'){
+    switch(_tipoEvento){
 
-        categoriaDeEvento = "Examen";
-    }
-    else if (_tipoEvento == 'o'){
-
-        categoriaDeEvento = "Otro";
+        case 'e':
+            categoriaDeEvento = "Examen";
+            break;
+        case 'o':
+            categoriaDeEvento = "Otro";
+            break;
+        default:
+            categoriaDeEvento = "Otro";
+            break;
     }
 
     return categoriaDeEvento;
