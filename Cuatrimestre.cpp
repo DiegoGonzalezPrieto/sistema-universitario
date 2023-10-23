@@ -1,5 +1,4 @@
 #include "Cuatrimestre.h"
-#include <cstring>
 #include <iostream>
 
 
@@ -8,7 +7,7 @@ Cuatrimestre::Cuatrimestre()
 
     ///Le coloco un valor inicial a los códigos de cursadaMateria para comparar en el setIdCursadaMateria contra este valor
     for(int i = 0; i < CANTMATERIAS; i++){
-        strcpy(_idsCursadaMateria[i], "N/A");
+        cargarCadenaConString("N/A", _idsCursadaMateria[i], LONGMAX);
     }
 
 }
@@ -40,13 +39,13 @@ void Cuatrimestre::setIdCursadaMateria(const std::string& nuevoIdMateria){
     // Verificar si se encontró un espacio disponible
     if (index != -1) {
 
-        strcpy(_idsCursadaMateria[index], nuevoIdMateria.c_str());
-        std::cout<<"MATERIA AGREGADA CORRECTAMENTE"<<std::endl;
+        cargarCadenaConString(nuevoIdMateria, _idsCursadaMateria[index], LONGMAX);
+
 
     } else {
 
         // Manejar el caso cuando no hay espacio disponible
-        std::cout << "Error: No hay espacio disponible para agregar más materias" << std::endl;
+
     }
 
 }
