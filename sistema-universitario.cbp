@@ -45,6 +45,8 @@
 		<Unit filename="Cuatrimestre.h" />
 		<Unit filename="Evento.cpp" />
 		<Unit filename="Evento.h" />
+		<Unit filename="DatosCursada.cpp" />
+		<Unit filename="DatosCursada.h" />
 		<Unit filename="Fecha.cpp" />
 		<Unit filename="Fecha.h" />
 		<Unit filename="FechaHorario.cpp" />
@@ -66,6 +68,7 @@
 		<Unit filename="func_utiles.cpp" />
 		<Unit filename="func_utiles.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="sistema-universitario.layout" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
