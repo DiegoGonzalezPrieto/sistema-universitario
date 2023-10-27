@@ -1,13 +1,22 @@
 #ifndef GESTORMATERIAS_H
 #define GESTORMATERIAS_H
 
+#include "Materia.h"
+#include "Archivo.h"
 
-class GestorMaterias
-{
+class GestorMaterias {
+
 private:
-public:
-    GestorMaterias();
 
+    Archivo<Materia> archivoMaterias;
+    Materia datosMateria;
+
+public:
+
+    GestorMaterias(string nombre);
+    bool guardarMateria();
+    bool modificarMateria();
+    void mostrarMaterias();
 
 };
 
