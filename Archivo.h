@@ -1,6 +1,6 @@
 #ifndef ARCHIVO_H
 #define ARCHIVO_H
-
+using namespace std;
 #include <vector>
 
 template<typename T>
