@@ -37,16 +37,16 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="Archivo.h" />
-		<Unit filename="CursadaMateria.cpp" />
-		<Unit filename="CursadaMateria.h" />
 		<Unit filename="Carrera.cpp" />
 		<Unit filename="Carrera.h" />
 		<Unit filename="Cuatrimestre.cpp" />
 		<Unit filename="Cuatrimestre.h" />
-		<Unit filename="Evento.cpp" />
-		<Unit filename="Evento.h" />
+		<Unit filename="CursadaMateria.cpp" />
+		<Unit filename="CursadaMateria.h" />
 		<Unit filename="DatosCursada.cpp" />
 		<Unit filename="DatosCursada.h" />
+		<Unit filename="Evento.cpp" />
+		<Unit filename="Evento.h" />
 		<Unit filename="Fecha.cpp" />
 		<Unit filename="Fecha.h" />
 		<Unit filename="FechaHorario.cpp" />
