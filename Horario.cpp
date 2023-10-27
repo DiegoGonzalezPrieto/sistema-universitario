@@ -4,18 +4,25 @@ using namespace std;
 
 Horario::Horario()
 {
-    _segundo = 0;
-    _minuto = 0;
-    _hora = 0;
+    ///Creamos una variable del tipo time_T
+    ///Le asignamos nuestros datos del sistema con localtime
+    ///Creamos un struct tm para acceder a todas las funciones de <time.h>
+
+    time_t t = time(NULL);
+    localtime(&t);
+    struct tm date = *localtime(&t);
+
+    setHora(date.tm_hour);
+    setMinuto(date.tm_min);
+    setSegundo(date.tm_sec);
+
 }
 
 Horario::Horario(int segundo, int minuto, int hora){
 
     if(validarHorario(segundo, minuto, hora) == false){
 
-        setSegundo(0);
-        setMinuto(0);
-        setHora(0);
+        Horario();
     }
     else{
 
