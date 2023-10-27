@@ -47,6 +47,8 @@
 		<Unit filename="Fecha.h" />
 		<Unit filename="FechaHorario.cpp" />
 		<Unit filename="FechaHorario.h" />
+		<Unit filename="GestorNotasFinales.cpp" />
+		<Unit filename="GestorNotasFinales.h" />
 		<Unit filename="Horario.cpp" />
 		<Unit filename="Horario.h" />
 		<Unit filename="Materia.cpp" />

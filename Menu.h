@@ -7,9 +7,9 @@
 class Menu
 {
 private:
-    vector<string> _opciones;
+    std::vector<std::string> _opciones;
 public:
-    Menu(const vector<string> &opciones);
+    Menu(const std::vector<std::string> &opciones);
     int mostrar();
 };
 
