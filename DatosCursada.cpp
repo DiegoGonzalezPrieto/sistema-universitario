@@ -3,7 +3,11 @@ using namespace std;
 
 #include "DatosCursada.h"
 
-DatosCursada::DatosCursada(){};
+/// Constructor vacío. Deja string vacío en _aula para poder chequear si es un dato válido.
+DatosCursada::DatosCursada(){
+    setAula("");
+    setDiaSemana(1);
+};
 
 Horario DatosCursada::getHorario()
     {
