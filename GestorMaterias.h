@@ -18,6 +18,7 @@ public:
     void modificarMaterias();
     void mostrarMaterias();
 
+    bool cargaCsv();
     bool AgregarUnaMateria();
     bool buscarMateria(const std::string& IDmateria, Materia& datosMateria) ;
     bool modificarUnaMateria();

@@ -6,10 +6,11 @@ using namespace std;
 #include "Materia.h"
 #include "Menu.h"
 
-GestorMaterias::GestorMaterias(string nombre) : archivoMaterias(nombre.c_str()) {}
+GestorMaterias::GestorMaterias(string nombre) : archivoMaterias(nombre) {}
 
 void GestorMaterias::CargarMaterias()
 {
+
     while (true)
     {
         if (AgregarUnaMateria())
