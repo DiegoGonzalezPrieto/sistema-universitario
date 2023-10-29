@@ -2,12 +2,14 @@
 #define GESTORCARRERA_H_INCLUDED
 #include "Carrera.h"
 #include "Archivo.h"
+#include "Mensajero.h"
+
 
 class GestorCarrera {
 
 public:
 
-    GestorCarrera(std::string nombre) : archivoCarreraEnCurso(nombre.c_str()) {
+    GestorCarrera(std::string nombre) : archivoCarreraEnCurso(nombre) {
     };
     void modificarRegistro();
     void asignarDatosDesdeVector(const std::vector<Carrera>& datos);
@@ -17,6 +19,7 @@ private:
 
     Archivo<Carrera> archivoCarreraEnCurso;
     Carrera datosCarrera;
+    Mensajero _mensajero;
 };
 
 #endif // GESTORCARRERA_H_INCLUDED

@@ -1,28 +1,24 @@
 #include "GestorCarrera.h"
 #include "Carrera.h"
+#include "Menu.h"
 void GestorCarrera::modificarRegistro()
 {
     Carrera datosCarrera;
 
-    if (!archivoCarreraEnCurso.leerRegistro(0, datosCarrera))
-    {
-        std::cout << "Error al leer el registro del Archivo Carrera.\n";
-        return;
-    }
+//    if (!archivoCarreraEnCurso.leerRegistro(0, datosCarrera))
+//    {
+//        _mensajero.mensajeError("No se pudo leer el registro del Archivo Carrera.");
+//        return;
+//    }
 
-    int opcion;
-    std::cout << "Seleccione el campo que desea modificar:\n";
-    std::cout << "1. Nombre de la Universidad\n";
-    std::cout << "2. Nombre de la Carrera\n";
-    std::cout << "3. Nombre del Estudiante\n";
-    std::cout << "4. Número de Legajo\n";
-
-    std::cin >> opcion;
+    Menu m({"Nombre de la Universidad","Nombre de la Carrera", "Nombre del Estudiante", "Número de Legajo"},"Seleccione el campo que desea modificar:");
     std::cin.ignore();
 
-    switch (opcion)
-    {
-    case 1:
+    switch (m.mostrar())
+        {
+        case 0:
+            return;
+        case 1:
         {
             std::string nuevoNombreUniversidad;
             std::cout << "Ingrese el nuevo nombre de la Universidad: \n";
@@ -30,7 +26,7 @@ void GestorCarrera::modificarRegistro()
             datosCarrera.setNombreUniversidad(nuevoNombreUniversidad);
         }
         break;
-    case 2:
+        case 2:
         {
             std::string nuevoNombreCarrera;
             std::cout << "Ingrese el nuevo nombre de la Carrera: \n";
@@ -38,7 +34,7 @@ void GestorCarrera::modificarRegistro()
             datosCarrera.setNombreCarrera(nuevoNombreCarrera);
         }
         break;
-    case 3:
+        case 3:
         {
             std::string nuevoNombreEstudiante;
             std::cout << "Ingrese el nuevo nombre del Estudiante: \n";
@@ -46,7 +42,7 @@ void GestorCarrera::modificarRegistro()
             datosCarrera.setNombreEstudiante(nuevoNombreEstudiante);
         }
         break;
-    case 4:
+        case 4:
         {
             std::string nuevoLegajo;
             std::cout << "Ingrese el nuevo número de Legajo: \n";
@@ -54,38 +50,37 @@ void GestorCarrera::modificarRegistro()
             datosCarrera.setLegajo(nuevoLegajo);
         }
         break;
-    default:
-        std::cout << "Opción invalida.\n";
         return;
-    }
+        }
 
     if (archivoCarreraEnCurso.modificarRegistro(0, datosCarrera))
-    {
-        std::cout << "Registro modificado exitosamente.\n";
-    }
-    else
-    {
-        std::cout << "Error al modificar el registro.\n";
-    }
-}
-
-void GestorCarrera::asignarDatosDesdeVector(const std::vector<Carrera>& datos)
-{
-    if (!datos.empty())
-    {
-        datosCarrera = datos[0];
-        if (archivoCarreraEnCurso.agregarRegistro(datosCarrera))
         {
-            std::cout << "Datos de la carrera asignados exitosamente.\n";
+            _mensajero.mensajeInformacion("Registro modificado exitosamente.");
         }
-    }
     else
-    {
-        std::cout << "No se pudo cargar la informacion de la carrera correctamente \n";
-    }
+        {
+            _mensajero.mensajeError("No se pudo modificar el registro.");
+        }
 }
 
-void GestorCarrera::cargarManual() {
+//void GestorCarrera::asignarDatosDesdeVector(const std::vector<Carrera>& datos)
+//{
+//    if (!datos.empty())
+//        {
+//            datosCarrera = datos[0];
+//            if (archivoCarreraEnCurso.agregarRegistro(datosCarrera))
+//                {
+//                    std::cout << "Datos de la carrera asignados exitosamente.\n";
+//                }
+//        }
+//    else
+//        {
+//            std::cout << "No se pudo cargar la informacion de la carrera correctamente \n";
+//        }
+//}
+
+void GestorCarrera::cargarManual()
+{
 
     Carrera datosCarrera;
     std::string nuevoDato;
@@ -105,10 +100,13 @@ void GestorCarrera::cargarManual() {
     std::cout << "Ingrese el numero de Legajo: ";
     std::getline(std::cin, nuevoDato);
     datosCarrera.setLegajo(nuevoDato);
-    if (archivoCarreraEnCurso.crearArchivo() && archivoCarreraEnCurso.agregarRegistro(datosCarrera)) {
+    if (archivoCarreraEnCurso.crearArchivo() && archivoCarreraEnCurso.agregarRegistro(datosCarrera))
+        {
 
-        std::cout << "Registro agregado exitosamente.\n";
-    } else {
-        std::cout << "Error al agregar el primer registro.\n";
-    }
+            std::cout << "Registro agregado exitosamente.\n";
+        }
+    else
+        {
+            std::cout << "Error al agregar el primer registro.\n";
+        }
 }
