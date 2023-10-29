@@ -5,8 +5,11 @@ using namespace std;
 
 #include "Unidad.h"
 
+/// Setea string vacío en _ruta para chequear validez
 Unidad::Unidad()
-{}
+{
+    setRuta("");
+}
 
 Unidad::Unidad(string ruta)
 {
