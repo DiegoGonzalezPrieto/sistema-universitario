@@ -1,30 +1,33 @@
 #include "Materia.h"
-#include <cstring>
 
+
+/// Cadenas vacías a NombreMateria e IdMateria
 Materia::Materia()
 {
-    ///Le coloco un valor inicial a los códigos de materiasRequeridas para comparar en el setIdCursadaMateria contra este valor
+    setNombreMateria("");
+    setIdMateria("");
+    ///Le coloco un valor inicial a los códigos de materiasRequeridas para comparar contra este valor
     for(int i = 0; i < CANTMATERIAS; i++){
-        strcpy(_idMateriasRequeridas[i], "N/A");
+        cargarCadenaConString("N/A", _idMateriasRequeridas[i], LONGMAXID);
     }
 }
 
 void Materia::setNombreMateria(const std::string& nombre){
 
-    strcpy(_nombre, nombre.c_str());
+    cargarCadenaConString(nombre, _nombre, LONGMAXNOMBRE);
 
 }
 
 
 void Materia::setIdMateria(const std::string& idMateria){
 
-    strcpy(_idMateria, idMateria.c_str());
+    cargarCadenaConString(idMateria, _idMateria, LONGMAXID);
 }
 
 
 void Materia::setIdMateriasRequeridas(int pos, const std::string& idMateriaRequerida){
 
-    strcpy(_idMateriasRequeridas[pos], idMateriaRequerida.c_str());
+    cargarCadenaConString(idMateriaRequerida, _idMateriasRequeridas[pos], LONGMAXID);
 }
 
 
