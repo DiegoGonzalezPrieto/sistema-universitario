@@ -37,6 +37,8 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="Archivo.h" />
+		<Unit filename="DatosCursada.cpp" />
+		<Unit filename="DatosCursada.h" />
 		<Unit filename="Carrera.cpp" />
 		<Unit filename="Carrera.h" />
 		<Unit filename="Cuatrimestre.cpp" />
@@ -48,7 +50,7 @@
 		<Unit filename="FechaHorario.cpp" />
 		<Unit filename="FechaHorario.h" />
 		<Unit filename="Horario.cpp" />
-		<Unit filename="Horario.h" />
+		<Unit filename="Horario.h" /
 		<Unit filename="Materia.cpp" />
 		<Unit filename="Materia.h" />
 		<Unit filename="Mensajero.cpp" />
@@ -64,6 +66,7 @@
 		<Unit filename="func_utiles.cpp" />
 		<Unit filename="func_utiles.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="sistema-universitario.layout" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
