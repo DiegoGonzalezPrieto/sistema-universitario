@@ -55,7 +55,7 @@ void GestorCarrera::modificarRegistro()
         }
         break;
     default:
-        std::cout << "Opción inválida.\n";
+        std::cout << "Opción invalida.\n";
         return;
     }
 
@@ -102,7 +102,7 @@ void GestorCarrera::cargarManual() {
     std::getline(std::cin, nuevoDato);
     datosCarrera.setNombreEstudiante(nuevoDato);
 
-    std::cout << "Ingrese el número de Legajo: ";
+    std::cout << "Ingrese el numero de Legajo: ";
     std::getline(std::cin, nuevoDato);
     datosCarrera.setLegajo(nuevoDato);
     if (archivoCarreraEnCurso.crearArchivo() && archivoCarreraEnCurso.agregarRegistro(datosCarrera)) {
