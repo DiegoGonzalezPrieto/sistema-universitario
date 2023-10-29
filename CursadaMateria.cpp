@@ -164,7 +164,6 @@ string CursadaMateria::toString()
 {
     string aux = "";
     aux += getIdMateria() +" - " +getNombreMateria();
-    aux += "";
     aux += "\nEstado: " + getEstadoToString();
     aux += "\nCuatrimestre de Inicio: " + getIdCuatrimestreInicio();
     aux += "\nCuatrimestre Actual: " + getIdCuatrimestreActual();
