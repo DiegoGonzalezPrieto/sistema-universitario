@@ -2,9 +2,10 @@
 #define CUATRIMESTRE_H
 
 #include <string>
+#include "func_utiles.h"
 
 const int CANTMATERIAS = 16;
-const int LONGMAX = 30;
+const int LONGMAX = 10;
 
 class Cuatrimestre
 {

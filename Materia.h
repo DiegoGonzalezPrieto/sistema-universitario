@@ -2,9 +2,11 @@
 #define MATERIA_H
 
 #include <string>
+#include "func_utiles.h"
 
 const int CANTMATERIAS = 10;
-const int LONGMAX = 30;
+const int LONGMAXID = 10;
+const int LONGMAXNOMBRE = 60;
 
 class Materia
 {
@@ -27,9 +29,9 @@ class Materia
 
     private:
 
-        char _nombre[30];
-        char _idMateria[LONGMAX];
-        char _idMateriasRequeridas[CANTMATERIAS][LONGMAX];
+        char _nombre[LONGMAXNOMBRE];
+        char _idMateria[LONGMAXID];
+        char _idMateriasRequeridas[CANTMATERIAS][LONGMAXID];
         int _cuatrimestreSugerido;
         int _cuatrimestresDeDuracion;
 };
