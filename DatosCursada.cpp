@@ -2,6 +2,7 @@
 using namespace std;
 
 #include "DatosCursada.h"
+#include "func_utiles.h"
 
 DatosCursada::DatosCursada(){};
 
@@ -39,7 +40,7 @@ string DatosCursada::getAula()
 
 void DatosCursada::setAula(string a)
     {
-        strcpy(_aula, a.c_str());
+        cargarCadenaConString(a, _aula, 200);
     }
 
 string DatosCursada::toString()
