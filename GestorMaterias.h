@@ -14,9 +14,13 @@ private:
 public:
 
     GestorMaterias(string nombre);
-    bool guardarMateria();
-    bool modificarMateria();
+    void CargarMaterias();
+    void modificarMaterias();
     void mostrarMaterias();
+
+    bool AgregarUnaMateria();
+    bool buscarMateria(const std::string& IDmateria, Materia& datosMateria) ;
+    bool modificarUnaMateria();
 
 };
 
