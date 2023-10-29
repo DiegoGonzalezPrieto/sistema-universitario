@@ -43,6 +43,10 @@
 		<Unit filename="Carrera.h" />
 		<Unit filename="Cuatrimestre.cpp" />
 		<Unit filename="Cuatrimestre.h" />
+		<Unit filename="CursadaMateria.cpp" />
+		<Unit filename="CursadaMateria.h" />
+		<Unit filename="DatosCursada.cpp" />
+		<Unit filename="DatosCursada.h" />
 		<Unit filename="Evento.cpp" />
 		<Unit filename="Evento.h" />
 		<Unit filename="Fecha.cpp" />
@@ -50,6 +54,7 @@
 		<Unit filename="FechaHorario.cpp" />
 		<Unit filename="FechaHorario.h" />
 		<Unit filename="Horario.cpp" />
+		<Unit filename="Horario.h" />
 		<Unit filename="Horario.h" /
 		<Unit filename="Materia.cpp" />
 		<Unit filename="Materia.h" />
