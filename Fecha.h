@@ -2,6 +2,7 @@
 #define FECHA_H
 #include <cstring>
 #include <string>
+#include <time.h>
 
 class Fecha
 {
@@ -21,7 +22,7 @@ public:
     static bool esFechaValida(int dia, int mes, int anio);
     bool esFechaValida();
     void agregarDias(int dias);
-    std::string getNombreDia(const Fecha& fecha);
+    std::string getNombreDia();
 
 protected:
 

@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="include" />
 					<Add directory="./" />
 				</Compiler>
 			</Target>
@@ -23,6 +24,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="include" />
 					<Add directory="./" />
 				</Compiler>
 				<Linker>
@@ -37,14 +39,32 @@
 		<Unit filename="Archivo.h" />
 		<Unit filename="DatosCursada.cpp" />
 		<Unit filename="DatosCursada.h" />
+		<Unit filename="Carrera.cpp" />
+		<Unit filename="Carrera.h" />
+		<Unit filename="Cuatrimestre.cpp" />
+		<Unit filename="Cuatrimestre.h" />
+		<Unit filename="Evento.cpp" />
+		<Unit filename="Evento.h" />
 		<Unit filename="Fecha.cpp" />
 		<Unit filename="Fecha.h" />
 		<Unit filename="FechaHorario.cpp" />
 		<Unit filename="FechaHorario.h" />
 		<Unit filename="Horario.cpp" />
-		<Unit filename="Horario.h" />
+		<Unit filename="Horario.h" /
+		<Unit filename="Materia.cpp" />
+		<Unit filename="Materia.h" />
 		<Unit filename="Mensajero.cpp" />
 		<Unit filename="Mensajero.h" />
+		<Unit filename="Menu.cpp" />
+		<Unit filename="Menu.h" />
+		<Unit filename="NotaFinal.cpp" />
+		<Unit filename="NotaFinal.h" />
+		<Unit filename="Unidad.cpp" />
+		<Unit filename="Unidad.h" />
+		<Unit filename="func_archivos.cpp" />
+		<Unit filename="func_archivos.h" />
+		<Unit filename="func_utiles.cpp" />
+		<Unit filename="func_utiles.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="sistema-universitario.layout" />
 		<Extensions />
