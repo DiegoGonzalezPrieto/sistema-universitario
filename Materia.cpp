@@ -1,8 +1,11 @@
 #include "Materia.h"
 
 
+/// Cadenas vacías a NombreMateria e IdMateria
 Materia::Materia()
 {
+    setNombreMateria("");
+    setIdMateria("");
     ///Le coloco un valor inicial a los códigos de materiasRequeridas para comparar contra este valor
     for(int i = 0; i < CANTMATERIAS; i++){
         cargarCadenaConString("N/A", _idMateriasRequeridas[i], LONGMAXID);
