@@ -7,7 +7,7 @@ class GestorCarrera {
 
 public:
 
-    GestorCarrera(string nombre) : archivoCarreraEnCurso(nombre.c_str()) {
+    GestorCarrera(std::string nombre) : archivoCarreraEnCurso(nombre.c_str()) {
     };
     void modificarRegistro();
     void asignarDatosDesdeVector(const std::vector<Carrera>& datos);
