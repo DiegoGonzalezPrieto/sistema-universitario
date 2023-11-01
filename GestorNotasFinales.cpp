@@ -19,7 +19,7 @@ GestorNotasFinales::~GestorNotasFinales()
 
 void GestorNotasFinales::iniciar(){
 
-    std::vector<std::string> opcMenu = {"Listar notas finales", "Guardar nota", "Eliminar nota", "Modificar nota", "Generar promedio"};
+    std::vector<std::string> opcMenu = {"Listar notas finales", "Guardar registro nota final", "Eliminar registro nota final", "Modificar registro nota final", "Generar promedio"};
 
     Menu menu(opcMenu);
 
@@ -163,26 +163,40 @@ bool GestorNotasFinales::altaNotaFinal(){
 
     std::string idMateria;
     int nota, dia, mes, anio;
-    Fecha fecha;
 
     std::cout << "ID de la materia: ";
     std::cin >> idMateria;
     std::cout << "Calificacion: ";
-    nota = validar<int>();
-    std::cout << "Ingrese el dia: ";
-    dia = validar<int>();
-    std::cout << "Ingrese el mes: ";
-    mes = validar<int>();
-    std::cout << "Ingrese el año: ";
-    anio = validar<int>();
+    nota = validar<int>("Por favor, reingrese la calificacion: ");
 
+    while(nota <= 0 || nota > 10){
+
+        std::cout << "Opcion no valida, se espera un numero entre 1 y 10: ";
+        nota = validar<int>("Por favor, reingrese la calificacion: ");
+    }
+
+
+
+    std::cout << "Ingrese el dia: ";
+    dia = validar<int>("Por favor, reingrese el dia: ");
+    std::cout << "Ingrese el mes: ";
+    mes = validar<int>("Por favor, reingrese el mes: ");
+    std::cout << "Ingrese el año: ";
+    anio = validar<int>("Por favor, reingrese el año: ");
 
     ///Llegados a este punto, todos los datos se deberian haber validado
+    ///Verificamos si la fecha es valida, caso contrario se asigna la fecha de hoy
+    Fecha fecha(dia,mes,anio);
 
     notaCargada.setIdMateria(idMateria);
     notaCargada.setNota(nota);
-    notaCargada.setFecha(Fecha(dia, mes, anio));
 
+    if(fecha.esFechaValida() == false){
+        notaCargada.setFecha(Fecha());
+    }
+    else{
+        notaCargada.setFecha(Fecha(dia, mes, anio));
+    }
 
     if (_auxArchivo.agregarRegistro(notaCargada) == true){
 
@@ -282,13 +296,13 @@ int GestorNotasFinales::eliminarNotaFinal(){
 
 
     int opc;
-    opc = validar<int>();
+    opc = validar<int>("Opcion no valida, por favor reintente: ");
 
     ///En caso de que el registro no este en rango se solicita nuevamente
     while(opc <= 0 || opc > cantNotasIdSolicitado){
 
         std::cout << "Numero de registro no valido, por favor reingreselo nuevamente: ";
-        opc = validar<int>();
+        opc = validar<int>("Opcion: ");
     }
 
 
@@ -422,13 +436,13 @@ int GestorNotasFinales::modificarNotaFinal(){
 
 
     int opc;
-    opc = validar<int>();
+    opc = validar<int>("Opcion no valida, por favor reintente: ");
 
     ///En caso de que el registro no este en rango se solicita nuevamente
     while(opc <= 0 || opc > cantNotasIdSolicitado){
 
         std::cout << "Numero de registro no valido, por favor reingreselo nuevamente: ";
-        opc = validar<int>();
+        opc = validar<int>("Opcion: ");
     }
 
     ///No uso la clase menu porque me da la opcion de ingresar cero para salir
@@ -440,13 +454,13 @@ int GestorNotasFinales::modificarNotaFinal(){
     std::cout << "Eleccion: ";
 
     int seleccion;
-    seleccion = validar<int>();
+    seleccion = validar<int>("Opcion no valida, por favor reintente: ");
 
     ///En caso de que el registro no este en rango se solicita nuevamente
     while(seleccion <= 0 || seleccion > 4){
 
         std::cout << "Opcion no valida, por favor reingreselo nuevamente: ";
-        seleccion = validar<int>();
+        seleccion = validar<int>("Opcion: ");
     }
 
     NotaFinal auxRegistro;
@@ -471,14 +485,23 @@ int GestorNotasFinales::modificarNotaFinal(){
             int dia, mes, anio;
 
             std::cout << "Ingrese el dia: ";
-            dia = validar<int>();
+            dia = validar<int>("Por favor, reingrese el dia: ");
             std::cout << "Ingrese el mes: ";
-            mes = validar<int>();
+            mes = validar<int>("Por favor, reingrese el mes: ");
             std::cout << "Ingrese el año: ";
-            anio = validar<int>();
+            anio = validar<int>("Por favor, reingrese el año: ");
 
             auxRegistro = listaNotas[posNotasIdMateriasSolicitado[opc-1]];
-            auxRegistro.setFecha(Fecha(dia, mes, anio));
+
+            Fecha fecha(dia,mes,anio);
+
+            if(fecha.esFechaValida() == false){
+                auxRegistro.setFecha(Fecha());
+            }
+            else{
+                auxRegistro.setFecha(Fecha(dia, mes, anio));
+            }
+
             _auxArchivo.modificarRegistro(posNotasIdMateriasSolicitado[opc-1], auxRegistro);
 
             break;
@@ -489,7 +512,13 @@ int GestorNotasFinales::modificarNotaFinal(){
             int nuevaCalificacion;
 
             std::cout << "Calificacion: ";
-            nuevaCalificacion = validar<int>();
+            nuevaCalificacion = validar<int>("Por favor, reingrese la calificacion: ");
+
+            while(nuevaCalificacion <= 0 || nuevaCalificacion > 10){
+
+                std::cout << "Opcion no valida, se espera un numero entre 1 y 10: ";
+                nuevaCalificacion = validar<int>("Por favor, reingrese la calificacion: ");
+            }
 
             auxRegistro = listaNotas[posNotasIdMateriasSolicitado[opc-1]];
             auxRegistro.setNota(nuevaCalificacion);
@@ -506,18 +535,34 @@ int GestorNotasFinales::modificarNotaFinal(){
             std::cout << "ID de la materia: ";
             std::cin >> nuevoIdMateria;
             std::cout << "Calificacion: ";
-            nuevaCalificacion = validar<int>();
+            nuevaCalificacion = validar<int>("Por favor, reingrese la calificacion: ");
+
+            while(nuevaCalificacion <= 0 || nuevaCalificacion > 10){
+
+                std::cout << "Opcion no valida, se espera un numero entre 1 y 10: ";
+                nuevaCalificacion = validar<int>("Por favor, reingrese la calificacion: ");
+            }
+
             std::cout << "Ingrese el dia: ";
-            dia = validar<int>();
+            dia = validar<int>("Por favor, reingrese el dia: ");
             std::cout << "Ingrese el mes: ";
-            mes = validar<int>();
+            mes = validar<int>("Por favor, reingrese el mes: ");
             std::cout << "Ingrese el año: ";
-            anio = validar<int>();
+            anio = validar<int>("Por favor, reingrese el año: ");
 
             auxRegistro = listaNotas[posNotasIdMateriasSolicitado[opc-1]];
             auxRegistro.setIdMateria(nuevoIdMateria);
             auxRegistro.setNota(nuevaCalificacion);
-            auxRegistro.setFecha(Fecha(dia, mes, anio));
+
+            Fecha fecha(dia,mes,anio);
+
+            if(fecha.esFechaValida() == false){
+                auxRegistro.setFecha(Fecha());
+            }
+            else{
+                auxRegistro.setFecha(Fecha(dia, mes, anio));
+            }
+
             _auxArchivo.modificarRegistro(posNotasIdMateriasSolicitado[opc-1], auxRegistro);
 
             break;
