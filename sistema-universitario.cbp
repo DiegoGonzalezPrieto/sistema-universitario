@@ -57,6 +57,8 @@
 		<Unit filename="GestorCsv.h" />
 		<Unit filename="GestorNotasFinales.cpp" />
 		<Unit filename="GestorNotasFinales.h" />
+		<Unit filename="GestorCarrera.cpp" />
+		<Unit filename="GestorCarrera.h" />
 		<Unit filename="Horario.cpp" />
 		<Unit filename="Horario.h" />
 		<Unit filename="Materia.cpp" />
