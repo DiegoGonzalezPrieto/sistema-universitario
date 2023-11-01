@@ -35,5 +35,31 @@ template<typename T>
         return entrada;
     }
 
+template<typename T>
+    T validar() {
+        T entrada;
+        while (true) {
+            std::cin >> entrada;
+
+            if (std::cin.fail()) {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "Entrada no válida. Intente de nuevo." << std::endl;
+            } else {
+                // Verificar si hay caracteres no válidos en el búfer
+                char c;
+                std::cin.get(c);
+                if (c != '\n' && !std::isdigit(c)) {
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cout << "Entrada no válida. Intente de nuevo." << std::endl;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        return entrada;
+    }
+
 
 #endif // FUNC_ARCHIVOS_H_INCLUDED
