@@ -51,6 +51,8 @@
 		<Unit filename="Fecha.h" />
 		<Unit filename="FechaHorario.cpp" />
 		<Unit filename="FechaHorario.h" />
+		<Unit filename="GestorCsv.cpp" />
+		<Unit filename="GestorCsv.h" />
 		<Unit filename="GestorCarrera.cpp" />
 		<Unit filename="GestorCarrera.h" />
 		<Unit filename="GestorCsv.cpp" />
