@@ -5,9 +5,9 @@ class Mensajero
 {
 public:
     Mensajero() { }
-    void mensajeAdvertencia(string mensaje);
-    void mensajeInformacion(string mensaje);
-    void mensajeError(string mensaje) ;
+    void mensajeAdvertencia(std::string mensaje);
+    void mensajeInformacion(std::string mensaje);
+    void mensajeError(std::string mensaje) ;
 
 };
 

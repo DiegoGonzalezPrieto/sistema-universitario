@@ -3,11 +3,12 @@
 
 #include "GestorNotasFinales.h"
 #include "Menu.h"
-#include "Archivo.h"
+#include "func_utiles.h"
+#include "Mensajero.h"
 
-GestorNotasFinales::GestorNotasFinales()
+GestorNotasFinales::GestorNotasFinales() : _auxArchivo("notas_finales.dat")
 {
-    //ctor
+
 }
 
 GestorNotasFinales::~GestorNotasFinales()
@@ -19,7 +20,6 @@ GestorNotasFinales::~GestorNotasFinales()
 void GestorNotasFinales::iniciar(){
 
     std::vector<std::string> opcMenu = {"Listar notas finales", "Guardar nota", "Eliminar nota", "Modificar nota", "Generar promedio"};
-
 
     Menu menu(opcMenu);
 
@@ -41,10 +41,10 @@ void GestorNotasFinales::iniciar(){
 
             switch(codError){
 
-            case -1:
+            case ARCH_NO_EXISTE:
                 std::cout << "Error: No existe el archivo de notas finales" << std::endl;
                 break;
-            case -2:
+            case ARCH_ERROR_LECTURA:
                 std::cout << "Error: No se pudo leer el archivo de notas finales" << std::endl;
                 break;
             default:
@@ -69,16 +69,16 @@ void GestorNotasFinales::iniciar(){
 
             switch(codError){
 
-            case -1:
+            case ARCH_NO_EXISTE:
                 std::cout << "Error: No existe el archivo de notas finales" << std::endl;
                 break;
-            case -2:
+            case ARCH_ERROR_LECTURA:
                 std::cout << "Error: No se pudo leer el archivo de notas finales" << std::endl;
                 break;
-            case -3:
+            case SIN_COINCIDENCIAS:
                 std::cout << "Error: No se encontraron registros para el ID Materia solicitado" << std::endl;
                 break;
-            case -4:
+            case CANCELAR_OPERACION:
                 std::cout << "Se ha cancelado la eliminacion del registro" << std::endl;
                 break;
             default:
@@ -96,17 +96,20 @@ void GestorNotasFinales::iniciar(){
 
             switch(codError){
 
-                case -1:
+                case ARCH_NO_EXISTE:
                     std::cout << "Error: No existe el archivo de notas finales" << std::endl;
                     break;
-                case -2:
+                case ARCH_ERROR_LECTURA:
                     std::cout << "Error: No se pudo leer el archivo de notas finales" << std::endl;
                     break;
-                case -3:
+                case SIN_COINCIDENCIAS:
                     std::cout << "Error: No se encontraron registros para el ID Materia solicitado" << std::endl;
                     break;
-                case -6:
+                case CANCELAR_OPERACION:
                     std::cout << "Se ha cancelado la modificacion del reistro" << std::endl;
+                    break;
+                default:
+                    std::cout << "Se ha modificado satisfactoriamente el registro" << std::endl;
                     break;
             }
 
@@ -125,13 +128,13 @@ void GestorNotasFinales::iniciar(){
                 switch(codError){
 
 
-                case -1:
+                case ARCH_NO_EXISTE:
                     std::cout << "Error: No existe el archivo de notas finales" << std::endl;
                     break;
-                case -2:
+                case ARCH_ERROR_LECTURA:
                     std::cout << "Error: No se pudo leer el archivo de notas finales" << std::endl;
                     break;
-                case -5:
+                case ARCH_SIN_REGISTROS:
                     std::cout << "Error: No se encontraron registros para calcular el promedio" << std::endl;
                     break;
                 default:
@@ -165,11 +168,13 @@ bool GestorNotasFinales::altaNotaFinal(){
     std::cout << "ID de la materia: ";
     std::cin >> idMateria;
     std::cout << "Calificacion: ";
-    std::cin >> nota;
-    std::cout << "Ingrese dia, mes y anio (Debe realizarse en este orden, separando cada campo con un espacio): ";
-    std::cin >> dia;
-    std::cin >> mes;
-    std::cin >> anio;
+    nota = validar<int>();
+    std::cout << "Ingrese el dia: ";
+    dia = validar<int>();
+    std::cout << "Ingrese el mes: ";
+    mes = validar<int>();
+    std::cout << "Ingrese el año: ";
+    anio = validar<int>();
 
 
     ///Llegados a este punto, todos los datos se deberian haber validado
@@ -179,9 +184,7 @@ bool GestorNotasFinales::altaNotaFinal(){
     notaCargada.setFecha(Fecha(dia, mes, anio));
 
 
-    Archivo <NotaFinal> auxArchivo("notas_finales.dat");
-
-    if (auxArchivo.agregarRegistro(notaCargada) == true){
+    if (_auxArchivo.agregarRegistro(notaCargada) == true){
 
         return true;
     }
@@ -194,19 +197,17 @@ bool GestorNotasFinales::altaNotaFinal(){
 int GestorNotasFinales::listadoNotasFinales(){
 
 
-    Archivo <NotaFinal> auxArchivo("notas_finales.dat");
-
-    if(auxArchivo.archivoExiste() == false){
+    if(_auxArchivo.archivoExiste() == false){
 
         return -1;
     }
 
     NotaFinal auxRegistro;
-    int cantRegistros = auxArchivo.contarRegistros();
+    int cantRegistros = _auxArchivo.contarRegistros();
 
     std::vector <NotaFinal> listaNotas;
 
-    if (auxArchivo.leerRegistros(listaNotas) == false){
+    if (_auxArchivo.leerRegistros(listaNotas) == false){
 
         return -2;
     }
@@ -222,9 +223,8 @@ int GestorNotasFinales::listadoNotasFinales(){
 
 int GestorNotasFinales::eliminarNotaFinal(){
 
-    Archivo <NotaFinal> auxArchivo("notas_finales.dat");
 
-    if(auxArchivo.archivoExiste() == false){
+    if(_auxArchivo.archivoExiste() == false){
 
         return -1;
     }
@@ -235,7 +235,7 @@ int GestorNotasFinales::eliminarNotaFinal(){
     std::cin >> idMateria;
 
 
-    int cantRegistros = auxArchivo.contarRegistros();
+    int cantRegistros = _auxArchivo.contarRegistros();
 
     ///Estan todas las notas
     std::vector <NotaFinal> listaNotas;
@@ -246,7 +246,7 @@ int GestorNotasFinales::eliminarNotaFinal(){
     ///Guardamos la posicion frente al listado de todas las notas
     std::vector <int> posNotasIdMateriasSolicitado;
 
-    if (auxArchivo.leerRegistros(listaNotas) == false){
+    if (_auxArchivo.leerRegistros(listaNotas) == false){
 
         return -2;
     }
@@ -282,13 +282,13 @@ int GestorNotasFinales::eliminarNotaFinal(){
 
 
     int opc;
-    std::cin >> opc;
+    opc = validar<int>();
 
     ///En caso de que el registro no este en rango se solicita nuevamente
     while(opc <= 0 || opc > cantNotasIdSolicitado){
 
         std::cout << "Numero de registro no valido, por favor reingreselo nuevamente: ";
-        std::cin >> opc;
+        opc = validar<int>();
     }
 
 
@@ -296,7 +296,7 @@ int GestorNotasFinales::eliminarNotaFinal(){
 
 
     char decisionFinal;
-    std::cout << "Esta seguro que desea eliminarlo? (S - si, N - no): ";
+    std::cout << "¿Esta seguro que desea eliminarlo? (S - si, N - no): ";
     std::cin >> decisionFinal;
 
 
@@ -305,7 +305,7 @@ int GestorNotasFinales::eliminarNotaFinal(){
     case 's':
     case 'S':
 
-        auxArchivo.borrarRegistro(posNotasIdMateriasSolicitado[opc-1]);
+        _auxArchivo.borrarRegistro(posNotasIdMateriasSolicitado[opc-1]);
         return 0;
         break;
 
@@ -328,9 +328,8 @@ int GestorNotasFinales::eliminarNotaFinal(){
 
 int GestorNotasFinales::generarPromedio(){
 
-    Archivo <NotaFinal> auxArchivo("notas_finales.dat");
 
-    if(auxArchivo.archivoExiste() == false){
+    if(_auxArchivo.archivoExiste() == false){
 
         return -1;
     }
@@ -338,12 +337,12 @@ int GestorNotasFinales::generarPromedio(){
     std::vector <NotaFinal> listaNotas;
 
 
-    if (auxArchivo.leerRegistros(listaNotas) == false){
+    if (_auxArchivo.leerRegistros(listaNotas) == false){
 
         return -2;
     }
 
-    int cantRegistros = auxArchivo.contarRegistros();
+    int cantRegistros = _auxArchivo.contarRegistros();
     int promedio = 0;
 
     for(int i = 0; i < cantRegistros; i++){
@@ -364,9 +363,8 @@ int GestorNotasFinales::generarPromedio(){
 
 int GestorNotasFinales::modificarNotaFinal(){
 
-    Archivo <NotaFinal> auxArchivo("notas_finales.dat");
 
-    if(auxArchivo.archivoExiste() == false){
+    if(_auxArchivo.archivoExiste() == false){
 
         return -1;
     }
@@ -377,7 +375,7 @@ int GestorNotasFinales::modificarNotaFinal(){
     std::cin >> idMateria;
 
 
-    int cantRegistros = auxArchivo.contarRegistros();
+    int cantRegistros = _auxArchivo.contarRegistros();
 
     ///Estan todas las notas
     std::vector <NotaFinal> listaNotas;
@@ -388,7 +386,7 @@ int GestorNotasFinales::modificarNotaFinal(){
     ///Guardamos la posicion frente al listado de todas las notas
     std::vector <int> posNotasIdMateriasSolicitado;
 
-    if (auxArchivo.leerRegistros(listaNotas) == false){
+    if (_auxArchivo.leerRegistros(listaNotas) == false){
 
         return -2;
     }
@@ -424,29 +422,31 @@ int GestorNotasFinales::modificarNotaFinal(){
 
 
     int opc;
-    std::cin >> opc;
+    opc = validar<int>();
 
     ///En caso de que el registro no este en rango se solicita nuevamente
     while(opc <= 0 || opc > cantNotasIdSolicitado){
 
         std::cout << "Numero de registro no valido, por favor reingreselo nuevamente: ";
-        std::cin >> opc;
+        opc = validar<int>();
     }
 
+    ///No uso la clase menu porque me da la opcion de ingresar cero para salir
     std::cout << "Indique el campo que desea modificar: " << std::endl;
     std::cout << "1 - ID Materia" << std::endl;
     std::cout << "2 - Fecha" << std::endl;
     std::cout << "3 - Calificacion" << std::endl;
+    std::cout << "4 - Modificar todo el registro" << std::endl;
     std::cout << "Eleccion: ";
 
     int seleccion;
-    std::cin >> seleccion;
+    seleccion = validar<int>();
 
     ///En caso de que el registro no este en rango se solicita nuevamente
-    while(seleccion <= 0 || seleccion > 3){
+    while(seleccion <= 0 || seleccion > 4){
 
         std::cout << "Opcion no valida, por favor reingreselo nuevamente: ";
-        std::cin >> seleccion;
+        seleccion = validar<int>();
     }
 
     NotaFinal auxRegistro;
@@ -462,7 +462,7 @@ int GestorNotasFinales::modificarNotaFinal(){
 
             auxRegistro = listaNotas[posNotasIdMateriasSolicitado[opc-1]];
             auxRegistro.setIdMateria(nuevoIdMateria);
-            auxArchivo.modificarRegistro(posNotasIdMateriasSolicitado[opc-1], auxRegistro);
+            _auxArchivo.modificarRegistro(posNotasIdMateriasSolicitado[opc-1], auxRegistro);
 
             break;
         }
@@ -470,15 +470,16 @@ int GestorNotasFinales::modificarNotaFinal(){
         {
             int dia, mes, anio;
 
-            std::cout << "Ingrese dia, mes y anio (Debe realizarse en este orden, separando cada campo con un espacio): ";
-            std::cin >> dia;
-            std::cin >> mes;
-            std::cin >> anio;
-
+            std::cout << "Ingrese el dia: ";
+            dia = validar<int>();
+            std::cout << "Ingrese el mes: ";
+            mes = validar<int>();
+            std::cout << "Ingrese el año: ";
+            anio = validar<int>();
 
             auxRegistro = listaNotas[posNotasIdMateriasSolicitado[opc-1]];
             auxRegistro.setFecha(Fecha(dia, mes, anio));
-            auxArchivo.modificarRegistro(posNotasIdMateriasSolicitado[opc-1], auxRegistro);
+            _auxArchivo.modificarRegistro(posNotasIdMateriasSolicitado[opc-1], auxRegistro);
 
             break;
         }
@@ -487,17 +488,43 @@ int GestorNotasFinales::modificarNotaFinal(){
 
             int nuevaCalificacion;
 
-            std::cout << "Ingrese la nueva Calificacion: ";
-            std::cin >> nuevaCalificacion;
+            std::cout << "Calificacion: ";
+            nuevaCalificacion = validar<int>();
 
             auxRegistro = listaNotas[posNotasIdMateriasSolicitado[opc-1]];
             auxRegistro.setNota(nuevaCalificacion);
-            auxArchivo.modificarRegistro(posNotasIdMateriasSolicitado[opc-1], auxRegistro);
+            _auxArchivo.modificarRegistro(posNotasIdMateriasSolicitado[opc-1], auxRegistro);
 
             break;
         }
+        case 4:
+        {
+
+            std::string nuevoIdMateria;
+            int nuevaCalificacion, dia, mes, anio;
+
+            std::cout << "ID de la materia: ";
+            std::cin >> nuevoIdMateria;
+            std::cout << "Calificacion: ";
+            nuevaCalificacion = validar<int>();
+            std::cout << "Ingrese el dia: ";
+            dia = validar<int>();
+            std::cout << "Ingrese el mes: ";
+            mes = validar<int>();
+            std::cout << "Ingrese el año: ";
+            anio = validar<int>();
+
+            auxRegistro = listaNotas[posNotasIdMateriasSolicitado[opc-1]];
+            auxRegistro.setIdMateria(nuevoIdMateria);
+            auxRegistro.setNota(nuevaCalificacion);
+            auxRegistro.setFecha(Fecha(dia, mes, anio));
+            _auxArchivo.modificarRegistro(posNotasIdMateriasSolicitado[opc-1], auxRegistro);
+
+            break;
+
+        }
         default:
-            return -6;
+            return -4;
             break;
     }
 

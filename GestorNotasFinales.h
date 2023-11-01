@@ -2,6 +2,19 @@
 #define GESTORNOTASFINALES_H
 
 #include "NotaFinal.h"
+#include "Archivo.h"
+
+enum TipoError{
+
+    ARCH_NO_EXISTE = -1,
+    ARCH_ERROR_LECTURA = -2,
+    SIN_COINCIDENCIAS = -3,
+    CANCELAR_OPERACION = -4,
+    ARCH_SIN_REGISTROS = -5
+
+};
+
+
 
 class GestorNotasFinales
 {
@@ -14,6 +27,9 @@ class GestorNotasFinales
 
 
     private:
+
+        Archivo <NotaFinal> _auxArchivo;
+
         bool altaNotaFinal();
         int listadoNotasFinales();
         int eliminarNotaFinal();

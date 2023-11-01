@@ -2,8 +2,6 @@
 #define ARCHIVO_H
 
 #include <vector>
-#include <cstring>
-#include <string>
 
 template<typename T>
 class Archivo
