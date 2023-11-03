@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Materia.h"
+#include "Archivo.h"
 
 class GestorCsv
 {
@@ -15,9 +16,13 @@ class GestorCsv
         void iniciar();
 
     private:
+
+        Archivo <Materia> _auxArchivo;
+        std::string _nombreArchivo;
+
         void mostrarInstrucciones();
-        bool generarArchivoModelo(const std::string& nombreArchivo);
-        bool importarArchivoCsv(const std::string& nombreArchivo, std::vector <Materia>& datos);
+        bool generarArchivoModelo();
+        bool importarArchivoCsv(std::vector <Materia>& datos);
         bool mostrarMaterias(const std::vector <Materia>& datos);
         bool grabarDatosImportados(const std::vector <Materia>& datos);
 
