@@ -12,13 +12,13 @@ public:
     GestorCarrera(std::string nombre) : archivoCarreraEnCurso(nombre) {
     };
     void modificarRegistro();
-    void asignarDatosDesdeVector(const std::vector<Carrera>& datos);
+    void mostrarDatosCarrera();
     void cargarManual();
 
 private:
 
     Archivo<Carrera> archivoCarreraEnCurso;
-    Carrera datosCarrera;
+    Carrera _datosCarrera;
     Mensajero _mensajero;
 };
 
