@@ -3,6 +3,7 @@
 
 #include "NotaFinal.h"
 #include "Archivo.h"
+#include "Mensajero.h"
 
 enum TipoError{
 
@@ -29,6 +30,7 @@ class GestorNotasFinales
     private:
 
         Archivo <NotaFinal> _auxArchivo;
+        Mensajero _mensajero;
 
         bool altaNotaFinal();
         int listadoNotasFinales();

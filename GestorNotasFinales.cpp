@@ -4,7 +4,7 @@
 #include "GestorNotasFinales.h"
 #include "Menu.h"
 #include "func_utiles.h"
-#include "Mensajero.h"
+
 
 GestorNotasFinales::GestorNotasFinales() : _auxArchivo("notas_finales.dat")
 {
@@ -21,8 +21,8 @@ void GestorNotasFinales::iniciar(){
 
     std::vector<std::string> opcMenu = {"Listar notas finales", "Guardar registro nota final", "Eliminar registro nota final", "Modificar registro nota final", "Generar promedio"};
 
-    Menu menu(opcMenu);
 
+    Menu menu(opcMenu);
     int opcion;
 
     while(true){
@@ -42,10 +42,10 @@ void GestorNotasFinales::iniciar(){
             switch(codError){
 
             case ARCH_NO_EXISTE:
-                std::cout << "Error: No existe el archivo de notas finales" << std::endl;
+                _mensajero.mensajeError("No existe el archivo de notas finales");
                 break;
             case ARCH_ERROR_LECTURA:
-                std::cout << "Error: No se pudo leer el archivo de notas finales" << std::endl;
+                _mensajero.mensajeError("No se pudo leer el archivo de notas finales");
                 break;
             default:
                 break;
@@ -55,11 +55,11 @@ void GestorNotasFinales::iniciar(){
         }
         case 2:
             if(altaNotaFinal() == true){
-                std::cout << "Se registro correctamente la nota" << std::endl;
+                _mensajero.mensajeInformacion("Se registro correctamente la nota");
                 break;
             }
             else{
-                std::cout << "Hubo un error al registrar la nota" << std::endl;
+                _mensajero.mensajeError("Hubo un error al registrar la nota");
                 break;
             }
         case 3:
@@ -70,19 +70,19 @@ void GestorNotasFinales::iniciar(){
             switch(codError){
 
             case ARCH_NO_EXISTE:
-                std::cout << "Error: No existe el archivo de notas finales" << std::endl;
+                _mensajero.mensajeError("No existe el archivo de notas finales");
                 break;
             case ARCH_ERROR_LECTURA:
-                std::cout << "Error: No se pudo leer el archivo de notas finales" << std::endl;
+                _mensajero.mensajeError("No se pudo leer el archivo de notas finales");
                 break;
             case SIN_COINCIDENCIAS:
-                std::cout << "Error: No se encontraron registros para el ID Materia solicitado" << std::endl;
+                _mensajero.mensajeError("No se encontraron registros para el ID Materia solicitado");
                 break;
             case CANCELAR_OPERACION:
-                std::cout << "Se ha cancelado la eliminacion del registro" << std::endl;
+                _mensajero.mensajeInformacion("Se ha cancelado la eliminacion del registro");
                 break;
             default:
-                std::cout << "Se ha eliminado el registro satisfactoriamente" << std::endl;
+                _mensajero.mensajeInformacion("Se ha eliminado el registro satisfactoriamente");
                 break;
             }
 
@@ -97,19 +97,19 @@ void GestorNotasFinales::iniciar(){
             switch(codError){
 
                 case ARCH_NO_EXISTE:
-                    std::cout << "Error: No existe el archivo de notas finales" << std::endl;
+                    _mensajero.mensajeError("No existe el archivo de notas finales");
                     break;
                 case ARCH_ERROR_LECTURA:
-                    std::cout << "Error: No se pudo leer el archivo de notas finales" << std::endl;
+                    _mensajero.mensajeError("No se pudo leer el archivo de notas finales");
                     break;
                 case SIN_COINCIDENCIAS:
-                    std::cout << "Error: No se encontraron registros para el ID Materia solicitado" << std::endl;
+                    _mensajero.mensajeError("No se encontraron registros para el ID Materia solicitado");
                     break;
                 case CANCELAR_OPERACION:
-                    std::cout << "Se ha cancelado la modificacion del reistro" << std::endl;
+                    _mensajero.mensajeInformacion("Se ha cancelado la modificacion del reistro");
                     break;
                 default:
-                    std::cout << "Se ha modificado satisfactoriamente el registro" << std::endl;
+                    _mensajero.mensajeInformacion("Se ha modificado satisfactoriamente el registro");
                     break;
             }
 
@@ -129,13 +129,13 @@ void GestorNotasFinales::iniciar(){
 
 
                 case ARCH_NO_EXISTE:
-                    std::cout << "Error: No existe el archivo de notas finales" << std::endl;
+                    _mensajero.mensajeError("No existe el archivo de notas finales");
                     break;
                 case ARCH_ERROR_LECTURA:
-                    std::cout << "Error: No se pudo leer el archivo de notas finales" << std::endl;
+                    _mensajero.mensajeError("No se pudo leer el archivo de notas finales");
                     break;
                 case ARCH_SIN_REGISTROS:
-                    std::cout << "Error: No se encontraron registros para calcular el promedio" << std::endl;
+                    _mensajero.mensajeError("No se encontraron registros para calcular el promedio");
                     break;
                 default:
                     break;
