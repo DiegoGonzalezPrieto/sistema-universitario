@@ -30,9 +30,9 @@ void GestorEventos::iniciar()
 {
     // 0. Chequear o crear archivo.
     if (!getArchivo().archivoExiste())
-    {
-        getArchivo().crearArchivo();
-    }
+        {
+            getArchivo().crearArchivo();
+        }
 
     // 1. Loop principal
     string tituloMenu = "\n========================\n** Gestión de Eventos **\n========================";
@@ -66,8 +66,7 @@ void GestorEventos::iniciar()
                     modificarEvento();
                     break;
                 case 5:
-                // buscar evento por fecha
-                _mensajero.mensajeAdvertencia("Funcionalidad aún no implementada.");
+                    mostrarEventosEnFecha();
                     break;
                 case 6:
                     eliminarEvento();
@@ -397,13 +396,13 @@ void GestorEventos::eliminarEvento()
 
 void GestorEventos::mostrarEventosProximos()
 {
-    Fecha hoy;
     cout << endl;
     cout << "********************************************" << endl;
     cout << "**** Eventos de este mes y el siguiente ****" << endl;
     cout << "********************************************" << endl;
     cout << endl;
 
+    Fecha hoy;
     vector<Evento> ve = obtenerEventosActivos();
     // TODO : ordenar el vector de forma ascendente
     bool mostrar;
@@ -417,15 +416,17 @@ void GestorEventos::mostrarEventosProximos()
             if (hoy.getAnio() < fechaEvento.getAnio() && hoy.getMes() != 12) continue;
 
             if (hoy.getMes() == fechaEvento.getMes())
-            {
-                mostrar = true;
-            } else if (hoy.getMes() + 1 == fechaEvento.getMes())
-            {
-                mostrar = true;
-            } else if (hoy.getMes() == 12 && fechaEvento.getMes() == 1)
-            {
-                mostrar = true;
-            }
+                {
+                    mostrar = true;
+                }
+            else if (hoy.getMes() + 1 == fechaEvento.getMes())
+                {
+                    mostrar = true;
+                }
+            else if (hoy.getMes() == 12 && fechaEvento.getMes() == 1)
+                {
+                    mostrar = true;
+                }
             if (!mostrar) continue;
 
             cout << "------------------------------" << endl;
@@ -434,8 +435,50 @@ void GestorEventos::mostrarEventosProximos()
         }
 
 }
-//    void GestorEventos::mostrarEventosEnFecha(Fecha);
-    bool GestorEventos::hayEventoProximo()
+void GestorEventos::mostrarEventosEnFecha()
+{
+    cout << endl;
+    cout << "**********************************" << endl;
+    cout << "**** Buscar Eventos Por Fecha ****" << endl;
+    cout << "**********************************" << endl;
+    cout << endl;
+
+    vector<Evento> ve = obtenerEventosActivos();
+    int anio, mes, dia, cantEventos=0;
+    string resultado = "";
+    cout << endl << "Año buscado: ";
+    cin >> anio;
+    cout << endl << "Mes buscado (1-12): ";
+    cin >> mes;
+    cout << endl << "Día buscado: ";
+    cin >> dia;
+    cout << endl;
+
+    bool hayEventos = false;
+    for (Evento e : ve)
+        {
+            if (e.getFecha().getAnio() == anio && e.getFecha().getMes() == mes && e.getFecha().getDia() == dia)
+                {
+                    hayEventos = true;
+                    resultado += e.toString() + "\n-------------------\n";
+                    cantEventos++;
+                }
+        }
+
+    if (!hayEventos)
+        {
+            _mensajero.mensajeInformacion("\nNo hay eventos en esa fecha.\n");
+            return;
+        }
+    cout << "\nSe encontraron " << cantEventos << " Eventos en la fecha seleccionada: " << endl;
+    cout << resultado;
+
+}
+
+
+
+
+bool GestorEventos::hayEventoProximo()
 {
     vector<Evento> ve = obtenerEventosActivos();
     Fecha hoy;
@@ -447,17 +490,19 @@ void GestorEventos::mostrarEventosProximos()
             if (hoy.getAnio() < fechaEvento.getAnio() && hoy.getMes() != 12) continue;
 
             if (hoy.getMes() == fechaEvento.getMes())
-            {
-                return true;
-            } else if (hoy.getMes() + 1 == fechaEvento.getMes())
-            {
-                return true;
-            } else if (hoy.getMes() == 12 && fechaEvento.getMes() == 1)
-            {
-                return true;
-            }
+                {
+                    return true;
+                }
+            else if (hoy.getMes() + 1 == fechaEvento.getMes())
+                {
+                    return true;
+                }
+            else if (hoy.getMes() == 12 && fechaEvento.getMes() == 1)
+                {
+                    return true;
+                }
         }
-return false;
+    return false;
 }
 
 Evento GestorEventos::buscarPorId(int id)

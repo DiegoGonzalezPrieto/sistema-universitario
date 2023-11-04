@@ -31,12 +31,13 @@ public:
     /// Modificación interactiva de Evento
     bool modificarEvento(); // TODO : modificación de idMateriaCursada
 
-    /// Eliminar evento de forma interactiva
-    void eliminarEvento();
 
     /// Mostrar eventos de este mes y del mes que viene
     void mostrarEventosProximos(); // TODO : ordenar fechas
-//    void mostrarEventosEnFecha(Fecha); // TODO
+    /// Pide una fecha al usuario y muestra los eventos que ocurren en ese día
+    void mostrarEventosEnFecha(); // TODO : ordenar fechas
+    /// Eliminar evento de forma interactiva
+    void eliminarEvento();
 
 
     /// Guardar nuevo objeto evento en el archivo.
