@@ -89,13 +89,15 @@ void altaCursadaMateriaPorConsola() // WIP
     // 1.b Pedir y validar datos de CursadaMateria, setearlos
 
     EstadoMateria _estado;
-    DatosCursada _datosCursada[MAX_DATOS_CURSADA];
+    int maxDatosCursada = cursadaMateria.getMaxDatosCursada(); // para validar
+    DatosCursada _datosCursada[1];
 
     // en qué Cuatrimestre inició? AÑO: 2023 - NRO: 2
     char _idCuatrimestreInicio[7];
 
         // cantidad de unidades. el resto quedan vacías
-    Unidad _unidades[MAX_UNIDADES];
+        int maxUnidades = cursadaMateria.getMaxUnidades(); // para validar
+    Unidad _unidades[1];
 
     // 1.c Generar datos automáticos
 
@@ -110,7 +112,8 @@ void altaCursadaMateriaPorConsola() // WIP
 
 void mostrarTodasCursadaMateria() // TODO
 {
-
+    // Evitar anuladas:
+    MAT_ANULADA;
 }
 void mostrarCursadasMateriaEnCurso() // TODO
 {
@@ -122,11 +125,17 @@ void buscarCursadaMateria() // TODO
 }
 void modificarCursadaMateria() // TODO
 {
+    /*
+        IMPORTANTE
 
+        No se debe poder modificar idCuatrimestreDeInicio ni idMateria
+        ya que en base a estos atributos se arma el id de CursadaMateria.
+
+    */
 }
 void eliminarCursadaMateria()// TODO
 {
-
+//    anularRegistroCursadaMateria();
 }
 
 // ---------------- Métodos de Apoyo ----------------------- //
@@ -146,4 +155,12 @@ bool GestorCursadaMateria::guardarNuevaCursadaMateria(CursadaMateria cm)
     // 2. Agregar registro
     return ac.agregarRegistro(cm);
 
+}
+
+
+
+bool anularRegistroCursadaMateria()
+{
+    // PASA A estado 3
+    MAT_ANULADA;
 }

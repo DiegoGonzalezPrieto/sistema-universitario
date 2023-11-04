@@ -5,6 +5,8 @@
 #include "Archivo.h"
 #include "Mensajero.h"
 
+
+
 class GestorCursadaMateria
 {
     public:
@@ -13,7 +15,7 @@ class GestorCursadaMateria
         Archivo<CursadaMateria> getArchivo();
         void setArchivo(string ruta);
 
-        void iniciar(); // TODO
+        void iniciar();
 
         // ---------- ABML ------------- //
 
@@ -27,7 +29,11 @@ class GestorCursadaMateria
 
         // ----- Métodos de apoyo ------- //
         /// Recibe una Cursada Materia y la guarda al final del archivo. Si el archivo no existe, intenta crearlo.
-        bool guardarNuevaCursadaMateria(CursadaMateria);//TODO
+        bool guardarNuevaCursadaMateria(CursadaMateria);
+        CursadaMateria buscarCursadaMateriaPorId(string idCursadaMateria); // TODO
+        int buscarPosicionEnArchivoPorId(string idCursadaMateria); // TODO
+        bool guardarCursadaMateriaModificada(CursadaMateria); // TODO
+        bool anularRegistroCursadaMateria(); // TODO
     protected:
 
     private:
