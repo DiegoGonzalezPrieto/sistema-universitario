@@ -8,16 +8,16 @@ template<typename T>
 class Archivo
 {
 public:
-    Archivo(string nombre)
+    Archivo(std::string nombre)
     {
         setNombre(nombre);
     }
     std::string getNombre()
     {
-        string nombre(_nombre);
-        return string(nombre);
+        std::string nombre(_nombre);
+        return std::string(nombre);
     }
-    void setNombre(string n)
+    void setNombre(std::string n)
     {
         strcpy(_nombre, n.c_str());
     }
@@ -86,7 +86,7 @@ public:
     }
 
 
-    bool leerRegistros(vector<T>& registros)
+    bool leerRegistros(std::vector<T>& registros)
     {
         T aux;
         int cant = contarRegistros();
@@ -128,7 +128,7 @@ public:
         int cantReg = contarRegistros();
         if (cantReg < 1) return false;
         char nombreBup[35];
-        string snom = getNombreBackup();
+        std::string snom = getNombreBackup();
         strcpy(nombreBup, snom.c_str());
         FILE* pi = fopen(nombreBup, "rb");
         FILE* po = fopen(_nombre, "wb");
@@ -165,7 +165,7 @@ public:
         int cantReg = contarRegistros();
         if (cantReg < 1) return false;
         char nombreBup[35];
-        string snom = getNombreBackup();
+        std::string snom = getNombreBackup();
         strcpy(nombreBup, snom.c_str());
         FILE* pi = fopen(_nombre, "rb");
         FILE* po = fopen(nombreBup, "wb");

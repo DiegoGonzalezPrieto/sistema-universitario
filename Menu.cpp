@@ -7,14 +7,14 @@ using namespace std;
 #include "Menu.h"
 
 
-Menu::Menu(const vector<string> &opciones) : _opciones(opciones) {}
+Menu::Menu(const vector<string> &opciones, string titulo) : _opciones(opciones), _titulo(titulo) {}
 
 int Menu::mostrar()
 {
     int opcionElegida, tamanio = _opciones.size();
     while (true)
         {
-            cout << "Menu:" << endl;
+            cout << _titulo << endl << endl;
 
             for (int i = 0; i < tamanio; ++i)
                 {
