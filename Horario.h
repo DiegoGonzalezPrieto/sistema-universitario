@@ -18,7 +18,7 @@ class Horario
         int getMinuto();
         int getHora();
 
-        bool validarHorario(int segundo, int minuto, int hora);
+        static bool validarHorario(int segundo, int minuto, int hora);
         std::string toString();
 
     private:
