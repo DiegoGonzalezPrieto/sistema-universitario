@@ -1,8 +1,17 @@
 #include "Evento.h"
 
-Evento::Evento()
+Evento::Evento(): _id(0)
 {
-    //ctor
+
+}
+
+void Evento::setId(int id)
+{
+    _id = id;
+}
+int Evento::getId()
+{
+    return _id;
 }
 
 void Evento::setFecha(const Fecha& fecha){

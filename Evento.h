@@ -14,6 +14,7 @@ class Evento
     public:
         Evento();
 
+        void setId(int);
         void setFecha(const Fecha& fecha);
         void setDescripcion(const std::string& descripcion);
         void setInformacion(const std::string& informacion);
@@ -21,7 +22,7 @@ class Evento
         void setTipoEvento(char tipoEvento);
         void setEstado(bool estado);
 
-
+        int getId();
         Fecha getFecha() const;
         std::string getDescripcion() const;
         std::string getInformacion() const;
@@ -33,6 +34,7 @@ class Evento
         std::string toString() const;
 
     private:
+        int _id;
         Fecha _fecha;
         char _descripcion[LONGMAXDESCRIPCION];
         char _informacion[LONGMAXINFORMACION];
