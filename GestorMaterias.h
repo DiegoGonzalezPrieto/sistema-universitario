@@ -3,24 +3,28 @@
 
 #include "Materia.h"
 #include "Archivo.h"
+#include "Mensajero.h"
 
 class GestorMaterias {
 
 private:
 
     Archivo<Materia> archivoMaterias;
+    std::vector<Materia> registros;
     Materia datosMateria;
+    Mensajero msj ;
 
 public:
 
-    GestorMaterias(string nombre);
+    GestorMaterias(std::string nombre);
     void CargarMaterias();
     void modificarMaterias();
     void mostrarMaterias();
 
     bool cargaCsv();
+    void seleccionarMateriasRequeridas(int cant);
     bool AgregarUnaMateria();
-    bool buscarMateria(const std::string& IDmateria, Materia& datosMateria) ;
+    bool buscarMateria(std::string& IDmateria, Materia& datosMateria, int& pos) ;
     bool modificarUnaMateria();
 
 };
