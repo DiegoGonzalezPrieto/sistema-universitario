@@ -14,9 +14,9 @@ int Evento::getId()
     return _id;
 }
 
-void Evento::setFecha(const Fecha& fecha){
+void Evento::setFechaHorario(const FechaHorario& fechaHorario){
 
-    _fecha = fecha;
+    _fechaHorario = fechaHorario;
 }
 
 void Evento::setDescripcion(const std::string& descripcion){
@@ -64,9 +64,9 @@ void Evento::setEstado(bool estado){
     _estado = estado;
 }
 
-Fecha Evento::getFecha() const{
+FechaHorario Evento::getFechaHorario() const{
 
-    return _fecha;
+    return _fechaHorario;
 }
 
 std::string Evento::getDescripcion() const{
@@ -121,9 +121,15 @@ std::string Evento::toString() const{
 
     aux = "Fecha: ";
 
-    Fecha auxFecha = _fecha;
+    Fecha auxFecha = _fechaHorario.getFecha();
 
     aux += auxFecha.toString();
+
+    aux = ",hora: ";
+
+    Horario auxHora = _fechaHorario.getHorario();
+
+    aux += auxHora.toString();
 
     aux += ", Categoria del evento: " + getCategoriaDeEvento();
 
