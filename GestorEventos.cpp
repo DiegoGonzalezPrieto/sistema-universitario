@@ -470,9 +470,8 @@ void GestorEventos::mostrarEventosEnFecha()
             _mensajero.mensajeInformacion("\nNo hay eventos en esa fecha.\n");
             return;
         }
-    cout << "\nSe encontraron " << cantEventos << " Eventos en la fecha seleccionada: " << endl;
+    cout << "\nSe encontraron " << cantEventos << " Eventos en la fecha seleccionada:\n" << endl;
     cout << resultado;
-
 }
 
 
