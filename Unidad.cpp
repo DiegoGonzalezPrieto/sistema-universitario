@@ -2,7 +2,7 @@
 using namespace std;
 
 #include <filesystem>
-
+#include "func_utiles.h"
 #include "Unidad.h"
 
 /// Setea string vacío en _ruta para chequear validez
@@ -24,7 +24,7 @@ string Unidad::getRuta()
 
 void Unidad::setRuta(string r)
 {
-    strcpy(_ruta, r.c_str());
+    cargarCadenaConString(r,_ruta,100);
 }
 
 string Unidad::getRutaCompletado()
