@@ -125,13 +125,13 @@ std::string Evento::toString() const{
 
     aux += auxFecha.toString();
 
-    aux = ",hora: ";
+    aux += ", hora: ";
 
     Horario auxHora = _fechaHorario.getHorario();
 
     aux += auxHora.toString();
 
-    aux += ", Categoria del evento: " + getCategoriaDeEvento();
+    aux += "\nCategoria del evento: " + getCategoriaDeEvento();
 
     aux += "\nDescripcion: " + getDescripcion();
 
