@@ -94,14 +94,17 @@ int GestorEventos::seleccionarEvento()
     cout << endl << "Indicar mes del evento (1-12): ";
     cin >> mes;
     cout << endl;
-    if (!getArchivo().leerRegistros(ve))
+    ve = obtenerEventosActivos();
+
+    if (ve.size()==0)
         {
-            _mensajero.mensajeError("No se pudo leer el archivo de eventos.");
+            _mensajero.mensajeAdvertencia("No hay eventos registrados.");
             return 0;
         }
     for (Evento e : ve)
         {
-            if (e.getFecha().getAnio() == anio && e.getFecha().getMes() == mes && e.getEstado())
+            Fecha fechaEvento = e.getFechaHorario().getFecha();
+            if ( fechaEvento.getAnio() == anio && fechaEvento.getMes() == mes)
                 {
                     eventosSeleccionados.push_back(e);
                     cout << "Evento " << eventosSeleccionados.size() << ":" << endl << e.toString() << endl;
@@ -140,7 +143,11 @@ bool GestorEventos::guardarNuevoEvento(Evento e)
 void GestorEventos::mostrarTodosEventos()
 {
     vector<Evento> ve = obtenerEventosActivos();
-    if (ve.size() == 0) return;
+    if (ve.size() == 0)
+    {
+        _mensajero.mensajeAdvertencia("No hay eventos almacenados.");
+        return;
+    }
 
     // TODO : ordenar eventos por fecha ?
 
@@ -169,7 +176,7 @@ void GestorEventos::altaEventoPorConsola()
     // Pedir datos y validar
     while (true)
         {
-            int dia, mes, anio;
+            int dia, mes, anio, horas, minutos;
             cout << "Ingresar fecha del evento (0 para cancelar)" << endl<< endl;
             cout << "Día: ";
             cin >> dia;
@@ -180,14 +187,19 @@ void GestorEventos::altaEventoPorConsola()
             cout << "Año: ";
             cin >> anio;
             if (anio==0) return;
-            if (Fecha::esFechaValida(dia, mes, anio))
+            cout << "Ingresar horario del evento" << endl<< endl;
+            cout << "Hora: ";
+            cin >> horas;
+            cout << "Minutos: ";
+            cin >> minutos;
+            if (Fecha::esFechaValida(dia, mes, anio) && Horario::validarHorario(0, minutos, horas))
                 {
-                    e.setFecha(Fecha(dia, mes, anio));
+                    e.setFechaHorario(FechaHorario(dia,mes,anio,0,minutos,horas));
                     break;
                 }
             else
                 {
-                    _mensajero.mensajeError("La fecha ingresada no es válida, vuelva a intentar.");
+                    _mensajero.mensajeError("La fecha/hroario ingresados no son válidos, vuelva a intentar.");
                     cout  << endl;
                 }
         }
@@ -278,18 +290,28 @@ bool GestorEventos::modificarEvento()
                 {
                 case 1:
                 {
-                    // TODO: mejorar ingreso de fecha, copiar de altaNuevoEvento
-                    int dia, mes, anio;
-                    cout << "La fecha actual es " << e.getFecha().toString() << endl ;
-                    cout <<  "Ingresar nueva fecha en formato DÍA MES AÑO (20 9 2023), o '0 0 0' para cancelar: ";
-                    cin >> dia >> mes >> anio;
-                    if (dia == 0) break;
-                    Fecha f;
-                    f.setDia(dia);
-                    f.setMes(mes);
-                    f.setAnio(anio);
-                    cout << endl << "Nueva Fecha: " << f.toString() << endl;
-                    e.setFecha(f);
+                    FechaHorario fh;
+                    cout << "La fecha actual es " << e.getFechaHorario().toString() << endl ;
+                    int dia, mes, anio, horas, minutos;
+                    cout << "Ingresar fecha del evento (0 para cancelar)" << endl<< endl;
+                    cout << "Día: ";
+                    cin >> dia;
+                    if (dia==0) return false;
+                    cout << "Mes: ";
+                    cin >> mes;
+                    if (mes==0) return false;
+                    cout << "Año: ";
+                    cin >> anio;
+                    if (anio==0) return false;
+                    cout << "Ingresar horario del evento" << endl<< endl;
+                    cout << "Hora: ";
+                    cin >> horas;
+                    cout << "Minutos: ";
+                    cin >> minutos;
+                    fh.setFecha(dia,mes,anio);
+                    fh.setHorario(0,minutos,horas);
+                    cout << endl << "Nueva Fecha: " << fh.toString() << endl;
+                    e.setFechaHorario(fh);
                     bool guardo = guardarEventoModificado(e);
                     if (!guardo)
                         {
@@ -410,7 +432,7 @@ void GestorEventos::mostrarEventosProximos()
     for (Evento e : ve)
         {
             mostrar = false;
-            Fecha fechaEvento = e.getFecha();
+            Fecha fechaEvento = e.getFechaHorario().getFecha();
             // Chequear año
             if (hoy.getAnio() > fechaEvento.getAnio()) continue;
             if (hoy.getAnio() < fechaEvento.getAnio() && hoy.getMes() != 12) continue;
@@ -457,7 +479,8 @@ void GestorEventos::mostrarEventosEnFecha()
     bool hayEventos = false;
     for (Evento e : ve)
         {
-            if (e.getFecha().getAnio() == anio && e.getFecha().getMes() == mes && e.getFecha().getDia() == dia)
+            Fecha fechaEvento = e.getFechaHorario().getFecha();
+            if (fechaEvento.getAnio() == anio && fechaEvento.getMes() == mes && fechaEvento.getDia() == dia)
                 {
                     hayEventos = true;
                     resultado += e.toString() + "\n-------------------\n";
@@ -483,7 +506,7 @@ bool GestorEventos::hayEventoProximo()
     Fecha hoy;
     for (Evento e : ve)
         {
-            Fecha fechaEvento = e.getFecha();
+            Fecha fechaEvento = e.getFechaHorario().getFecha();
             // Chequear año
             if (hoy.getAnio() > fechaEvento.getAnio()) continue;
             if (hoy.getAnio() < fechaEvento.getAnio() && hoy.getMes() != 12) continue;
