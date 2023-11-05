@@ -25,6 +25,9 @@ int Menu::mostrar()
             cin >> opcionElegida;
             cout << endl ;
 
+
+            cin.clear();
+            cin.ignore();
             if (opcionElegida < 0 || opcionElegida > tamanio)
                 {
                     cout << endl << "Opcion no valida. Vuelva a intentarlo" << endl << endl;
