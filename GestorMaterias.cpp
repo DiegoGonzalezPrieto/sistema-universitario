@@ -9,13 +9,54 @@ using namespace std;
 
 GestorMaterias::GestorMaterias(std::string nombre) : archivoMaterias(nombre) {}
 
+void GestorMaterias::iniciarGestorMaterias()
+{
+    std::vector<string> opciones =
+    {
+        "Cargar materias",
+        "Modificar una materia",
+        "Mostrar materias"
+    };
+
+    Menu menuPrincipal(opciones,"------ MATERIAS ------") ;
+
+    int op;
+
+    do
+    {
+        op = menuPrincipal.mostrar();
+        switch(op)
+        {
+        case 0:
+            break;
+        case 1:
+            CargarMaterias();
+            break;
+        case 2:
+            modificarMaterias();
+            break;
+        case 3:
+            mostrarMaterias();
+            break;
+        default:
+            cout << "Opcion no valida. Por favor, ingrese una opcion valida" << endl;
+            break;
+        }
+
+
+    cout << endl ;
+    }
+    while (op != 0);
+}
+
 void GestorMaterias::CargarMaterias()
 {
     int opCarga ;
-    cout << "Cómo desea realizar la carga de materias?" << endl;
+    cout << "Como desea realizar la carga de materias?" << endl;
     cout << "1 - Manual" << endl;
     cout << "2 - Mediante un archivo" << endl;
     cin >> opCarga ;
+
 
     switch(opCarga)
     {
@@ -68,11 +109,11 @@ bool GestorMaterias::AgregarUnaMateria()
     int datoInt ;
 
     cout << "Ingrese el nombre de la Materia: ";
-    getline(cin, datoString);
+    getline(cin >> ws, datoString);
     datosMateria.setNombreMateria(datoString);
 
     cout << "Ingrese el ID de la Materia: ";
-    getline(cin, datoString);
+    getline(cin >> ws, datoString);
     datosMateria.setIdMateria(datoString);
 
     cout << "Ingrese la cantidad de materias requeridas: ";
@@ -163,7 +204,6 @@ void GestorMaterias::modificarMaterias()
     {
         if (modificarUnaMateria())
         {
-            cout << "Materia modificada correctamente" << endl ;
             char op ;
             cout << "Desea modificar otra materia? (S/N)" << endl ;
             cin >> op ;
@@ -209,8 +249,7 @@ bool GestorMaterias::modificarUnaMateria()
     string IDmateria;
 
     cout << "Ingrese el ID de la materia a modificar: ";
-    getline(cin, IDmateria);
-
+    getline(cin >> ws, IDmateria);
     int pos ;
 
     if (!buscarMateria(IDmateria, datosMateria, pos))
@@ -232,7 +271,7 @@ bool GestorMaterias::modificarUnaMateria()
 
     while (true)
     {
-
+        cout << endl ;
         switch (MenuMod.mostrar())
         {
         case 0:
@@ -243,7 +282,7 @@ bool GestorMaterias::modificarUnaMateria()
         {
             string nuevoNombreMateria;
             cout << "Ingrese el nuevo nombre de la Materia: ";
-            getline(cin, nuevoNombreMateria);
+            getline(cin >> ws, nuevoNombreMateria);
             datosMateria.setNombreMateria(nuevoNombreMateria);
         }
         break;
@@ -251,7 +290,7 @@ bool GestorMaterias::modificarUnaMateria()
         {
             string nuevoIDmateria;
             cout << "Ingrese el nuevo ID de la materia: ";
-            getline(cin, nuevoIDmateria);
+            getline(cin >> ws, nuevoIDmateria);
             datosMateria.setIdMateria(nuevoIDmateria);
         }
         break;
@@ -273,7 +312,8 @@ bool GestorMaterias::modificarUnaMateria()
         }
         }
         char op ;
-        cout << "Desea modificar otro dato de esta materia? (S/N)" << endl ;
+        cin.ignore();
+        cout << "Desea modificar otro dato de esta materia? (S/N): " ;
         cin >> op ;
         if (op == 'N' || op == 'n')
         {
@@ -283,6 +323,7 @@ bool GestorMaterias::modificarUnaMateria()
 
     if (archivoMaterias.modificarRegistro(pos, datosMateria))
     {
+        cout << "Materia modificada correctamente" << endl << endl ;
         return true;
     }
     else
@@ -308,8 +349,11 @@ void GestorMaterias::mostrarMaterias()
 
                 if (archivoMaterias.leerRegistro(i,datosMateria))
                 {
-                    cout << datosMateria.toString();
+                    cout << endl << datosMateria.toString() ;
+                    cout  << endl << "----------------------------------" ;
+
                 }
+
                 else
                 {
                     msj.mensajeError("No se pudo leer el registro") ;

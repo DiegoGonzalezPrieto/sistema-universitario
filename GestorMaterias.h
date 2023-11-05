@@ -17,6 +17,7 @@ private:
 public:
 
     GestorMaterias(std::string nombre);
+    void iniciarGestorMaterias();
     void CargarMaterias();
     void modificarMaterias();
     void mostrarMaterias();
