@@ -5,13 +5,6 @@
 
 Carrera::Carrera()
 {
-     for (int i = 0; i < 50; ++i){
-
-        for (int j = 0; j < 10; ++j){
-            _idMaterias[i][j] = '\0';
-
-            }
-     }
 }
 std::string Carrera::getNombreUniversidad() const
 {
@@ -21,11 +14,6 @@ std::string Carrera::getNombreUniversidad() const
 std::string Carrera::getNombreCarrera() const
 {
     return _nombreCarrera;
-}
-
-std::string Carrera::getIdMateria(int index) const
-{
-    return _idMaterias[index];
 }
 
 std::string Carrera::getLegajo() const
@@ -50,54 +38,6 @@ void Carrera::setNombreCarrera(const std::string& nombre)
     _nombreCarrera[sizeof(_nombreCarrera) - 1] = '\0';  // Asegurar la terminación nula
 }
 
-void Carrera::setIdMateria(const std::string& nuevoIdMateria)
-{
-    // Buscar el primer espacio disponible
-    int index = -1;
-    for (int i = 0; i < 50; ++i)
-    {
-        if (_idMaterias[i][0] == '\0')
-        {
-            index = i;
-            break;
-        }
-    }
-
-    // Verificar si se encontró un espacio disponible
-    if (index != -1)
-    {
-        std::strncpy(_idMaterias[index], nuevoIdMateria.c_str(), sizeof(_idMaterias[index]) - 1);
-        _idMaterias[index][sizeof(_idMaterias[index]) - 1] = '\0';
-    }
-
-}
-
-//SOBRECARGA PARA ENVIARLE UNA MATRIZ DE TIPO VECTOR Y ASINGAR TODOS LOS ID DE MATERIAS.
-
-void Carrera::setIdMaterias(const std::vector<std::string>& nuevosIdMaterias)
-{
-    // Buscar el primer espacio disponible
-    int index = -1;
-    for (const auto& nuevoIdMateria : nuevosIdMaterias)
-    {
-        for (int i = 0; i < 50; ++i)
-        {
-            if (_idMaterias[i][0] == '\0')
-            {
-                index = i;
-                break;
-            }
-        }
-
-        // Verificar si se encontró un espacio disponible
-        if (index != -1)
-        {
-            std::strncpy(_idMaterias[index], nuevoIdMateria.c_str(), sizeof(_idMaterias[index]) - 1);
-            _idMaterias[index][sizeof(_idMaterias[index]) - 1] = '\0';
-        }
-    }
-}
-
 void Carrera::setLegajo(const std::string& nuevoLegajo)
 {
     strncpy(_legajo, nuevoLegajo.c_str(), sizeof(_legajo) - 1);
@@ -110,6 +50,15 @@ void Carrera::setNombreEstudiante(const std::string& nuevoNombre)
     _nombreEstudiante[sizeof(_nombreEstudiante) - 1] = '\0';
 }
 
+ std::string Carrera::toString() const
+    {
+        std::string Aux;
+        Aux += "Nombre Universidad: " + getNombreUniversidad() + "\n";
+        Aux += "Nombre Carrera: " + getNombreCarrera() + "\n";
+        Aux += "Legajo: " + getLegajo() + "\n";
+        Aux += "Nombre Estudiante: " + getNombreEstudiante() + "\n";
+        return Aux;
+    }
 
 
 
