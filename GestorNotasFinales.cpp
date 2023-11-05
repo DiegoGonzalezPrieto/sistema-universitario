@@ -6,7 +6,7 @@
 #include "func_utiles.h"
 
 
-GestorNotasFinales::GestorNotasFinales() : _auxArchivo("notas_finales.dat")
+GestorNotasFinales::GestorNotasFinales(std::string ruta) : _auxArchivo(ruta)
 {
 
 }

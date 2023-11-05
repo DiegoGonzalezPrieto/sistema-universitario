@@ -20,7 +20,7 @@ enum TipoError{
 class GestorNotasFinales
 {
     public:
-        GestorNotasFinales();
+        GestorNotasFinales(std::string ruta);
         virtual ~GestorNotasFinales();
 
 
