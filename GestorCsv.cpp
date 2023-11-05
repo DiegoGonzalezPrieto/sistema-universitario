@@ -11,9 +11,9 @@
 
 using namespace std;
 
-GestorCsv::GestorCsv() : _auxArchivo("materias.dat")
+GestorCsv::GestorCsv(string archivoImportacion, string archivoMateria) : _auxArchivo(archivoMateria), _nombreArchivo(archivoImportacion)
 {
-    _nombreArchivo = "archivoImportacion.csv";
+
 }
 
 GestorCsv::~GestorCsv()

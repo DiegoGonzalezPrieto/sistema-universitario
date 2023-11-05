@@ -10,7 +10,7 @@
 class GestorCsv
 {
     public:
-        GestorCsv();
+        GestorCsv(std::string archivoImportacion, std::string archivoMateria);
         virtual ~GestorCsv();
 
         void iniciar();
