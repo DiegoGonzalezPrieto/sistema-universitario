@@ -11,7 +11,6 @@ private:
 
     Archivo<Materia> archivoMaterias;
     std::vector<Materia> registros;
-    Materia datosMateria;
     Mensajero msj ;
 
 public:
@@ -23,8 +22,10 @@ public:
     void mostrarMaterias();
 
     bool cargaCsv();
-    void seleccionarMateriasRequeridas(int cant);
+    void mostrarNombresMaterias();
+    bool guardarIDsMatRequeridas(int cant, Materia& datosMateria);
     bool AgregarUnaMateria();
+    std::string buscarIDMateria();
     bool buscarMateria(std::string& IDmateria, Materia& datosMateria, int& pos) ;
     bool modificarUnaMateria();
 

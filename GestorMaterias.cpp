@@ -44,7 +44,7 @@ void GestorMaterias::iniciarGestorMaterias()
         }
 
 
-    cout << endl ;
+        cout << endl ;
     }
     while (op != 0);
 }
@@ -55,8 +55,9 @@ void GestorMaterias::CargarMaterias()
     cout << "Como desea realizar la carga de materias?" << endl;
     cout << "1 - Manual" << endl;
     cout << "2 - Mediante un archivo" << endl;
+    cout << endl << "Ingrese una opcion: ";
     cin >> opCarga ;
-
+    cin.ignore();
 
     switch(opCarga)
     {
@@ -92,112 +93,6 @@ void GestorMaterias::CargarMaterias()
     }
 }
 
-
-bool GestorMaterias::AgregarUnaMateria()
-{
-    if (!archivoMaterias.archivoExiste())
-    {
-        if (!archivoMaterias.crearArchivo())
-        {
-            msj.mensajeError("El archivo no existe y no puede ser creado ") ;
-            return false ;
-        }
-    }
-
-    Materia datosMateria;
-    string datoString;
-    int datoInt ;
-
-    cout << "Ingrese el nombre de la Materia: ";
-    getline(cin >> ws, datoString);
-    datosMateria.setNombreMateria(datoString);
-
-    cout << "Ingrese el ID de la Materia: ";
-    getline(cin >> ws, datoString);
-    datosMateria.setIdMateria(datoString);
-
-    cout << "Ingrese la cantidad de materias requeridas: ";
-    cin >> datoInt;
-
-    if (datoInt>0)
-    {
-        seleccionarMateriasRequeridas(datoInt) ;
-    }
-
-    cout << "Ingrese el cuatrimestre sugerido: ";
-    cin >> datoInt ;
-    datosMateria.setCuatrimestreSugerido(datoInt) ;
-
-    cout << "Ingrese la cantidad de cuatrimestres de duracion: " ;
-    cin >> datoInt ;
-    datosMateria.setCuatrimestreDeDuracion(datoInt) ;
-
-
-    if (archivoMaterias.agregarRegistro(datosMateria))
-    {
-        return true ;
-    }
-    else
-    {
-        msj.mensajeError("Error al agregar el registro en el archivo.") ;
-        return false ;
-    }
-
-};
-
-
-void GestorMaterias::seleccionarMateriasRequeridas(int cant) ///RECIBE UN INT QUE ES LA CANTIDAD DE MATERIAS REQUERIDAS A SELECCIONAR.
-{
-
-    ///LEO EL ARCHIVO Y MUESTRO LOS NOMBRES DE TODAS LAS MATERIAS CON UN NUMERO COMO OPCION A SELECCIONAR.
-
-    int cantMat = archivoMaterias.contarRegistros() ;
-    if (archivoMaterias.leerRegistros(registros))
-    {
-        for (int i=0; i<cantMat; i++)
-        {
-            if (archivoMaterias.leerRegistro(i,datosMateria))
-            {
-                cout << i+1 << ".Materia: " << datosMateria.getNombreMateria() << endl ;
-            }
-            else
-            {
-                msj.mensajeError("No se pudo mostrar las materias") ;
-            }
-        }
-
-    }
-    else
-    {
-        msj.mensajeError ("No se pudo mostrar las materias");
-        return ;
-    }
-
-    /// PIDO INGRESAR LOS NUMEROS QUE CORRESPONDEN A LAS MATERIAS REQUERIDAS
-
-    string nuevoID;
-    int op ;
-    cout << "Seleccione las materias requeridas" << endl ;
-    for (int i=0; i<cant; i++) ///ITERO POR LA CANTIDAD DE MATERIAS REQUERIDAS QUE EL USUARIO HABIA INGRESADO PREVIAMENTE
-    {
-        cin >> op ;
-        if (op >= 1 && op <= cantMat) ///VALIDO EL NUMERO
-        {
-
-            if (archivoMaterias.leerRegistro(op-1,datosMateria)) ///ABRO EL REGISTRO DE LA MATERIA QUE EL USUARIO SELECCIONO
-            {
-                nuevoID = datosMateria.getIdMateria() ; ///COPIO EL ID DE ESA MATERIA SELECCIONADA
-                datosMateria.setIdMateriasRequeridas(i, nuevoID); ///SETEO EL ID COMO ID DE MATERIA REQUERIDA
-            }
-        }
-        else
-        {
-            msj.mensajeError("Ingreso no valido. Por favor, ingrese un numero valido.");
-        }
-
-    }
-}
-
 void GestorMaterias::modificarMaterias()
 {
     while (true)
@@ -223,33 +118,112 @@ void GestorMaterias::modificarMaterias()
 }
 
 
-bool GestorMaterias::buscarMateria(std::string& IDmateria, Materia& datosMateria, int &pos)
+void GestorMaterias::mostrarMaterias()
 {
-    archivoMaterias.leerRegistros(registros);
-    int tam = archivoMaterias.contarRegistros() ;
-
-    for (int i = 0; i < tam; i++)
+    Materia datosMateria;
+    if (archivoMaterias.leerRegistros(registros))
     {
-        if (registros[i].getIdMateria() == IDmateria)
+        if (registros.empty())
         {
+            msj.mensajeError("No hay materias para mostrar.") ;
+        }
+        else
+        {
+            int cantMat = archivoMaterias.contarRegistros() ;
+            for (int i=0; i<cantMat; i++)
+            {
 
-            datosMateria = registros[i];
-            pos = i ;
-            return true;
+                if (archivoMaterias.leerRegistro(i,datosMateria))
+                {
+                    cout << endl << datosMateria.toString() ;
+                    cout  << endl << "----------------------------------" ;
+
+                }
+
+                else
+                {
+                    msj.mensajeError("No se pudo leer el registro") ;
+                }
+            }
         }
     }
 
-    return false;
-
+    else
+    {
+        cout << "Error al leer los registros del archivo." << endl;
+    }
 }
+
+
+
+
+
+bool GestorMaterias::AgregarUnaMateria()
+{
+    if (!archivoMaterias.archivoExiste())
+    {
+        if (!archivoMaterias.crearArchivo())
+        {
+            msj.mensajeError("El archivo no existe y no puede ser creado ") ;
+            return false ;
+        }
+    }
+    Materia datosMateria;
+    string datoString;
+    int datoInt ;
+
+    cout << "Ingrese el nombre de la Materia: ";
+    getline(cin >> ws, datoString);
+    datosMateria.setNombreMateria(datoString);
+
+    cout << "Ingrese el ID de la Materia: ";
+    getline(cin >> ws, datoString);
+    datosMateria.setIdMateria(datoString);
+
+    cout << "Ingrese la cantidad de materias requeridas: ";
+    cin >> datoInt;
+    cin.ignore();
+    if (datoInt>0)
+    {
+        mostrarNombresMaterias();
+        if (!guardarIDsMatRequeridas(datoInt, datosMateria))
+        {
+            msj.mensajeError("No se pudieron guardar las correlativas");
+        }
+    }
+
+    cout << "Ingrese el cuatrimestre sugerido: ";
+    cin >> datoInt ;
+    cin.ignore();
+    datosMateria.setCuatrimestreSugerido(datoInt) ;
+
+    cout << "Ingrese la cantidad de cuatrimestres de duracion: " ;
+    cin >> datoInt ;
+    cin.ignore();
+    datosMateria.setCuatrimestreDeDuracion(datoInt) ;
+
+
+    if (archivoMaterias.agregarRegistro(datosMateria))
+    {
+        return true ;
+    }
+    else
+    {
+        msj.mensajeError("Error al agregar el registro en el archivo.") ;
+        return false ;
+    }
+
+};
+
 
 bool GestorMaterias::modificarUnaMateria()
 {
 
+    Materia datosMateria;
     string IDmateria;
 
-    cout << "Ingrese el ID de la materia a modificar: ";
-    getline(cin >> ws, IDmateria);
+    mostrarNombresMaterias();
+    IDmateria = buscarIDMateria();
     int pos ;
 
     if (!buscarMateria(IDmateria, datosMateria, pos))
@@ -299,7 +273,12 @@ bool GestorMaterias::modificarUnaMateria()
             int cant;
             cout << "Ingrese la cantidad de IDs de materias requeridas: ";
             cin >> cant;
-            seleccionarMateriasRequeridas(cant) ;
+            cin.ignore();
+            if (cant>0)
+            {
+                mostrarNombresMaterias();
+                guardarIDsMatRequeridas(cant, datosMateria) ;
+            }
 
         }
         break;
@@ -308,7 +287,16 @@ bool GestorMaterias::modificarUnaMateria()
             int nuevoCuatrimestreSugerido;
             cout << "Ingrese el nuevo cuatrimestre sugerido: ";
             cin >> nuevoCuatrimestreSugerido;
+            cin.ignore();
             datosMateria.setCuatrimestreSugerido(nuevoCuatrimestreSugerido);
+        }
+        case 5:
+        {
+            int nuevoCuatrimestresDuracion;
+            cout << "Ingrese la cantidad de cuatrimestres de duracion: ";
+            cin >> nuevoCuatrimestresDuracion;
+            cin.ignore();
+            datosMateria.setCuatrimestreDeDuracion(nuevoCuatrimestresDuracion);
         }
         }
         char op ;
@@ -333,37 +321,112 @@ bool GestorMaterias::modificarUnaMateria()
     }
 }
 
-void GestorMaterias::mostrarMaterias()
+
+void GestorMaterias::mostrarNombresMaterias()
 {
+
+
+    Materia datosMateria;
+    int cantMat = archivoMaterias.contarRegistros() ;
     if (archivoMaterias.leerRegistros(registros))
     {
-        if (registros.empty())
+        for (int i=0; i<cantMat; i++)
         {
-            msj.mensajeError("No hay materias para mostrar.") ;
+            if (archivoMaterias.leerRegistro(i,datosMateria))
+            {
+                cout << i+1 << ".Materia: " << datosMateria.getNombreMateria() << endl ;
+            }
+            else
+            {
+                msj.mensajeError("No se pudo mostrar las materias") ;
+                break;
+            }
+        }
+
+    }
+    else
+    {
+        msj.mensajeError ("No se pudo mostrar las materias");
+    }
+}
+
+bool GestorMaterias::guardarIDsMatRequeridas(int cant, Materia& datosMateria)
+{
+
+    string nuevoID;
+    Materia dataMateria;
+    int op ;
+    cout << "Seleccione las materias requeridas" << endl ;
+    for (int i=0; i<cant; i++) ///ITERO POR LA CANTIDAD DE MATERIAS REQUERIDAS QUE EL USUARIO HABIA INGRESADO PREVIAMENTE
+    {
+        /// PIDO INGRESAR LOS NUMEROS QUE CORRESPONDEN A LAS MATERIAS REQUERIDAS
+        cin >> op ;
+        cin.ignore();
+        if (op >= 1 && op <= archivoMaterias.contarRegistros()) ///VALIDO EL NUMERO
+        {
+
+            if (archivoMaterias.leerRegistro(op-1,dataMateria)) ///ABRO EL REGISTRO DE LA MATERIA QUE EL USUARIO SELECCIONO
+            {
+                nuevoID = dataMateria.getIdMateria() ; ///COPIO EL ID DE ESA MATERIA SELECCIONADA
+                datosMateria.setIdMateriasRequeridas(i, nuevoID); ///SETEO EL ID COMO ID DE MATERIA REQUERIDA
+            }
         }
         else
         {
-            int cantMat = archivoMaterias.contarRegistros() ;
-            for (int i=0; i<cantMat; i++)
+            msj.mensajeError("Ingreso no valido. Por favor, ingrese un numero valido.");
+            return false ;
+        }
+
+
+
+    }
+    return true ;
+}
+
+
+string GestorMaterias::buscarIDMateria()
+{
+    int op ;
+    Materia datosMateria;
+    while (true)
+    {
+
+        cout << endl << "Seleccione la materia que desea modificar: " ;
+
+        /// PIDO INGRESAR LOS NUMEROS QUE CORRESPONDEN A LAS MATERIAS REQUERIDAS
+        cin >> op ;
+        cin.ignore();
+        if (op >= 1 && op <= archivoMaterias.contarRegistros()) ///VALIDO EL NUMERO
+        {
+            if (archivoMaterias.leerRegistro(op-1,datosMateria)) ///ABRO EL REGISTRO DE LA MATERIA QUE EL USUARIO SELECCIONO
             {
-
-                if (archivoMaterias.leerRegistro(i,datosMateria))
-                {
-                    cout << endl << datosMateria.toString() ;
-                    cout  << endl << "----------------------------------" ;
-
-                }
-
-                else
-                {
-                    msj.mensajeError("No se pudo leer el registro") ;
-                }
+                return datosMateria.getIdMateria() ; ///COPIO EL ID DE ESA MATERIA SELECCIONADA
             }
+        }
+        else
+        {
+            msj.mensajeError("Ingreso no valido. Por favor, ingrese un numero valido.");
+        }
+    }
+}
+
+
+bool GestorMaterias::buscarMateria(std::string& IDmateria, Materia& datosMateria, int &pos)
+{
+    archivoMaterias.leerRegistros(registros);
+    int tam = archivoMaterias.contarRegistros() ;
+
+    for (int i = 0; i < tam; i++)
+    {
+        if (registros[i].getIdMateria() == IDmateria)
+        {
+
+            datosMateria = registros[i];
+            pos = i ;
+            return true;
         }
     }
 
-    else
-    {
-        cout << "Error al leer los registros del archivo." << endl;
-    }
+    return false;
+
 }
