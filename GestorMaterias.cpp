@@ -5,6 +5,7 @@ using namespace std;
 #include "GestorMaterias.h"
 #include "Materia.h"
 #include "Menu.h"
+#include "GestorCsv.h"
 
 
 GestorMaterias::GestorMaterias(std::string nombre) : archivoMaterias(nombre) {}
@@ -85,8 +86,11 @@ void GestorMaterias::CargarMaterias()
         }
         break ;
     case 2:
-        /// DESARROLLO DE CARGA A TRAVES DE ARCHIVO
+        {
+        GestorCsv csv;
+        csv.iniciar();
         break;
+        }
     default:
         cout << "Opcion ingresada no valida. Por favor, ingrese 1 o 2" << endl ;
         break ;
