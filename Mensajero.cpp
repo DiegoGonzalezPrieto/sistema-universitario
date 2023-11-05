@@ -7,13 +7,13 @@ using namespace std;
 
 void Mensajero::mensajeAdvertencia(string mensaje)
 {
-cout << "ADVERTENCIA: " << mensaje << endl;
+cout << "ADVERTENCIA: " << mensaje << endl << endl;
 }
 void Mensajero::mensajeInformacion(string mensaje)
 {
-cout << "INFORMACION: " << mensaje << endl;
+cout << "INFORMACION: " << mensaje << endl << endl;
 }
 void Mensajero::mensajeError(string mensaje)
 {
-cout << "ERROR: " << mensaje << endl;
+cout << "ERROR: " << mensaje << endl << endl;
 }

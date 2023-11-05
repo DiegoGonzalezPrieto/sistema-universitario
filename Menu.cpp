@@ -23,6 +23,9 @@ int Menu::mostrar()
 
             cout << "Seleccione una opcion (0 para salir/volver): ";
             cin >> opcionElegida;
+            cout << endl ;
+
+
             cin.clear();
             cin.ignore();
             if (opcionElegida < 0 || opcionElegida > tamanio)
