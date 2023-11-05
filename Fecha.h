@@ -24,6 +24,42 @@ public:
     void agregarDias(int dias);
     std::string getNombreDia();
 
+    bool operator <(Fecha & f)
+    {
+        if (_anio < f.getAnio()) return true;
+        if (_anio > f.getAnio()) return false;
+        if (_mes < f.getMes()) return true;
+        if (_mes > f.getMes()) return false;
+        if (_dia < f.getDia()) return true;
+        return false;
+    }
+    bool operator >(Fecha & f)
+    {
+        if (_anio > f.getAnio()) return true;
+        if (_anio < f.getAnio()) return false;
+        if (_mes > f.getMes()) return true;
+        if (_mes < f.getMes()) return false;
+        if (_dia > f.getDia()) return true;
+        return false;
+    }
+    bool operator ==(Fecha & f)
+    {
+        if (_anio != f.getAnio() || _mes != f.getMes() || _dia != f.getDia())
+            {
+                return false;
+            }
+        return true;
+    }
+    bool operator !=(Fecha & f)
+    {
+        if (_anio != f.getAnio() || _mes != f.getMes() || _dia != f.getDia())
+            {
+                return true;
+            }
+        return false;
+    }
+
+
 protected:
 
 private:
