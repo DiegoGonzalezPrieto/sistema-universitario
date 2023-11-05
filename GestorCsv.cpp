@@ -7,13 +7,13 @@
 #include "GestorCsv.h"
 #include "func_csv.h"
 #include "Menu.h"
-#include "Archivo.h"
+
 
 using namespace std;
 
-GestorCsv::GestorCsv()
+GestorCsv::GestorCsv(string archivoImportacion, string archivoMateria) : _auxArchivo(archivoMateria), _nombreArchivo(archivoImportacion)
 {
-    //ctor
+
 }
 
 GestorCsv::~GestorCsv()
@@ -27,7 +27,6 @@ void GestorCsv::iniciar(){
 
     vector<string> opcMenu = {"Instrucciones", "Generar archivo modelo de importacion CSV", "Importar datos mediante archivo modelo CSV ", "Mostrar datos importados", "Grabar datos en el sistema"};
     vector<Materia> materias;
-    string nombreArchivo = "archivoImportacion.csv";
 
     Menu menu(opcMenu);
 
@@ -46,8 +45,8 @@ void GestorCsv::iniciar(){
             mostrarInstrucciones();
             break;
         case 2:
-            if(generarArchivoModelo(nombreArchivo) == true){
-                cout << "Los datos se han escrito correctamente en " << nombreArchivo << endl;
+            if(generarArchivoModelo() == true){
+                cout << "Los datos se han escrito correctamente en " << _nombreArchivo << endl;
             }
             else{
                 cout << "Error al generar el archivo modelo" << endl;
@@ -55,13 +54,13 @@ void GestorCsv::iniciar(){
             break;
 
         case 3:
-            if(importarArchivoCsv(nombreArchivo, materias) == true){
+            if(importarArchivoCsv(materias) == true){
 
                 if(materias.size() > 0){
-                    cout << "Se han importado los datos en " << nombreArchivo << endl;
+                    cout << "Se han importado los datos en " << _nombreArchivo << endl;
                 }
                 else{
-                    cout << "El archivo '" << nombreArchivo << "' no tiene datos para importar" << endl;
+                    cout << "El archivo '" << _nombreArchivo << "' no tiene datos para importar" << endl;
                 }
             }
             break;
@@ -92,24 +91,25 @@ void GestorCsv::mostrarInstrucciones(){
     cout << "- No deben alterarse las columnas establecidas por defecto" << endl;
     cout << "- Debe completar los datos respetando las columnas" << endl << endl;
 
-    system("pause");
+    cin.get();
 
     cout << endl << endl;
     cout << "Acerca del uso del archivo modelo: " << endl;
     cout << "Los campos listados como 'Obligatorio' se deben completar (no admite campos vacios)" << endl << endl << endl;
 
-    system("pause");
+    cin.get();
 
     cout << endl << endl;
     cout << "* Columna 'Nombre' (Obligatorio) corresponde al nombre de la materia" << endl << endl;
     cout << "* Columna 'Id Materia (Obligatorio) corresponde al ID que identifica a la materia" << endl << endl;
     cout << "* Columna 'Cuatrimestre Sugerido' corresponde al cuatrimestre en el que se cursaria la materia siguiendo el plan de estudios.\n  Se debe completar un numero entero" << endl << endl;
     cout << "* Columna 'Duracion Cuatrimestre (Obligatorio). Se debe completar '1' si la materia es cuatrimestral o '2' si es anual" << endl << endl;
-    cout << "* Columna 'Id Materias Correlativas'. En caso de tener correlativas para cursarse, se deben asignar las ID en esta columna separadas por una coma ','" << endl << endl;
+    cout << "* Columna 'Id Materias Correlativas'. En caso de tener correlativas para cursarse, se deben asignar las ID en esta columna separadas por una coma ','\n";
+    cout << "Muy importante no colocar espacios en blanco al momento de cargar las ID materias correlativas, caso contrario será informado como un error" << endl << endl;
 
     cout << "Si se detecta alguna discrepancia, se cancelara la importacion y se emitira un listado de errores, con el objetivo que puedan ser corregidos" << endl;
 
-    system("pause");
+    cin.get();
 }
 
 
@@ -119,9 +119,9 @@ void GestorCsv::mostrarInstrucciones(){
 ///Como decido abrirlo en una planilla de cálculo, una decisión intuitiva para su carga
 ///es utilizar el delimitador punto y coma, ya que las planillas de cálculo abrirán el archivo
 ///y separarán los campos en casillas en vez de tenerlo en una sola línea
-bool GestorCsv::generarArchivoModelo(const string& nombreArchivo){
+bool GestorCsv::generarArchivoModelo(){
 
-    ofstream archivo(nombreArchivo);
+    ofstream archivo(_nombreArchivo);
 
     if (archivo.is_open() == false){
 
@@ -141,17 +141,17 @@ bool GestorCsv::generarArchivoModelo(const string& nombreArchivo){
     return true;
 }
 
-bool GestorCsv::importarArchivoCsv(const string& nombreArchivo, vector <Materia>& datos){
+bool GestorCsv::importarArchivoCsv(vector <Materia>& datos){
 
 
     vector <string> errores; /// Almacenaremos los errores en caso de haber
 
     ifstream archivoImportacion;
-    archivoImportacion.open(nombreArchivo.c_str());
+    archivoImportacion.open(_nombreArchivo.c_str());
 
     if (archivoImportacion.is_open() == false){
 
-        cout << "Error al leer el archivo. Verifique que el archivo exista, y que el nombre sea " << nombreArchivo <<  endl;
+        cout << "Error al leer el archivo. Verifique que el archivo exista, y que el nombre sea " << _nombreArchivo <<  endl;
 
         return false;
     }
@@ -163,11 +163,25 @@ bool GestorCsv::importarArchivoCsv(const string& nombreArchivo, vector <Materia>
     if(validarColumnas(linea, errores) == false){
 
         mostrarErrores(errores);
+        archivoImportacion.close();
         return false;
     }
 
     bool noHuboErrores = true;
+    int cantErrores = 0;
     int nroFila = 2;
+
+
+    /// Si se completaron datos fuera de cualquier columna, como romperia toda la estructura, evitamos que se procese el archivo
+    if(validarDatosFueraDeLasColumnas(linea, errores) == false){
+
+        mostrarErrores(errores);
+        archivoImportacion.close();
+        return false;
+
+    }
+
+    linea = "";
 
     while(getline(archivoImportacion, linea)){
 
@@ -186,27 +200,30 @@ bool GestorCsv::importarArchivoCsv(const string& nombreArchivo, vector <Materia>
         ///Obtenemos el nombre en un string, y lo almacenamos en el objeto
         getline(inputString, nombreMateria, ';');
 
-        if(validarCamposObligatoriosVacios(nombreMateria, nroFila, nroColumna, errores) != false){
+        if(validarCamposObligatoriosVacios(nombreMateria, nroFila, nroColumna, errores, datos) != false){
 
             reg.setNombreMateria(nombreMateria.c_str());
         }
         else{
 
             noHuboErrores = false;
+            cantErrores++;
         }
+
 
         nroColumna++;
 
         ///Obtenemos el ID de la materia en un string, y lo almacenamos en el objeto
         getline(inputString, idMateria, ';');
 
-        if(validarCamposObligatoriosVacios(idMateria, nroFila, nroColumna, errores) != false){
+        if(validarCamposObligatoriosVacios(idMateria, nroFila, nroColumna, errores, datos) != false){
 
             reg.setIdMateria(idMateria.c_str());
         }
         else{
 
             noHuboErrores = false;
+            cantErrores++;
         }
 
 
@@ -224,6 +241,7 @@ bool GestorCsv::importarArchivoCsv(const string& nombreArchivo, vector <Materia>
         else{
 
             noHuboErrores = false;
+            cantErrores++;
         }
 
 
@@ -242,16 +260,46 @@ bool GestorCsv::importarArchivoCsv(const string& nombreArchivo, vector <Materia>
         else{
 
             noHuboErrores = false;
+            cantErrores++;
         }
 
         nroColumna++;
 
+        vector<string> auxCorrelativas;
+        bool coincidencias = false;
+
         for(int i = 0; i < 10; i++){
 
+
             getline(inputString, aux, ',');
+
+            if(validarEspaciosEnBlanco(aux, nroFila, nroColumna, errores) != true){
+
+                cantErrores++;
+            }
+
+            if(validarSiYaSeCargaronIdMateriasRequeridas(aux, nroFila, nroColumna, errores, datos) != true){
+
+                cantErrores++;
+            }
+
+            if(validarIdMateriasRequeridasNoRepetidas(aux, nroFila, nroColumna, errores, auxCorrelativas) != true){
+
+                cantErrores++;
+            }
+
+            if((coincidencias == false) && (validarIdMateriasRequeridasNoSeanIdMateriaPropia(idMateria,nroFila, nroColumna, errores, auxCorrelativas)) != true){
+
+                cantErrores++;
+                coincidencias = true;
+            }
+
             reg.setIdMateriasRequeridas(i, aux.c_str());
+
             aux = "";
         }
+
+        auxCorrelativas.clear();
 
         linea = "";
 
@@ -259,18 +307,30 @@ bool GestorCsv::importarArchivoCsv(const string& nombreArchivo, vector <Materia>
 
             datos.push_back(reg);
         }
-        else{
-
-            cout << "Se han encontrado los siguientes errores:" << endl << endl;
-            cout << "-----------------------------------------------------------------------------------" << endl;
-            mostrarErrores(errores);
-            cout << "-----------------------------------------------------------------------------------" << endl<<endl;
-            cout << "No se han importado los datos" << endl;
-            return false;
-        }
 
         nroFila++;
+
+
     }
+
+
+
+    if(cantErrores > 0){
+
+        cout << "Se han encontrado los siguientes errores:" << endl << endl;
+        cout << "-----------------------------------------------------------------------------------" << endl;
+        mostrarErrores(errores);
+        cout << "-----------------------------------------------------------------------------------" << endl<<endl;
+        cout << "No se han importado los datos. En total se detectaron " << cantErrores << " errores" << endl;
+        archivoImportacion.close();
+
+        datos.clear();
+
+        return false;
+
+
+    }
+
 
     archivoImportacion.close();
 
@@ -312,8 +372,6 @@ bool GestorCsv::mostrarMaterias(const std::vector <Materia>& datos){
 
 bool GestorCsv::grabarDatosImportados(const vector <Materia>& datos){
 
-    Archivo <Materia> auxArchivo("materias.dat");
-
     int tam = datos.size();
 
     if(tam == 0){
@@ -326,7 +384,7 @@ bool GestorCsv::grabarDatosImportados(const vector <Materia>& datos){
 
     for(int i = 0; i < tam; i++){
 
-        if(auxArchivo.agregarRegistro(datos[i]) == false){
+        if(_auxArchivo.agregarRegistro(datos[i]) == false){
 
             noHuboError = false;
         }
