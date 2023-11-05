@@ -59,6 +59,18 @@ public:
         return false;
     }
 
+    bool operator >=(Fecha & f)
+    {
+        if (*this == f) return true;
+        if (*this > f) return true;
+        return false;
+    }
+    bool operator <=(Fecha & f)
+    {
+        if (*this == f) return true;
+        if (*this < f) return true;
+        return false;
+    }
 
 protected:
 
