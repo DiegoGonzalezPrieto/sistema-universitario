@@ -18,91 +18,115 @@ Horario::Horario()
 
 }
 
-Horario::Horario(int segundo, int minuto, int hora){
+Horario::Horario(int segundo, int minuto, int hora)
+{
 
-    if(validarHorario(segundo, minuto, hora) == false){
+    if(validarHorario(segundo, minuto, hora) == false)
+        {
 
-        Horario();
-    }
-    else{
+            time_t t = time(NULL);
+            localtime(&t);
+            struct tm date = *localtime(&t);
 
-        setSegundo(segundo);
-        setMinuto(minuto);
-        setHora(hora);
-    }
+            setHora(date.tm_hour);
+            setMinuto(date.tm_min);
+            setSegundo(date.tm_sec);
+        }
+    else
+        {
+
+            setSegundo(segundo);
+            setMinuto(minuto);
+            setHora(hora);
+        }
 
 }
 
-void Horario::setSegundo(int segundo){
+void Horario::setSegundo(int segundo)
+{
 
     _segundo = segundo;
 }
 
-void Horario::setMinuto(int minuto){
+void Horario::setMinuto(int minuto)
+{
 
     _minuto = minuto;
 }
 
-void Horario::setHora(int hora){
+void Horario::setHora(int hora)
+{
 
     _hora = hora;
 }
 
-int Horario::getSegundo(){
+int Horario::getSegundo()
+{
 
     return _segundo;
 }
 
-int Horario::getMinuto(){
+int Horario::getMinuto()
+{
 
     return _minuto;
 }
 
-int Horario::getHora(){
+int Horario::getHora()
+{
 
     return _hora;
 }
 
-bool Horario::validarHorario(int segundo, int minuto, int hora){
+bool Horario::validarHorario(int segundo, int minuto, int hora)
+{
 
-    if(segundo >= 60 || segundo < 0 || minuto >= 60 || minuto < 0 || hora < 0 || hora > 23){
+    if(segundo >= 60 || segundo < 0 || minuto >= 60 || minuto < 0 || hora < 0 || hora > 23)
+        {
 
-        return false;
-    }
+            return false;
+        }
 
     return true;
 }
 
-string Horario::toString(){
+string Horario::toString()
+{
 
     string segundos, minutos, horas, resultado;
 
-    if(getSegundo() < 10){
+    if(getSegundo() < 10)
+        {
 
-        segundos = "0" + to_string(getSegundo());
-    }
-    else{
+            segundos = "0" + to_string(getSegundo());
+        }
+    else
+        {
 
-        segundos = to_string(getSegundo());
-    }
+            segundos = to_string(getSegundo());
+        }
 
-    if(getMinuto() < 10){
+    if(getMinuto() < 10)
+        {
 
-        minutos = "0" + to_string(getMinuto());
-    }
-    else{
+            minutos = "0" + to_string(getMinuto());
+        }
+    else
+        {
 
-        minutos = to_string(getMinuto());
-    }
+            minutos = to_string(getMinuto());
+        }
 
-    if(getHora() < 10){
+    if(getHora() < 10)
+        {
 
-        horas = "0" + to_string(getHora());
-    }
-    else{
+            horas = "0" + to_string(getHora());
+        }
+    else
+        {
 
-        horas = to_string(getHora());
-    }
+            horas = to_string(getHora());
+        }
 
     resultado = horas + ":" + minutos + ":" + segundos;
 
