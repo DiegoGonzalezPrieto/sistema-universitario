@@ -1,6 +1,6 @@
 #ifndef ARCHIVO_H
 #define ARCHIVO_H
-#include <string.h>
+#include <cstring>
 #include <vector>
 
 template<typename T>

@@ -8,11 +8,12 @@ using namespace std;
 int GestorCorrelativas::validarSisepuedeCursar(std::string idMateria)
 {
     Mensajero m;
-    int nregistros = archivoMaterias.contarRegistros();
-    Materia datosMateria;
     if(!archivoMaterias.archivoExiste()){
         return 2;
     }
+    int nregistros = archivoMaterias.contarRegistros();
+    Materia datosMateria;
+
     for(int x=0; x<nregistros; x++)
     {
         archivoMaterias.leerRegistro(x,datosMateria);
@@ -26,7 +27,10 @@ int GestorCorrelativas::validarSisepuedeCursar(std::string idMateria)
 
     for(int i = 0; i< 10; i++)
     {
+        if(datosMateria.getIdMateriasRequeridas(i)!="N/A"){
         materiasRequeridas.push_back(datosMateria.getIdMateriasRequeridas(i));
+
+        }
     }
     if(materiasRequeridas[0]=="")
     {
@@ -34,7 +38,7 @@ int GestorCorrelativas::validarSisepuedeCursar(std::string idMateria)
         return 1;
     }
 
-    /*else
+    else
     {
         cout<<"el vector no esta vacio"<<endl;
         for(int x =0; x<materiasRequeridas.size(); x++)
@@ -42,11 +46,13 @@ int GestorCorrelativas::validarSisepuedeCursar(std::string idMateria)
             cout<<materiasRequeridas[x];
         }
         cout<<endl;
-    }*/
+        cout<<materiasRequeridas.size();
+    }
 
     if(!archivoCursadaMateria.archivoExiste()){
         return 2;
     }
+
     nregistros = archivoCursadaMateria.contarRegistros();
     CursadaMateria datosCursadaMateria;
     int materiasRequeridasAprobadas=materiasRequeridas.size();
