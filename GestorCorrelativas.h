@@ -8,7 +8,7 @@ class GestorCorrelativas
 {
 
 public:
-GestorCorrelativas() : archivoMaterias("materias.dat"), archivoCursadaMateria("cursadaMateria.dat") {
+GestorCorrelativas(std::string materiasd, std::string cursadamateriad) : archivoMaterias(materiasd), archivoCursadaMateria(cursadamateriad) {
 };
 int validarSisepuedeCursar(std::string codigoMateria);
 void mostrarCorrelativas(std::string codigoMateria);
