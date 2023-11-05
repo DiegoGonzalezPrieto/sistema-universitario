@@ -14,7 +14,11 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add directory="include" />
+<<<<<<< HEAD
+					<Add directory="../sistema-universitario" />
+=======
 					<Add directory="./" />
+>>>>>>> develop
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -25,7 +29,11 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add directory="include" />
+<<<<<<< HEAD
+					<Add directory="../sistema-universitario" />
+=======
 					<Add directory="./" />
+>>>>>>> develop
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -36,6 +44,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+<<<<<<< HEAD
+		<Unit filename="Fecha.cpp" />
+		<Unit filename="Fecha.h" />
+		<Unit filename="GestorMaterias.cpp" />
+		<Unit filename="GestorMaterias.h" />
+=======
 		<Unit filename="Archivo.h" />
 		<Unit filename="Carrera.cpp" />
 		<Unit filename="Carrera.h" />
@@ -59,10 +73,13 @@
 		<Unit filename="Horario.h" />
 		<Unit filename="Materia.cpp" />
 		<Unit filename="Materia.h" />
+>>>>>>> develop
 		<Unit filename="Mensajero.cpp" />
 		<Unit filename="Mensajero.h" />
 		<Unit filename="Menu.cpp" />
 		<Unit filename="Menu.h" />
+<<<<<<< HEAD
+=======
 		<Unit filename="NotaFinal.cpp" />
 		<Unit filename="NotaFinal.h" />
 		<Unit filename="Unidad.cpp" />
@@ -73,6 +90,7 @@
 		<Unit filename="func_csv.h" />
 		<Unit filename="func_utiles.cpp" />
 		<Unit filename="func_utiles.h" />
+>>>>>>> develop
 		<Unit filename="main.cpp" />
 		<Unit filename="sistema-universitario.layout" />
 		<Extensions />
