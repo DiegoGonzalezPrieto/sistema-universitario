@@ -5,6 +5,7 @@ using namespace std;
 
 #include "GestorEventos.h"
 #include "Menu.h"
+#include "func_utiles.h"
 
 
 GestorEventos::GestorEventos(string nombreArchivo): _archivo(nombreArchivo)
@@ -90,9 +91,9 @@ int GestorEventos::seleccionarEvento()
     vector<Evento> eventosSeleccionados;
     int anio, mes, numEvento;
     cout << endl << "Indicar el año del evento: ";
-    cin >> anio;
+    anio = validar<int>();
     cout << endl << "Indicar mes del evento (1-12): ";
-    cin >> mes;
+    mes = validar<int>();
     cout << endl;
     ve = obtenerEventosActivos();
 
@@ -119,7 +120,7 @@ int GestorEventos::seleccionarEvento()
     while (true)
         {
             cout << endl << "Indicar el número del evento deseado (0 para cancelar): ";
-            cin >> numEvento;
+            numEvento = validar<int>();;
             if (numEvento == 0 ) return 0;
             if (numEvento > 0 && numEvento <= eventosSeleccionados.size()) break;
             _mensajero.mensajeInformacion("Opción no válida.");
@@ -144,10 +145,10 @@ void GestorEventos::mostrarTodosEventos()
 {
     vector<Evento> ve = obtenerEventosActivos();
     if (ve.size() == 0)
-    {
-        _mensajero.mensajeAdvertencia("No hay eventos almacenados.");
-        return;
-    }
+        {
+            _mensajero.mensajeAdvertencia("No hay eventos almacenados.");
+            return;
+        }
 
     // TODO : ordenar eventos por fecha ?
 
@@ -174,38 +175,56 @@ void GestorEventos::altaEventoPorConsola()
     cout << endl;
 
     // Pedir datos y validar
+    int dia, mes, anio;
+    int horas, minutos;
     while (true)
         {
-            int dia, mes, anio, horas, minutos;
+            Fecha f;
+            Horario h;
             cout << "Ingresar fecha del evento (0 para cancelar)" << endl<< endl;
             cout << "Día: ";
-            cin >> dia;
+            dia = validar<int>();
             if (dia==0) return;
             cout << "Mes: ";
-            cin >> mes;
+            mes = validar<int>();
             if (mes==0) return;
             cout << "Año: ";
-            cin >> anio;
+            anio = validar<int>();
             if (anio==0) return;
-            cout << "Ingresar horario del evento" << endl<< endl;
-            cout << "Hora: ";
-            cin >> horas;
-            cout << "Minutos: ";
-            cin >> minutos;
-            if (Fecha::esFechaValida(dia, mes, anio) && Horario::validarHorario(0, minutos, horas))
+            if (Fecha::esFechaValida(dia, mes, anio))
                 {
-                    e.setFechaHorario(FechaHorario(dia,mes,anio,0,minutos,horas));
+                    break;
+
+                }
+            else
+                {
+                    _mensajero.mensajeError("La fecha ingresada no es válida, vuelva a intentar.");
+                    continue;
+                }
+        }
+    while (true)
+        {
+            cout << "Ingresar horario del evento:" << endl<< endl;
+            cout << "Hora: ";
+            horas = validar<int>();
+            cout << "Minutos: ";
+            minutos = validar<int>();
+            if (Horario::validarHorario(0, minutos, horas))
+                {
                     break;
                 }
             else
                 {
-                    _mensajero.mensajeError("La fecha/hroario ingresados no son válidos, vuelva a intentar.");
+                    _mensajero.mensajeError("El horario ingresado no es válido, vuelva a intentar.");
                     cout  << endl;
                 }
         }
+    cout << endl;
+    e.setFechaHorario(FechaHorario(dia,mes,anio,0,minutos,horas));
+
 
     string descripcion;
-    cout << "Ingresar descripción breve del evento" << endl<< endl;
+    cout << "Ingresar descripción breve del evento: " << endl<< endl;
     getline(cin>>ws, descripcion);
     e.setDescripcion(descripcion);
 
@@ -293,109 +312,134 @@ bool GestorEventos::modificarEvento()
                     FechaHorario fh;
                     cout << "La fecha actual es " << e.getFechaHorario().toString() << endl ;
                     int dia, mes, anio, horas, minutos;
-                    cout << "Ingresar fecha del evento (0 para cancelar)" << endl<< endl;
-                    cout << "Día: ";
-                    cin >> dia;
-                    if (dia==0) return false;
-                    cout << "Mes: ";
-                    cin >> mes;
-                    if (mes==0) return false;
-                    cout << "Año: ";
-                    cin >> anio;
-                    if (anio==0) return false;
-                    cout << "Ingresar horario del evento" << endl<< endl;
-                    cout << "Hora: ";
-                    cin >> horas;
-                    cout << "Minutos: ";
-                    cin >> minutos;
-                    fh.setFecha(dia,mes,anio);
-                    fh.setHorario(0,minutos,horas);
-                    cout << endl << "Nueva Fecha: " << fh.toString() << endl;
-                    e.setFechaHorario(fh);
+                    while (true)
+                        {
+                            Fecha f;
+                            Horario h;
+                            cout << "Ingresar nueva fecha del evento (0 para cancelar)" << endl<< endl;
+                            cout << "Día: ";
+                            dia = validar<int>();
+                            if (dia==0) return false;
+                            cout << "Mes: ";
+                            mes = validar<int>();
+                            if (mes==0) return false;
+                            cout << "Año: ";
+                            anio = validar<int>();
+                            if (anio==0) return false;
+                            if (Fecha::esFechaValida(dia, mes, anio))
+                                {
+                                    break;
+
+                                }
+                            else
+                                {
+                                    _mensajero.mensajeError("La fecha ingresada no es válida, vuelva a intentar.");
+                                    continue;
+                                }
+                        }
+                    while (true)
+                        {
+                            cout << "Ingresar horario del evento:" << endl<< endl;
+                            cout << "Hora: ";
+                            horas = validar<int>();
+                            cout << "Minutos: ";
+                            minutos = validar<int>();
+                            if (Horario::validarHorario(0, minutos, horas))
+                                {
+                                    break;
+                                }
+                            else
+                                {
+                                    _mensajero.mensajeError("El horario ingresado no es válido, vuelva a intentar.");
+                                    cout  << endl;
+                                }
+                        }
+                    cout << endl;
+                    e.setFechaHorario(FechaHorario(dia,mes,anio,0,minutos,horas));
                     bool guardo = guardarEventoModificado(e);
                     if (!guardo)
                         {
-                            _mensajero.mensajeError("El evento modificado no pudo guardarse.");
+                            _mensajero.mensajeError("El evento modificado no pudo guardarse.\n");
                         }
                     else
                         {
                             _mensajero.mensajeInformacion("Fecha modificada correctamente");
                         }
-                    break;
-                }
-                case 2:
-                {
-                    string nuevaDescrip = "";
-                    cout << "\nLa descripción actual es: " << e.getDescripcion() << endl;
-                    cout << "\nIngresar nueva descripción: ";
-                    getline(cin>>ws, nuevaDescrip);
-                    e.setDescripcion(nuevaDescrip);
-                    bool guardo = guardarEventoModificado(e);
-                    if (!guardo)
-                        {
-                            _mensajero.mensajeError("El evento modificado no pudo guardarse.\n");
-                        }
-                    else
-                        {
-                            _mensajero.mensajeInformacion("Descripción modificada correctamente");
-                        }
                 }
                 break;
-                case 3:
-                {
-                    string nuevaInfo = "";
-                    cout << "\nLa información actual es: " << e.getDescripcion() << endl;
-                    cout << "\nIngresar nueva información: ";
-                    getline(cin>>ws, nuevaInfo);
-                    e.setInformacion(nuevaInfo);
-                    bool guardo = guardarEventoModificado(e);
-                    if (!guardo)
-                        {
-                            _mensajero.mensajeError("El evento modificado no pudo guardarse.\n");
-                        }
-                    else
-                        {
-                            _mensajero.mensajeInformacion("Información modificada correctamente");
-                        }
-                }
-                break;
-                case 4:
-                {
-                    int tipoEventoSeleccionado;
-                    char tipoEvento;
-                    cout << "\nEl tipo de evento actual es: " << e.getCategoriaDeEvento() << endl;
-                    Menu menu({"Examen", "Otro"}, "Seleccionar tipo de evento");
-                    tipoEventoSeleccionado = menu.mostrar();
-                    if (tipoEventoSeleccionado == 0) break;
-                    if (tipoEventoSeleccionado == 1)
-                        {
-                            tipoEvento = 'e';
-                        }
-                    else
-                        {
-                            tipoEvento = 'o';
-                        }
-                    e.setTipoEvento(tipoEvento);
-                    bool guardo = guardarEventoModificado(e);
-                    if (!guardo)
-                        {
-                            _mensajero.mensajeError("El evento modificado no pudo guardarse.\n");
-                        }
-                    else
-                        {
-                            _mensajero.mensajeInformacion("Tipo de evento modificado correctamente");
-                        }
-                }
-                break;
-                case 5:
-                    _mensajero.mensajeAdvertencia("Funcionalidad aún no implementada.");
-                    // TODO: modificar materia asociada (ID cursadaMateria)
-                    break;
-                default:
-                    break;
-                }
-
+        case 2:
+            {
+                string nuevaDescrip = "";
+                cout << "\nLa descripción actual es: " << e.getDescripcion() << endl;
+                cout << "\nIngresar nueva descripción: ";
+                getline(cin>>ws, nuevaDescrip);
+                e.setDescripcion(nuevaDescrip);
+                bool guardo = guardarEventoModificado(e);
+                if (!guardo)
+                    {
+                        _mensajero.mensajeError("El evento modificado no pudo guardarse.\n");
+                    }
+                else
+                    {
+                        _mensajero.mensajeInformacion("Descripción modificada correctamente");
+                    }
+            }
+            break;
+        case 3:
+            {
+                string nuevaInfo = "";
+                cout << "\nLa información actual es: " << e.getInformacion() << endl;
+                cout << "\nIngresar nueva información: ";
+                getline(cin>>ws, nuevaInfo);
+                e.setInformacion(nuevaInfo);
+                bool guardo = guardarEventoModificado(e);
+                if (!guardo)
+                    {
+                        _mensajero.mensajeError("El evento modificado no pudo guardarse.\n");
+                    }
+                else
+                    {
+                        _mensajero.mensajeInformacion("Información modificada correctamente");
+                    }
+            }
+            break;
+        case 4:
+            {
+                int tipoEventoSeleccionado;
+                char tipoEvento;
+                cout << "\nEl tipo de evento actual es: " << e.getCategoriaDeEvento() << endl;
+                Menu menu({"Examen", "Otro"}, "Seleccionar tipo de evento");
+                tipoEventoSeleccionado = menu.mostrar();
+                if (tipoEventoSeleccionado == 0) break;
+                if (tipoEventoSeleccionado == 1)
+                    {
+                        tipoEvento = 'e';
+                    }
+                else
+                    {
+                        tipoEvento = 'o';
+                    }
+                e.setTipoEvento(tipoEvento);
+                bool guardo = guardarEventoModificado(e);
+                if (!guardo)
+                    {
+                        _mensajero.mensajeError("El evento modificado no pudo guardarse.\n");
+                    }
+                else
+                    {
+                        _mensajero.mensajeInformacion("Tipo de evento modificado correctamente");
+                    }
+            }
+            break;
+        case 5:
+            _mensajero.mensajeAdvertencia("Funcionalidad aún no implementada.");
+            // TODO: modificar materia asociada (ID cursadaMateria)
+            break;
+        default:
+            break;
         }
+
+}
 
 }
 
@@ -467,30 +511,62 @@ void GestorEventos::mostrarEventosEnFecha()
 
     vector<Evento> ve = obtenerEventosActivos();
     int anio, mes, dia, cantEventos=0;
+    bool buscarPorDia = true;
     string resultado = "";
-    cout << endl << "Año buscado: ";
-    cin >> anio;
-    cout << endl << "Mes buscado (1-12): ";
-    cin >> mes;
-    cout << endl << "Día buscado: ";
-    cin >> dia;
-    cout << endl;
+
+    while (true)
+        {
+            cout << endl << "Año buscado (0 para cancelar): ";
+            anio = validar<int>();
+            if (anio==0) return;
+            cout << endl << "Mes buscado (1-12): ";
+            mes = validar<int>();
+            if (mes==0) return;
+            cout << endl << "Día buscado (0 busca en todo el mes): ";
+            dia = validar<int>();
+            if (dia==0 && Fecha::esFechaValida(1, mes, anio))
+                {
+                    dia = 1;
+                    buscarPorDia = false;
+                    break;
+                }
+            cout << endl;
+            if (Fecha::esFechaValida(dia, mes, anio))
+                {
+                    break;
+                }
+            else
+                {
+                    _mensajero.mensajeError("Fecha inválida, intente nuevamente.");
+                }
+        }
+
 
     bool hayEventos = false;
     for (Evento e : ve)
         {
             Fecha fechaEvento = e.getFechaHorario().getFecha();
-            if (fechaEvento.getAnio() == anio && fechaEvento.getMes() == mes && fechaEvento.getDia() == dia)
+            if (fechaEvento.getAnio() == anio && fechaEvento.getMes() == mes)
                 {
-                    hayEventos = true;
-                    resultado += e.toString() + "\n-------------------\n";
-                    cantEventos++;
+                    if (!buscarPorDia)
+                        {
+                            hayEventos = true;
+                            resultado += e.toString() + "\n-------------------\n";
+                            cantEventos++;
+
+                        }
+                    else if (fechaEvento.getDia() == dia)
+                        {
+                            hayEventos = true;
+                            resultado += e.toString() + "\n-------------------\n";
+                            cantEventos++;
+                        }
                 }
         }
 
     if (!hayEventos)
         {
-            _mensajero.mensajeInformacion("\nNo hay eventos en esa fecha.\n");
+            _mensajero.mensajeInformacion("No hay eventos en esa fecha.\n");
             return;
         }
     cout << "\nSe encontraron " << cantEventos << " Eventos en la fecha seleccionada:\n" << endl;
@@ -593,6 +669,12 @@ bool GestorEventos::bajaEvento(int id)
 
 void GestorEventos::ordenarEventos(vector<Evento>& vec, bool descendente=true)
 {
+    // for todos los elementos menos 1
+
+        // for desde l posición del for externo hasta el final
+//            comparar i con j
+
+
 // TODO : esperar a modificación Evento pasa a FechaHorario
 
 }
