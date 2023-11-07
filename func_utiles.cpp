@@ -35,3 +35,26 @@ int obtenerNumeroEntero(std::string mensajeError)
             if (salir) return resultado;
         }
 }
+
+float obtenerNumeroDecimal(std::string mensajeError)
+{
+    while (true)
+        {
+            std::string input = "";
+            getline(std::cin, input);
+            float resultado;
+            bool salir=true;
+
+            try
+                {
+                    resultado = stof(input);
+                }
+            catch (...)
+                {
+                    std::cout << mensajeError;
+                    salir = false;
+                }
+
+            if (salir) return resultado;
+        }
+}

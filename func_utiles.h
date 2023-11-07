@@ -11,6 +11,9 @@ bool cargarCadenaConString(std::string input, char* output, size_t tamanioOutput
 /// Obtiene un entero con getline, dejando vacío el buffer de cin
 int obtenerNumeroEntero(std::string mensajeError="Valor incorrecto. Ingrese un número entero: ");
 
+/// Obtiene un decimal con getline, dejando vacío el buffer de cin
+float obtenerNumeroDecimal(std::string mensajeError="Valor incorrecto. Ingrese un número decimal: ");
+
 /// Valida datos de tipo int y float
 template<typename T>
 T validar(std::string mensaje)
