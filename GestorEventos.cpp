@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -150,13 +151,13 @@ void GestorEventos::mostrarTodosEventos()
             return;
         }
 
-    // TODO : ordenar eventos por fecha ?
-
     cout << endl;
     cout << "********************" << endl;
     cout << "***   Eventos    ***" << endl;
     cout << "********************" << endl;
     cout << endl;
+
+    ordenarEventosPorFecha(ve);
 
     for (Evento e : ve)
         {
@@ -241,9 +242,9 @@ void GestorEventos::altaEventoPorConsola()
             string idCursadaMateria;
             cout << "Indicar materia asociada: ";
             getline(cin>>ws, idCursadaMateria);
-            // TODO : seleccionar materia
 
-            idCursadaMateria = "TODO";
+            // TODO : selector de Materias
+
             e.setIdCursadaMateria(idCursadaMateria);
         }
     else
@@ -470,7 +471,8 @@ void GestorEventos::mostrarEventosProximos()
 
     Fecha hoy;
     vector<Evento> ve = obtenerEventosActivos();
-    // TODO : ordenar el vector de forma ascendente
+    ordenarEventosPorFecha(ve);
+
     bool mostrar;
 
     for (Evento e : ve)
@@ -510,6 +512,8 @@ void GestorEventos::mostrarEventosEnFecha()
     cout << endl;
 
     vector<Evento> ve = obtenerEventosActivos();
+    ordenarEventosPorFecha(ve);
+
     int anio, mes, dia, cantEventos=0;
     bool buscarPorDia = true;
     string resultado = "";
@@ -667,15 +671,34 @@ bool GestorEventos::bajaEvento(int id)
     return true;
 }
 
-void GestorEventos::ordenarEventos(vector<Evento>& vec, bool descendente=true)
+void GestorEventos::ordenarEventosPorFecha(vector<Evento>& vec, bool descendente)
 {
-    // for todos los elementos menos 1
+    // Algoritmo de ordenamiento por Burbujeo
+    int i,j,cantEventos = vec.size();
+    Evento aux;
 
-        // for desde l posición del for externo hasta el final
-//            comparar i con j
+    for (i=0; i<cantEventos-1; i++)
+    {
+        for (j=0; j < cantEventos - i - 1; j++)
+        {
+            FechaHorario izq = vec[j].getFechaHorario();
+            FechaHorario der = vec[j+1].getFechaHorario();
 
+            if (izq < der)
+            {
+                aux = vec[j];
+                vec[j] = vec[j+1];
+                vec[j+1] = aux;
 
-// TODO : esperar a modificación Evento pasa a FechaHorario
+            }
+        }
+    }
+
+    if (!descendente)
+    {
+        // Invertimos el vector
+        reverse(begin(vec), end(vec));
+    }
 
 }
 
