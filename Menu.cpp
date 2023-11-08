@@ -5,7 +5,7 @@
 using namespace std;
 
 #include "Menu.h"
-
+#include "func_utiles.h"
 
 Menu::Menu(const vector<string> &opciones, string titulo) : _opciones(opciones), _titulo(titulo) {}
 
@@ -22,12 +22,8 @@ int Menu::mostrar()
                 }
 
             cout << "Seleccione una opcion (0 para salir/volver): ";
-            cin >> opcionElegida;
-            cout << endl ;
+            opcionElegida=validar<int>();
 
-
-            cin.clear();
-            cin.ignore();
             if (opcionElegida < 0 || opcionElegida > tamanio)
                 {
                     cout << endl << "Opcion no valida. Vuelva a intentarlo" << endl << endl;

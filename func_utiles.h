@@ -25,7 +25,7 @@ template<typename T>
                 std::cin.get(c);
                 if (c != '\n' && !std::isdigit(c)) {
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    std::cout << "Entrada no válida. Intente de nuevo." << std::endl;
+                    std::cout << "Entrada no valida. Intente de nuevo." << std::endl;
                 } else {
                     break;
                 }
@@ -44,14 +44,14 @@ template<typename T>
             if (std::cin.fail()) {
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout << "Entrada no válida. Intente de nuevo." << std::endl;
+                std::cout << "Entrada no valida. Intente de nuevo." << std::endl;
             } else {
                 // Verificar si hay caracteres no válidos en el búfer
                 char c;
                 std::cin.get(c);
                 if (c != '\n' && !std::isdigit(c)) {
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    std::cout << "Entrada no válida. Intente de nuevo." << std::endl;
+                    std::cout << "Entrada no valida. Intente de nuevo." << std::endl;
                 } else {
                     break;
                 }

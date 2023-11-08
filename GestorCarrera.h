@@ -14,6 +14,7 @@ public:
     void modificarRegistro();
     void mostrarDatosCarrera();
     void cargarManual();
+    void iniciar();
 
 private:
 
