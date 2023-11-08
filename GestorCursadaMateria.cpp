@@ -4,7 +4,10 @@ using namespace std;
 #include "Menu.h"
 #include "GestorCursadaMateria.h"
 
-GestorCursadaMateria::GestorCursadaMateria(string rutaArchivo): _archivo(rutaArchivo)
+
+GestorCursadaMateria::GestorCursadaMateria(string rutaArchivo, string rutaMaterias):
+    _archivo(rutaArchivo),
+    gm(rutaMaterias)
 {
 }
 
@@ -32,7 +35,7 @@ void GestorCursadaMateria::iniciar()
         }
 
     // 1. Loop principal
-    string tituloMenu = "\n========================\n** Gestión de Cursadas de Materias **\n========================";
+    string tituloMenu = "\n=====================================\n** Gestión de Cursadas de Materias **\n=====================================";
     Menu m({"Ingresar nueva cursada de materia.",
             "Ver todas las cursadas de materias.",
             "Ver cursadas de materias en curso.",
@@ -51,28 +54,28 @@ void GestorCursadaMateria::iniciar()
                     break;
                 // ABM
                 case 1:
-                    void altaCursadaMateriaPorConsola(); // TODO
+                    altaCursadaMateriaPorConsola(); // TODO
                     break;
                 case 2:
-                    void mostrarTodasCursadaMateria(); // TODO
+                    mostrarTodasCursadaMateria(); // TODO
                     break;
                 case 3:
-                    void mostrarCursadasMateriaEnCurso(); // TODO
+                    mostrarCursadasMateriaEnCurso(); // TODO
                     break;
                 case 4:
-                    void buscarCursadaMateria(); // TODO
+                    buscarCursadaMateria(); // TODO
                     break;
                 case 5:
-                    void modificarCursadaMateria(); // TODO
+                    modificarCursadaMateria(); // TODO
                     break;
                 case 6:
-                    void eliminarCursadaMateria(); // TODO
+                    eliminarCursadaMateria(); // TODO
                     break;
                 }
         }
 }
 
-void altaCursadaMateriaPorConsola() // WIP
+void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
 {
     cout << endl;
     cout << "***********************" << endl;
@@ -80,23 +83,53 @@ void altaCursadaMateriaPorConsola() // WIP
     cout << "***********************" << endl;
     cout << endl;
 
-    CursadaMateria cursadaMateria;
 
- // 1. Pedir  validar datos para construir el objeto
+// 1. Pedir y validar datos para construir el objeto
 
-    // 1.a Ofrecer materias para que elija qué materia va a cursar. Buscarla con GestorMaterias y setear las propiedades.
+    cout << "Qué materia se va a cursar?" << endl<< endl;
+
+    string idMateria = gm.seleccionarIdMateria();
+    Archivo<Materia> archiMat = gm.getArchivoMaterias();
+    int cantMat = archiMat.contarRegistros();
+
+    if (cantMat<=0)
+        {
+            _mensajero.mensajeError("No hay información de materias almacenada en el sistema.");
+            return;
+        }
+    Materia aux;
+    for (int i=0; i<cantMat; i++)
+        {
+            if (!archiMat.leerRegistro(i,aux))
+                {
+                    _mensajero.mensajeError("No se pudo leer correctamente el archivo de materias.");
+                    return;
+                }
+            if (aux.getIdMateria()==idMateria)
+            {
+                cout << "\n* Selección:\n\n" << aux.toString() <<endl<<endl;
+                break;
+            }
+        }
+
+    // leerMateria
+    CursadaMateria cursadaMateria(aux);
 
     // 1.b Pedir y validar datos de CursadaMateria, setearlos
 
-    EstadoMateria _estado;
+    EstadoMateria estado;
+    if (!seleccionarEstadoCursadaMateria(estado)) return;
+    cursadaMateria.setEstado(estado);
+
+    // WIP: datosCursada
     int maxDatosCursada = cursadaMateria.getMaxDatosCursada(); // para validar
     DatosCursada _datosCursada[1];
 
     // en qué Cuatrimestre inició? AÑO: 2023 - NRO: 2
     char _idCuatrimestreInicio[7];
 
-        // cantidad de unidades. el resto quedan vacías
-        int maxUnidades = cursadaMateria.getMaxUnidades(); // para validar
+    // cantidad de unidades. el resto quedan vacías - puede ingresar 0
+    int maxUnidades = cursadaMateria.getMaxUnidades(); // para validar
     Unidad _unidades[1];
 
     // 1.c Generar datos automáticos
@@ -106,24 +139,24 @@ void altaCursadaMateriaPorConsola() // WIP
 
 
 
- // 2. Guardar y revisar resultado de guardarNuevaCursadaMateria(CursadaMateria cm)
+// 2. Guardar y revisar resultado de guardarNuevaCursadaMateria(CursadaMateria cm)
 
 }
 
-void mostrarTodasCursadaMateria() // TODO
+void GestorCursadaMateria::mostrarTodasCursadaMateria() // TODO
 {
     // Evitar anuladas:
     MAT_ANULADA;
 }
-void mostrarCursadasMateriaEnCurso() // TODO
+void GestorCursadaMateria::mostrarCursadasMateriaEnCurso() // TODO
 {
 
 }
-void buscarCursadaMateria() // TODO
+void GestorCursadaMateria::buscarCursadaMateria() // TODO
 {
 
 }
-void modificarCursadaMateria() // TODO
+void GestorCursadaMateria::modificarCursadaMateria() // TODO
 {
     /*
         IMPORTANTE
@@ -133,7 +166,7 @@ void modificarCursadaMateria() // TODO
 
     */
 }
-void eliminarCursadaMateria()// TODO
+void GestorCursadaMateria::eliminarCursadaMateria()// TODO
 {
 //    anularRegistroCursadaMateria();
 }
@@ -145,13 +178,13 @@ bool GestorCursadaMateria::guardarNuevaCursadaMateria(CursadaMateria cm)
     // 1. Chequear o crear archivo.
     Archivo<CursadaMateria> ac = getArchivo();
     if (!ac.archivoExiste())
-    {
-        if(!ac.crearArchivo())
         {
-            _mensajero.mensajeError("No se pudo crear el archivo para guardar Cursadas de Materias");
-            return false;
+            if(!ac.crearArchivo())
+                {
+                    _mensajero.mensajeError("No se pudo crear el archivo para guardar Cursadas de Materias");
+                    return false;
+                }
         }
-    }
     // 2. Agregar registro
     return ac.agregarRegistro(cm);
 
@@ -159,8 +192,32 @@ bool GestorCursadaMateria::guardarNuevaCursadaMateria(CursadaMateria cm)
 
 
 
-bool anularRegistroCursadaMateria()
+bool GestorCursadaMateria::anularRegistroCursadaMateria()
 {
     // PASA A estado 3
     MAT_ANULADA;
 }
+
+bool GestorCursadaMateria::seleccionarEstadoCursadaMateria(EstadoMateria &estado)
+{
+    Menu m({"En curso", "Regularizada", "Aprobada", "Anulada"}, "Seleccionar estado de la cursada.");
+    int seleccion = m.mostrar();
+    if (seleccion==0) return false;
+    switch (seleccion)
+    {
+    case 1:
+    estado = MAT_EN_CURSO;
+        break;
+    case 2:
+    estado = MAT_REGULARIZADA;
+        break;
+    case 3:
+    estado = MAT_APROBADA;
+        break;
+    case 4:
+    estado = MAT_ANULADA;
+        break;
+    }
+    return true;
+}
+

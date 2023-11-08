@@ -519,3 +519,8 @@ std::string GestorMaterias::seleccionarIdMateria()
     delete[] filas;
 }
 
+Archivo<Materia> GestorMaterias::getArchivoMaterias()
+{
+    return archivoMaterias;
+
+}
