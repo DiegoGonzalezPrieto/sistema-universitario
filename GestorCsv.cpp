@@ -11,7 +11,8 @@
 
 using namespace std;
 
-GestorCsv::GestorCsv(string archivoImportacion, string archivoMateria) : _auxArchivo(archivoMateria), _nombreArchivo(archivoImportacion)
+GestorCsv::GestorCsv(string archivoImportacion, string archivoMateria, string archivoCargaInicial) :
+_auxArchivo(archivoMateria), _nombreArchivo(archivoImportacion), _cargaInicial(archivoCargaInicial)
 {
 
 }
@@ -68,10 +69,18 @@ void GestorCsv::iniciar(){
             mostrarMaterias(materias);
             break;
         case 5:
-            if(grabarDatosImportados(materias) == true){
-                cout << "Se han grabado todos los registros cargados en el sistema" << endl;
+            {
+                if(grabarDatosImportados(materias) == true){
+                    cout << "Se han grabado todos los registros cargados en el sistema" << endl;
+
+                    CargaInicial aux;
+                    aux.setEstado(false);
+                    _cargaInicial.modificarRegistro(0,aux);
+                }
+                cout << "Carga inicial de materias finalizada" << endl;
+                return;
+                break;
             }
-            break;
         default:
             break;
         }

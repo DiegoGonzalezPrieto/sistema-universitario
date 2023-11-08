@@ -6,11 +6,12 @@
 
 #include "Materia.h"
 #include "Archivo.h"
+#include "CargaInicial.h"
 
 class GestorCsv
 {
     public:
-        GestorCsv(std::string archivoImportacion, std::string archivoMateria);
+        GestorCsv(std::string archivoImportacion, std::string archivoMateria, std::string archivoCargaInicial);
         virtual ~GestorCsv();
 
         void iniciar();
@@ -19,6 +20,7 @@ class GestorCsv
 
         Archivo <Materia> _auxArchivo;
         std::string _nombreArchivo;
+        Archivo <CargaInicial> _cargaInicial;
 
         void mostrarInstrucciones();
         bool generarArchivoModelo();
