@@ -36,6 +36,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="GestorMaterias.cpp" />
+		<Unit filename="GestorMaterias.h" />
 		<Unit filename="Archivo.h" />
 		<Unit filename="Carrera.cpp" />
 		<Unit filename="Carrera.h" />
@@ -55,8 +57,14 @@
 		<Unit filename="GestorCarrera.h" />
 		<Unit filename="GestorCorrelativas.cpp" />
 		<Unit filename="GestorCorrelativas.h" />
+		<Unit filename="GestorEventos.cpp" />
+		<Unit filename="GestorEventos.h" />
 		<Unit filename="GestorCsv.cpp" />
 		<Unit filename="GestorCsv.h" />
+		<Unit filename="GestorMaterias.cpp" />
+		<Unit filename="GestorMaterias.h" />
+		<Unit filename="GestorNotasFinales.cpp" />
+		<Unit filename="GestorNotasFinales.h" />
 		<Unit filename="Horario.cpp" />
 		<Unit filename="Horario.h" />
 		<Unit filename="Materia.cpp" />

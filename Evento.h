@@ -2,7 +2,7 @@
 #define EVENTO_H
 
 #include <string>
-#include "Fecha.h"
+#include "FechaHorario.h"
 #include "func_utiles.h"
 
 const int LONGMAXIDMATERIA = 10;
@@ -14,15 +14,16 @@ class Evento
     public:
         Evento();
 
-        void setFecha(const Fecha& fecha);
+        void setId(int);
+        void setFechaHorario(const FechaHorario& fechaHorario);
         void setDescripcion(const std::string& descripcion);
         void setInformacion(const std::string& informacion);
         void setIdCursadaMateria(const std::string& idCursadaMateria);
         void setTipoEvento(char tipoEvento);
         void setEstado(bool estado);
 
-
-        Fecha getFecha() const;
+        int getId();
+        FechaHorario getFechaHorario() const;
         std::string getDescripcion() const;
         std::string getInformacion() const;
         std::string getIdCursadaMateria() const;
@@ -33,7 +34,8 @@ class Evento
         std::string toString() const;
 
     private:
-        Fecha _fecha;
+        int _id;
+        FechaHorario _fechaHorario;
         char _descripcion[LONGMAXDESCRIPCION];
         char _informacion[LONGMAXINFORMACION];
         char _idCursadaMateria[LONGMAXIDMATERIA];
