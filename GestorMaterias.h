@@ -29,6 +29,9 @@ public:
     bool buscarMateria(std::string& IDmateria, Materia& datosMateria, int& pos) ;
     bool modificarUnaMateria();
 
+    /// Devuelve idMateria luego de permitir seleccionar de forma interactiva (para uso por otros gestores)
+    string seleccionarIdMateria();
+
 };
 
 #endif // GESTORMATERIAS_H
