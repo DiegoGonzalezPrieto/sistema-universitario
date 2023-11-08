@@ -26,6 +26,49 @@ class FechaHorario
 
         std::string toString() const;
 
+        bool operator <(FechaHorario & fh)
+    {
+        if (_fecha < fh._fecha) return true;
+        if (_fecha > fh._fecha) return false;
+        if (_horario < fh._horario) return true;
+        return false;
+    }
+    bool operator >(FechaHorario & fh)
+    {
+        if (_fecha > fh._fecha) return true;
+        if (_fecha < fh._fecha) return false;
+        if (_horario > fh._horario) return true;
+        return false;
+    }
+    bool operator ==(FechaHorario & fh)
+    {
+        if (_fecha != fh._fecha || _horario != fh._horario)
+            {
+                return false;
+            }
+        return true;
+    }
+    bool operator !=(FechaHorario & fh)
+    {
+        if (_fecha != fh._fecha || _horario != fh._horario)
+            {
+                return true;
+            }
+        return false;
+    }
+
+    bool operator >=(FechaHorario & fh)
+    {
+        if (*this == fh) return true;
+        if (*this > fh) return true;
+        return false;
+    }
+    bool operator <=(FechaHorario & fh)
+    {
+        if (*this == fh) return true;
+        if (*this < fh) return true;
+        return false;
+    }
 
     private:
         Fecha _fecha;
