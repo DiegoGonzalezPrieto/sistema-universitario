@@ -4,101 +4,167 @@ using namespace std;
 #include "GestorCorrelativas.h"
 #include "Mensajero.h"
 
-/// Retorna 0 Si no se cumple con las correlativas, Retorna 1 Si se cumple con las coorrelativas, Retorna 2 si hubo error al abrir archivos.
-int GestorCorrelativas::validarSisepuedeCursar(std::string idMateria)
+
+bool GestorCorrelativas::validarSisepuedeCursar(std::string idMateria)
 {
     Mensajero m;
-    if(!archivoMaterias.archivoExiste()){
-        return 2;
-    }
     int nregistros = archivoMaterias.contarRegistros();
+
     Materia datosMateria;
 
-    for(int x=0; x<nregistros; x++)
+    for (int x = 0; x < nregistros; x++)
     {
-        archivoMaterias.leerRegistro(x,datosMateria);
+        archivoMaterias.leerRegistro(x, datosMateria);
 
-        if(datosMateria.getIdMateria()==idMateria)
+        if (datosMateria.getIdMateria() == idMateria)
+        {
+
+            break;
+        }
+    }
+
+    vector<string> materiasRequeridas;
+
+    for (int i = 0; i < 10; i++)
+    {
+        if (datosMateria.getIdMateriasRequeridas(i) != "")
+        {
+            materiasRequeridas.push_back(datosMateria.getIdMateriasRequeridas(i));
+        }
+    }
+
+    if (materiasRequeridas.empty())
+    {
+
+        return true;
+    }
+    nregistros = archivoCursadaMateria.contarRegistros();
+    CursadaMateria datosCursadaMateria;
+    int materiasRequeridasAprobadas = materiasRequeridas.size();
+    int cantidadMateriasAprobadas = 0;
+
+    for (int x = 0; x < nregistros; x++)
+    {
+        archivoCursadaMateria.leerRegistro(x, datosCursadaMateria);
+
+        for (int i = 0; i < materiasRequeridas.size(); i++)
+        {
+            if (datosCursadaMateria.getIdMateria() == materiasRequeridas[i] && datosCursadaMateria.getEstado() == MAT_APROBADA)
+            {
+                cantidadMateriasAprobadas++;
+            }
+        }
+    }
+
+    if (materiasRequeridasAprobadas == cantidadMateriasAprobadas)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+std::vector<std::string> GestorCorrelativas::getNoAprobadas(std::string idMateria)
+{
+    Mensajero m;
+    int nregistros = archivoMaterias.contarRegistros();
+
+    Materia datosMateria;
+
+    for (int x = 0; x < nregistros; x++)
+    {
+        archivoMaterias.leerRegistro(x, datosMateria);
+
+        if (datosMateria.getIdMateria() == idMateria)
         {
             break;
         }
     }
-    vector<string> materiasRequeridas;
 
-    for(int i = 0; i< 10; i++)
+    std::vector<std::string> materiasRequeridasNoAprobadas;
+
+    for (int i = 0; i < 10; i++)
     {
-        if(datosMateria.getIdMateriasRequeridas(i)!="N/A"){
-        materiasRequeridas.push_back(datosMateria.getIdMateriasRequeridas(i));
-
-        }
-    }
-    if(materiasRequeridas[0]=="")
-    {
-
-        return 1;
-    }
-
-    else
-    {
-        cout<<"el vector no esta vacio"<<endl;
-        for(int x =0; x<materiasRequeridas.size(); x++)
+        if (datosMateria.getIdMateriasRequeridas(i) != "")
         {
-            cout<<materiasRequeridas[x];
-        }
-        cout<<endl;
-        cout<<materiasRequeridas.size();
-    }
+            bool materiaAprobada = false;
 
-    if(!archivoCursadaMateria.archivoExiste()){
-        return 2;
-    }
+            int nCursadas = archivoCursadaMateria.contarRegistros();
+            CursadaMateria datosCursadaMateria;
 
-    nregistros = archivoCursadaMateria.contarRegistros();
-    CursadaMateria datosCursadaMateria;
-    int materiasRequeridasAprobadas=materiasRequeridas.size();
-    int cantidadMateriasAprobadas=0;
-    for(int x=0; x<nregistros; x++)
-    {
-        archivoCursadaMateria.leerRegistro(x,datosCursadaMateria);
-
-        for(int i = 0; i< 10; i++)
-        {
-            if(datosCursadaMateria.getIdMateria()==materiasRequeridas[i] && datosCursadaMateria.getEstado()==MAT_APROBADA)
+            for (int j = 0; j < nCursadas; j++)
             {
+                archivoCursadaMateria.leerRegistro(j, datosCursadaMateria);
 
-                cantidadMateriasAprobadas++;
+                if (datosCursadaMateria.getIdMateria() == datosMateria.getIdMateriasRequeridas(i) &&
+                    datosCursadaMateria.getEstado() == MAT_APROBADA)
+                {
+                    materiaAprobada = true;
+                    break;
+                }
             }
 
+            if (!materiaAprobada)
+            {
+                materiasRequeridasNoAprobadas.push_back(datosMateria.getIdMateriasRequeridas(i));
+            }
         }
     }
 
-    if(materiasRequeridasAprobadas==cantidadMateriasAprobadas)
-    {
-
-        return 1;
-    }
-    else
-    {
-
-        return 0;
-    }
+    return materiasRequeridasNoAprobadas;
 }
 
 void GestorCorrelativas::mostrarCorrelativas(std::string idMateria)
 {
     int registros = archivoMaterias.contarRegistros();
     Materia datosMateria;
-    for(int x=0; x<registros; x++)
+    bool hayCorrelativas = false;
+    const int CANTMATERIAS = 10;
+    std::vector<std::string> materias;
+    int cantreg = archivoMaterias.contarRegistros();
+
+
+    for (int x = 0; x < cantreg; x++)
     {
-        if (!archivoMaterias.leerRegistro(x,datosMateria))
+        archivoMaterias.leerRegistro(x, datosMateria);
+
+        if (datosMateria.getIdMateria() == idMateria)
         {
-            Mensajero m;
-            m.mensajeError("No se pudo leer el archivo materias.dat");
-            return;
+            for (int i = 0; i < CANTMATERIAS; i++)
+            {
+                if (datosMateria.getIdMateriasRequeridas(i) != "N/A" && datosMateria.getIdMateriasRequeridas(i) != "")
+                {
+                    materias.push_back(datosMateria.getIdMateriasRequeridas(i));
+                }
+            }
+            break;
         }
-        if(datosMateria.getIdMateria()==idMateria)
+    }
+
+    if (!materias.empty())
+    {
+        std::cout << "La materia: " << idMateria << " Posee las siguientes Correlativas: \n\n";
+
+        for (const std::string &correlativa : materias)
         {
-            cout<<datosMateria.toString();
+            int reg = archivoMaterias.contarRegistros();
+
+            for (int x = 0; x < reg; x++)
+            {
+                archivoMaterias.leerRegistro(x, datosMateria);
+
+                if (datosMateria.getIdMateria() == correlativa)
+                {
+                    std::cout << datosMateria.getIdMateria() << " " << datosMateria.getNombreMateria() << std::endl;
+                    break;
+                }
+            }
         }
+    }
+    else
+    {
+        std::cout << "No tiene correlativas" << std::endl;
     }
 }

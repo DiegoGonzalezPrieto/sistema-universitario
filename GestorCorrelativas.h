@@ -10,8 +10,9 @@ class GestorCorrelativas
 public:
 GestorCorrelativas(std::string materiasd, std::string cursadamateriad) : archivoMaterias(materiasd), archivoCursadaMateria(cursadamateriad) {
 };
+bool validarSisepuedeCursar(std::string codigoMateria);
 
-int validarSisepuedeCursar(std::string codigoMateria);
+std::vector<std::string> getNoAprobadas(std::string idMateria);
 
 void mostrarCorrelativas(std::string codigoMateria);
 
