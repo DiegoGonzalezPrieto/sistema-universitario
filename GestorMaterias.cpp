@@ -63,7 +63,6 @@ void GestorMaterias::CargarMaterias()
         if (AgregarUnaMateria())
         {
             cout << "Materia agregada correctamente" << endl ;
-
             char op ;
             cout << "Desea agregar otra materia? (S/N)" << endl ;
             op=validar<char>();
@@ -78,7 +77,6 @@ void GestorMaterias::CargarMaterias()
             msj.mensajeError("No se pudo agregar la materia");
             break ;
         }
-
     }
 }
 
@@ -225,7 +223,7 @@ bool GestorMaterias::modificarUnaMateria()
 
         if (!buscarMateria(IDmateria, datosMateria, pos))
         {
-            msj.mensajeError("No se encontró la materia con el ID proporcionado.");
+            msj.mensajeError("No se encontrÃ³ la materia con el ID proporcionado.");
             return false;
         }
 
@@ -238,7 +236,7 @@ bool GestorMaterias::modificarUnaMateria()
             "Duracion de la materia"
         };
 
-        Menu MenuMod(opciones,"Seleccione qué dato desea modificar: ");
+        Menu MenuMod(opciones,"Seleccione quÃ© dato desea modificar: ");
 
         while (true)
         {
@@ -415,6 +413,28 @@ string GestorMaterias::buscarIDMateria()
 }
 
 
+string GestorMaterias::mostrarNombrePorID(string IDMateria)
+{
+    Materia datosMateria;
+    int cantMat = archivoMaterias.contarRegistros() ;
+    if (archivoMaterias.leerRegistros(registros))
+        {
+            for (int i=0; i<cantMat; i++)
+                {
+                    archivoMaterias.leerRegistro(i,datosMateria);
+                    if (datosMateria.getIdMateria()==IDMateria)
+                        {
+                            return datosMateria.getNombreMateria();
+                        }
+
+
+                }
+
+        }
+                            return "";
+}
+
+
 bool GestorMaterias::buscarMateria(std::string& IDmateria, Materia& datosMateria, int &pos)
 {
     archivoMaterias.leerRegistros(registros);
@@ -497,10 +517,10 @@ std::string GestorMaterias::seleccionarIdMateria()
 
         while (true)
         {
-            std::cout << std::endl << "Ingresar número de la materia deseada: ";
+            std::cout << std::endl << "Ingresar nÃºmero de la materia deseada: ";
             opc = validar<int>();
             if (opc > 0 && opc <= cantMat) break;
-            msj.mensajeError("Opción inexistente.");
+            msj.mensajeError("OpciÃ³n inexistente.");
         }
         if (archivoMaterias.leerRegistro(opc-1,datosMateria)) return datosMateria.getIdMateria();
         else

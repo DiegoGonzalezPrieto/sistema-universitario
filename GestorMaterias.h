@@ -26,6 +26,7 @@ public:
     bool guardarIDsMatRequeridas(int cant, Materia& datosMateria);
     bool AgregarUnaMateria();
     std::string buscarIDMateria();
+    std::string mostrarNombrePorID(std::string IDMateria);
     bool buscarMateria(std::string& IDmateria, Materia& datosMateria, int& pos) ;
     bool modificarUnaMateria();
 
