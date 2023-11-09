@@ -14,12 +14,11 @@ public:
     }
     std::string getNombre()
     {
-        std::string nombre(_nombre);
-        return std::string(nombre);
+        return _nombre;
     }
     void setNombre(std::string n)
     {
-        strcpy(_nombre, n.c_str());
+        _nombre = n;
     }
 
     std::string getNombreBackup()
@@ -29,7 +28,7 @@ public:
 
     bool crearArchivo()
     {
-        if (FILE* p = fopen(_nombre, "wb"))
+        if (FILE* p = fopen(_nombre.c_str(), "wb"))
             {
                 fclose(p);
                 return true;
@@ -42,7 +41,7 @@ public:
 
     bool archivoExiste()
     {
-        if (FILE* p = fopen(_nombre, "rb"))
+        if (FILE* p = fopen(_nombre.c_str(), "rb"))
             {
                 fclose(p);
                 return true;
@@ -56,7 +55,7 @@ public:
 
     bool leerRegistro(int pos, T& registro)
     {
-        if (FILE* p = fopen(_nombre, "rb"))
+        if (FILE* p = fopen(_nombre.c_str(), "rb"))
             {
                 fseek(p, sizeof(T) * pos, SEEK_SET);
                 fread(&registro, sizeof(T), 1, p);
@@ -72,7 +71,7 @@ public:
     int contarRegistros()
     {
         int tamanio;
-        if (FILE* p = fopen(_nombre, "rb"))
+        if (FILE* p = fopen(_nombre.c_str(), "rb"))
             {
                 fseek(p, 0, SEEK_END);
                 tamanio = ftell(p);
@@ -90,7 +89,7 @@ public:
     {
         T aux;
         int cant = contarRegistros();
-        if (FILE* p = fopen(_nombre, "rb"))
+        if (FILE* p = fopen(_nombre.c_str(), "rb"))
             {
                 for (int i=0; i< cant; i++)
                     {
@@ -109,7 +108,7 @@ public:
 
     bool agregarRegistro(T registro)
     {
-        if (FILE* p = fopen(_nombre, "ab"))
+        if (FILE* p = fopen(_nombre.c_str(), "ab"))
             {
                 fwrite(&registro, sizeof(T), 1, p);
                 fclose(p);
@@ -127,11 +126,11 @@ public:
         T aux;
         int cantReg = contarRegistros();
         if (cantReg < 1) return false;
-        char nombreBup[35];
+        std::string nombreBup;
         std::string snom = getNombreBackup();
-        strcpy(nombreBup, snom.c_str());
-        FILE* pi = fopen(nombreBup, "rb");
-        FILE* po = fopen(_nombre, "wb");
+        nombreBup = snom;
+        FILE* pi = fopen(nombreBup.c_str(), "rb");
+        FILE* po = fopen(_nombre.c_str(), "wb");
         if (pi == NULL || po == NULL) return false;
         for (int i=0; i<cantReg; i++)
             {
@@ -146,7 +145,7 @@ public:
 
     bool modificarRegistro(int pos, T registro)
     {
-        if (FILE* p = fopen(_nombre, "rb+"))
+        if (FILE* p = fopen(_nombre.c_str(), "rb+"))
             {
                 fseek(p, sizeof(T) * pos, SEEK_SET);
                 fwrite(&registro, sizeof(T), 1, p);
@@ -164,11 +163,9 @@ public:
         T aux;
         int cantReg = contarRegistros();
         if (cantReg < 1) return false;
-        char nombreBup[35];
-        std::string snom = getNombreBackup();
-        strcpy(nombreBup, snom.c_str());
-        FILE* pi = fopen(_nombre, "rb");
-        FILE* po = fopen(nombreBup, "wb");
+        std::string nombreBup = getNombreBackup();
+        FILE* pi = fopen(_nombre.c_str(), "rb");
+        FILE* po = fopen(nombreBup.c_str(), "wb");
         if (pi == NULL || po == NULL) return false;
         for (int i=0; i<cantReg; i++)
             {
@@ -185,7 +182,7 @@ public:
 protected:
 
 private:
-    char _nombre[30];
+    std::string _nombre;
 
 };
 
