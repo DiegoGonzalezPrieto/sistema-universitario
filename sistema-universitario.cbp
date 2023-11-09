@@ -55,6 +55,10 @@
 		<Unit filename="FechaHorario.h" />
 		<Unit filename="GestorCarrera.cpp" />
 		<Unit filename="GestorCarrera.h" />
+		<Unit filename="GestorCorrelativas.cpp" />
+		<Unit filename="GestorCorrelativas.h" />
+		<Unit filename="GestorEventos.cpp" />
+		<Unit filename="GestorEventos.h" />
 		<Unit filename="GestorCsv.cpp" />
 		<Unit filename="GestorCsv.h" />
 		<Unit filename="GestorEventos.cpp" />

@@ -24,6 +24,8 @@ public:
 
     /// Listar todos los eventos.
     void mostrarTodosEventos(); // TODO : ordenar por fechaHorario
+    /// Mostrar eventos de este mes y del mes que viene
+    void mostrarEventosProximos();
 
     /// Alta interactiva de Evento
     void altaEventoPorConsola(); // TODO : seleccionar materia asociada
@@ -31,11 +33,9 @@ public:
     /// Modificación interactiva de Evento
     bool modificarEvento(); // TODO : modificación de idMateriaCursada
 
-
-    /// Mostrar eventos de este mes y del mes que viene
-    void mostrarEventosProximos(); // TODO : ordenar fechas
     /// Pide una fecha al usuario y muestra los eventos que ocurren en ese día
-    void mostrarEventosEnFecha(); // TODO : ordenar fechas
+    void mostrarEventosEnFecha();
+
     /// Eliminar evento de forma interactiva
     void eliminarEvento();
 
@@ -54,8 +54,8 @@ public:
     int obtenerPosicionEnArchivo(int id);
     /// Baja lógica del evento con id
     bool bajaEvento(int id);
-    /// Ordenar vector de eventos (ascendente|descendente)
-    void ordenarEventos(vector<Evento>&, bool); // TODO
+    /// Ordenar vector de eventos (descendente|ascendente)
+    void ordenarEventosPorFecha(vector<Evento>&, bool descendente=true);
     /// Revisa este mes y el siguiente por algún evento.
     bool hayEventoProximo();
 protected:
