@@ -36,9 +36,9 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="GestorMaterias.cpp" />
-		<Unit filename="GestorMaterias.h" />
 		<Unit filename="Archivo.h" />
+		<Unit filename="CargaInicial.cpp" />
+		<Unit filename="CargaInicial.h" />
 		<Unit filename="Carrera.cpp" />
 		<Unit filename="Carrera.h" />
 		<Unit filename="Cuatrimestre.cpp" />
@@ -61,6 +61,8 @@
 		<Unit filename="GestorEventos.h" />
 		<Unit filename="GestorCsv.cpp" />
 		<Unit filename="GestorCsv.h" />
+		<Unit filename="GestorEventos.cpp" />
+		<Unit filename="GestorEventos.h" />
 		<Unit filename="GestorMaterias.cpp" />
 		<Unit filename="GestorMaterias.h" />
 		<Unit filename="GestorNotasFinales.cpp" />
@@ -75,6 +77,8 @@
 		<Unit filename="Menu.h" />
 		<Unit filename="NotaFinal.cpp" />
 		<Unit filename="NotaFinal.h" />
+		<Unit filename="Sistema.cpp" />
+		<Unit filename="Sistema.h" />
 		<Unit filename="Unidad.cpp" />
 		<Unit filename="Unidad.h" />
 		<Unit filename="func_archivos.cpp" />
