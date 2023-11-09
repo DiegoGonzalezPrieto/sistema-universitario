@@ -101,6 +101,7 @@ archivoCarreraEnCurso.leerRegistro(0,_datosCarrera);
 
 std::cout<<_datosCarrera.toString();
 }
+
 void GestorCarrera::iniciar()
 {
     bool a = true;
@@ -116,8 +117,8 @@ void GestorCarrera::iniciar()
                 cargarManual();
                 }
                 else {
-                    std::cout<<"> Ya realizo el ingreso los datos, si deseas modificar los datos  "<<std::endl;
-                    std::cout<<"1 seleccione la opcion correspondiente a modificar registros  "<<std::endl;
+                    std::cout<<"> Ya realizó el ingreso de los datos, si deseas modificar los datos  "<<std::endl;
+                    std::cout<<"seleccione la opcion correspondiente a modificar registros."<<std::endl;
                 }
                 std::cout<<std::endl;
                 std::cout << "-- Desea modificar otro registro? (s/n)" << std::endl;
