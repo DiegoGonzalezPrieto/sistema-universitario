@@ -7,11 +7,14 @@ class CargaInicial
     public:
         CargaInicial();
 
-        void setEstado(bool estado);
-        bool getEstado() const;
+        void disminuirDatosCargados();
+        void aumentarcontadorDatosCargados();
+        int getdatoscargados();
 
     private:
-        bool _estado;
+        int  _contador;
+
+
 };
 
 #endif // CARGAINICIAL_H

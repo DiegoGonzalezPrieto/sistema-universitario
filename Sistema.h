@@ -34,7 +34,6 @@ class Sistema
         GestorEventos _gestorEventos;
         GestorCsv _gestorCsv; ///VER SI SE INICIALIZA AQUI, O EN GESTOR MATERIAS
 
-
         Mensajero _mensajero;
         Archivo <CargaInicial> _cargaInicial;
 

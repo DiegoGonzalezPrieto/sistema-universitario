@@ -30,7 +30,7 @@ public:
     bool modificarUnaMateria();
 
     /// Devuelve idMateria luego de permitir seleccionar de forma interactiva (para uso por otros gestores)
-    string seleccionarIdMateria();
+    std::string seleccionarIdMateria();
 
 };
 

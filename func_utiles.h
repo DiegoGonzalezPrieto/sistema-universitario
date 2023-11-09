@@ -82,6 +82,6 @@ T validar()
 
     return entrada;
 }
-
+void limpiarPantalla();
 
 #endif // FUNC_ARCHIVOS_H_INCLUDED

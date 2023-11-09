@@ -9,11 +9,11 @@
 class GestorEventos
 {
 public:
-    GestorEventos(string nombreArchivo);
+    GestorEventos(std::string nombreArchivo);
     ~GestorEventos(); // TODO
 
     Archivo<Evento> getArchivo();
-    void setArchivo(string ruta);
+    void setArchivo(std::string ruta);
 
     /// Loop principal
     void iniciar(); // WIP
@@ -49,13 +49,13 @@ public:
     /// Devuelve datos del evento cuyo ID coindice
     Evento buscarPorId(int id);
     /// Obtener todos los eventos activos.
-    vector<Evento> obtenerEventosActivos();
+    std::vector<Evento> obtenerEventosActivos();
     /// Obtener Posición del Evento en el achivo, en base a su ID.
     int obtenerPosicionEnArchivo(int id);
     /// Baja lógica del evento con id
     bool bajaEvento(int id);
     /// Ordenar vector de eventos (descendente|ascendente)
-    void ordenarEventosPorFecha(vector<Evento>&, bool descendente=true);
+    void ordenarEventosPorFecha(std::vector<Evento>&, bool descendente=true);
     /// Revisa este mes y el siguiente por algún evento.
     bool hayEventoProximo();
 protected:

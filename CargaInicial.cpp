@@ -2,15 +2,18 @@
 
 CargaInicial::CargaInicial()
 {
-    //ctor
+    _contador=0;
 }
 
-void CargaInicial::setEstado(bool estado){
+void CargaInicial::aumentarcontadorDatosCargados(){
 
-    _estado = estado;
+    _contador++;
 }
+int CargaInicial::getdatoscargados(){
 
-bool CargaInicial::getEstado() const{
+return _contador;}
 
-    return _estado;
+void CargaInicial::disminuirDatosCargados(){
+
+    _contador--;
 }
