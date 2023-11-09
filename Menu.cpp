@@ -13,6 +13,7 @@ Menu::Menu(const vector<string> &opciones, string titulo) : _opciones(opciones),
 int Menu::mostrar()
 {
     int opcionElegida, tamanio = _opciones.size();
+    limpiarPantalla();
     while (true)
         {
             cout << _titulo << endl << endl;

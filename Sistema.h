@@ -24,6 +24,7 @@ class Sistema
         Sistema();
 
         void iniciar();
+        void menuCargaInicial();
         bool cargaInicial();
         void crearDirectoriosEsenciales();
 
@@ -33,7 +34,6 @@ class Sistema
         GestorNotasFinales _gestorNotasFinales;
         GestorEventos _gestorEventos;
         GestorCsv _gestorCsv; ///VER SI SE INICIALIZA AQUI, O EN GESTOR MATERIAS
-
 
         Mensajero _mensajero;
         Archivo <CargaInicial> _cargaInicial;

@@ -2,6 +2,7 @@
 #include "Carrera.h"
 #include "Menu.h"
 #include "func_utiles.h"
+#include "CargaInicial.h"
 void GestorCarrera::modificarRegistro()
 {
 
@@ -65,7 +66,7 @@ void GestorCarrera::modificarRegistro()
 
 void GestorCarrera::cargarManual()
 {
-
+    std::cout<<"INGRESE LOS DATOS DE SU UNIVERSIDAD: "<<std::endl;
     _datosCarrera;
     std::string nuevoDato;
 
@@ -88,6 +89,10 @@ void GestorCarrera::cargarManual()
         {
 
             _mensajero.mensajeInformacion("Registro agregado exitosamente. ");
+            CargaInicial aux;
+            aux.aumentarcontadorDatosCargados();
+            archivoCargainicial.modificarRegistro(1,aux);
+
         }
     else
         {
@@ -175,4 +180,17 @@ void GestorCarrera::iniciar()
             break;
         }
     }
+}
+
+bool GestorCarrera::archivoExiste(){
+
+if(archivoCarreraEnCurso.archivoExiste()){
+
+    return true;
+}
+else{
+
+    return false;
+}
+
 }
