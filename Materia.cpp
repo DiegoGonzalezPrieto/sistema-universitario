@@ -1,4 +1,6 @@
 #include "Materia.h"
+#include "GestorCorrelativas.h"
+#include "GestorMaterias.h"
 
 
 /// Cadenas vacías a NombreMateria e IdMateria
@@ -67,29 +69,33 @@ int Materia::getCuatrimestreDeDuracion() const{
     return _cuatrimestresDeDuracion;
 }
 
+
 std::string Materia::toString() const{
 
 
 ///OBSERVACION: Como no hay datos por defecto en el constructor, si no seteamos datos en algún atributo toString() mostrará basura
-
+    GestorMaterias gMat("Materias.dat");
     std::string aux = "";
 
     aux = "Materia: ";
     aux += getNombreMateria();
-    aux += ", ID: ";
+    aux += " - ID:";
     aux += getIdMateria();
 
     bool hayCorrelativas = false;
 
-    aux += "\nID materias correlativas: ";
+    aux += "\nMaterias correlativas: ";
 
     for(int i = 0; i < CANTMATERIAS; i++){
 
-        if(getIdMateriasRequeridas(i) != "N/A"){
+        if(getIdMateriasRequeridas(i) != ""){
 
             if(i != (CANTMATERIAS -1)){
 
+                aux += "\nID:";
                 aux += getIdMateriasRequeridas(i);
+                aux += " - ";
+                aux += gMat.mostrarNombrePorID(getIdMateriasRequeridas(i));
                 aux += "    ";
                 hayCorrelativas = true;
             }
@@ -102,13 +108,14 @@ std::string Materia::toString() const{
 
     if(hayCorrelativas == false){
 
-        aux +="no tiene\n";
+        aux +="No tiene";
     }
+
 
     aux += "\nCuatrimestre sugerido: ";
     aux += std::to_string(getCuatrimestreSugerido());
-    aux += ", la materia tiene una duracion de ";
+    aux += "\nDuracion: ";
     aux += std::to_string(getCuatrimestreDeDuracion());
-    aux += " cuatrimestre/s";
+    aux += " Cuatrimestre/s";
     return aux;
 }
