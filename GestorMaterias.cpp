@@ -416,6 +416,28 @@ string GestorMaterias::buscarIDMateria()
 }
 
 
+string GestorMaterias::mostrarNombrePorID(string IDMateria)
+{
+    Materia datosMateria;
+    int cantMat = archivoMaterias.contarRegistros() ;
+    if (archivoMaterias.leerRegistros(registros))
+        {
+            for (int i=0; i<cantMat; i++)
+                {
+                    archivoMaterias.leerRegistro(i,datosMateria);
+                    if (datosMateria.getIdMateria()==IDMateria)
+                        {
+                            return datosMateria.getNombreMateria();
+                        }
+
+
+                }
+
+        }
+                            return "";
+}
+
+
 bool GestorMaterias::buscarMateria(std::string& IDmateria, Materia& datosMateria, int &pos)
 {
     archivoMaterias.leerRegistros(registros);

@@ -95,7 +95,7 @@ std::string Materia::toString() const{
                 aux += "\nID:";
                 aux += getIdMateriasRequeridas(i);
                 aux += " - ";
-///                aux += gMat.mostrarNombrePorID(getIdMateriasRequeridas(i));
+                aux += gMat.mostrarNombrePorID(getIdMateriasRequeridas(i));
                 aux += "    ";
                 hayCorrelativas = true;
             }
