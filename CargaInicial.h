@@ -11,8 +11,16 @@ class CargaInicial
         void aumentarcontadorDatosCargados();
         int getdatoscargados();
 
+        bool getCarreraCargada();
+        bool getMateriasCargadas();
+
+        void setCarreraCargada(bool);
+        void setMateriasCargadas(bool);
+
     private:
         int  _contador;
+        bool carreraCargada;
+        bool materiasCargadas;
 
 
 };

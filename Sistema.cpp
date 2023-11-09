@@ -42,7 +42,7 @@ Sistema::Sistema() :
 
 void Sistema::iniciar()
 {
-    system("color B1");
+//    system("color B1");
     crearDirectoriosEsenciales();
 
 
@@ -51,166 +51,207 @@ void Sistema::iniciar()
     Menu menu(opcMenu, "Sistema de Gestion de Carrera Universitaria");
     int opc;
     int datosAgregadoss=0;
+    bool materiaCargada = false, carreraCargada =false;
 
     if(_cargaInicial.archivoExiste())
-    {
-        CargaInicial datos;
-        _cargaInicial.leerRegistro(0,datos);
+        {
+            CargaInicial datos;
+            _cargaInicial.leerRegistro(0,datos);
 
-        datosAgregadoss=datos.getdatoscargados();
+            datosAgregadoss=datos.getdatoscargados();
+            materiaCargada = datos.getMateriasCargadas();
+            carreraCargada = datos.getCarreraCargada();
 
-    }
+        }
 
-    else {_cargaInicial.crearArchivo();}
+    else
+        {
+            _cargaInicial.crearArchivo();
+        }
 
     ///Si falta 1 o 2 datos entra el primer while
 
-    cout<<"INFORMACION NECESARIA "<< datosAgregadoss <<" / 2" <<endl;
+    string mensaje = "Datos necesarios para el funcionamiento del sistema:\n";
+    mensaje += carreraCargada ? "Carrera : OK" : "Carrera : Falta";
+    mensaje += "\n";
+    mensaje += materiaCargada ? "Materias : OK" : "Materias : Falta";
+    mensaje += "\n";
 
-    if(datosAgregadoss==0 || datosAgregadoss==1)
-    {
 
-        vector <string> opcMenuInicial = {"> Cargar datos de la carrera ","> Cargar de forma manual las materias", "> Cargar las materias mediante archivo csv "};
-
-        Menu menuInicial(opcMenuInicial, "MENU DE CARGA INICIAL");
-
-        while(datosAgregadoss==0 || datosAgregadoss==1 )
+    if(!materiaCargada || !carreraCargada)
         {
+            _mensajero.mensajeInformacion(mensaje);
 
-            opc = menuInicial.mostrar();
-            limpiarPantalla();
-            switch(opc)
-            {
 
-            case 0:
-                return;
-                break;
-            case 1:
-            {
-                if(!_gestorCarrera.archivoExiste())
+            _mensajero.mensajeInformacion("Como primer paso, se debe cargar la información de la carrera y de todas las materias de la misma.");
+            vector <string> opcMenuInicial = {"> Cargar datos de la carrera ","> Cargar de forma manual las materias", "> Cargar las materias mediante archivo csv "};
+
+            Menu menuInicial(opcMenuInicial, "MENU DE CARGA INICIAL");
+
+            bool salir=false;
+
+            while(!materiaCargada || !carreraCargada )
                 {
-                    _gestorCarrera.cargarManual();
+                    if (salir) break;
+
+                    opc = menuInicial.mostrar();
+                    limpiarPantalla();
+                    switch(opc)
+                        {
+
+                        case 0:
+                            salir = true;
+                            break;
+                        case 1:
+                        {
+                            if(!carreraCargada)
+                                {
+                                    _gestorCarrera.cargarManual();
+                                    CargaInicial datos;
+                                    _cargaInicial.leerRegistro(0,datos);
+                                    datos.aumentarcontadorDatosCargados();
+                                    datos.setCarreraCargada(true);
+                                    _cargaInicial.modificarRegistro(0,datos);
+                                }
+                            else
+                                {
+                                    _mensajero.mensajeInformacion("La carrera ya fue cargada correctamente. Ingresar datos de la carrera.");
+                                    CargaInicial datos;
+                                    _cargaInicial.leerRegistro(0,datos);
+                                    datos.setCarreraCargada(true);
+                                    _cargaInicial.modificarRegistro(0,datos);
+                                }
+                            //limpiarPantalla();
+                            break;
+                        }
+                        case 2:
+                        {
+                            if (materiaCargada)
+                                {
+                                    _mensajero.mensajeInformacion("Las materias ya fueron cargadas correctamente. Ingresar datos de la carrera.");
+                                    break;
+                                }
+
+                            _gestorMaterias.iniciarGestorMaterias();
+                            std::cout << "Luego de confirmar la carga actual, no podrán agregarse nuevas materias." << std::endl;
+                            std::cout << "Si selecciona 'N', se guardará información parcial de las materias, permitiendo continuar luego." << std::endl;
+                            std::cout << "Desea dar por finalizada la carga de todas materias? (S/N) " << std::endl;
+                            std::cin.clear();
+                            char respuesta;
+                            respuesta = validar<char>();
+                            if(respuesta=='S' || respuesta=='s')
+                                {
+                                    _mensajero.mensajeInformacion("Se ha guardado la información total de las materias.\nPara el correcto funcionamiento del sistema, no pueden agregarse más materias.");
+                                    CargaInicial datos;
+                                    _cargaInicial.leerRegistro(0,datos);
+                                    datos.aumentarcontadorDatosCargados();
+                                    datos.setMateriasCargadas(true);
+                                    _cargaInicial.modificarRegistro(0,datos);
+                                    break;
+                                }
+                            else
+                                {
+                                    _mensajero.mensajeInformacion("Se ha guardado la información total de las materias.\nPara el correcto funcionamiento del sistema, no pueden agregarse más materias.");
+                                }
+
+                            break;
+                        }
+
+
+                        case 3:
+                        {
+                            Archivo<Materia> Materias("Archivos/datos/materias.dat");
+                            if(Materias.archivoExiste())
+                                {
+                                    std::cout<<" Hemos detectado que ya realizo ingresos manuales de materias"<<std::endl;
+                                    std::cout<<" en caso de querer ingresar las materias a travez de la carga"<<std::endl;
+                                    std::cout<<" por archivo, se eliminara toda la informacion anteriormente ingresada "<<std::endl;
+                                    std::cout<<" para evitar errores"<<std::endl;
+                                    std::cout<<" Desea Continuar? (S/N) "<<std::endl;
+                                    char res = validar<char>();
+
+                                    if(res =='s' || res =='S' )
+                                        {
+                                            CargaInicial datos;
+                                            _cargaInicial.leerRegistro(0,datos);
+                                            datos.disminuirDatosCargados();
+                                            datos.setMateriasCargadas(false);
+                                            _cargaInicial.modificarRegistro(0,datos);
+                                            Materias.crearArchivo();
+                                            _gestorCsv.iniciar();
+
+                                        }
+                                }
+
+                            else
+                                {
+                                    _gestorCsv.iniciar();
+                                }
+
+
+                            break;
+                        }
+
+                        default:
+                            break;
+                        }
                     CargaInicial datos;
                     _cargaInicial.leerRegistro(0,datos);
-                    datos.aumentarcontadorDatosCargados();
-                    _cargaInicial.modificarRegistro(0,datos);
-                }
-                else
-                {
-                    _mensajero.mensajeInformacion(" LOS DATOS DE LA CARRERA YA FUERON INGRESADOS ");
-                    _mensajero.mensajeInformacion(" FINALICE LA CARGA DE MATERIAS " );
-                }
-                //limpiarPantalla();
-                break;
-            }
-            case 2:
-            {
-
-                _gestorMaterias.iniciarGestorMaterias();
-                std::cout << "Desea continuar luego con la carga de materias? (S/N) " << std::endl;
-                std::cin.clear();
-                char respuesta;
-                respuesta = validar<char>();
-                if(respuesta=='N' || respuesta=='n')
-                {
-                    CargaInicial datos;
-                    _cargaInicial.leerRegistro(0,datos);
-                    datos.aumentarcontadorDatosCargados();
-                    _cargaInicial.modificarRegistro(0,datos);
-                    //limpiarPantalla();
+                    datosAgregadoss=datos.getdatoscargados();
 
                 }
-
-                break;
-            }
-
-
-            case 3:
-            {
-                Archivo<Materia> Materias("Archivos/datos/materias.dat");
-                if(Materias.archivoExiste())
-                {
-                    std::cout<<" Hemos detectado que ya realizo ingresos manuales de materias"<<std::endl;
-                    std::cout<<" en caso de querer ingresar las materias a travez de la carga"<<std::endl;
-                    std::cout<<" por archivo, se eliminara toda la informacion anteriormente ingresada "<<std::endl;
-                    std::cout<<" para evitar errores"<<std::endl;
-                    std::cout<<" Desea Continuar (s/n) "<<std::endl;
-                    char res = validar<char>();
-
-                    if(res =='s' || res =='S' )
-                    {
-                        CargaInicial datos;
-                        _cargaInicial.leerRegistro(0,datos);
-                        datos.disminuirDatosCargados();
-                        _cargaInicial.modificarRegistro(0,datos);
-                        Materias.crearArchivo();
-                        _gestorCsv.iniciar();
-
-                    }
-                }
-
-                else
-                {
-                    _gestorCsv.iniciar();
-
-
-                }
-
-
-                break;
-            }
-
-            default:
-                break;
-            }
-            CargaInicial datos;
-            _cargaInicial.leerRegistro(0,datos);
-            datosAgregadoss=datos.getdatoscargados();
-
         }
-    }
 
+    CargaInicial cargaInicial;
+    _cargaInicial.leerRegistro(0,cargaInicial);
+
+
+    if (!cargaInicial.getMateriasCargadas()|| !cargaInicial.getCarreraCargada())
+        {
+            _mensajero.mensajeAdvertencia("No se puede continuar hasta no finalizar la carga inicial de datos. Reiniciar el programa.");
+            return;
+        }
 
     /// Una vez finalizada la carga inicial
     while(true)
-    {
-
-
-        opc = menu.mostrar();
-
-        switch(opc)
         {
 
-        case 0:
-            return;
-            break;
-        case 1:
-        {
-            _gestorMaterias.iniciarGestorMaterias();
+
+            opc = menu.mostrar();
+
+            switch(opc)
+                {
+
+                case 0:
+                    return;
+                    break;
+                case 1:
+                {
+                    _gestorMaterias.iniciarGestorMaterias();
+                }
+                case 2:
+                {
+                    cout<<" En desarrollo "<<endl;
+                }
+                break;
+                case 3:
+                    _gestorEventos.iniciar();
+                    break;
+                case 4:
+                    _gestorNotasFinales.iniciar();
+                    break;
+                case 5:
+                    _gestorCarrera.iniciar();
+                    break;
+                case 6:
+                {
+                    cout<<" En desarrollo "<<endl;
+                }
+                break;
+                default:
+                    break;
+                }
         }
-        case 2:
-        {
-            cout<<" En desarrollo "<<endl;
-        }
-        break;
-        case 3:
-            _gestorEventos.iniciar();
-            break;
-        case 4:
-            _gestorNotasFinales.iniciar();
-            break;
-        case 5:
-            _gestorCarrera.iniciar();
-            break;
-        case 6:
-        {
-            cout<<" En desarrollo "<<endl;
-        }
-        break;
-        default:
-            break;
-        }
-    }
 
 }
 

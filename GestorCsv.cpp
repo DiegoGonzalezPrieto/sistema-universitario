@@ -75,6 +75,7 @@ void GestorCsv::iniciar(){
                     CargaInicial datos;
                     _cargaInicial.leerRegistro(0,datos);
                     datos.aumentarcontadorDatosCargados();
+                    datos.setMateriasCargadas(true); // prupuesta para discernir qué dato se cargó
                     _cargaInicial.modificarRegistro(0,datos);
 
                 }
