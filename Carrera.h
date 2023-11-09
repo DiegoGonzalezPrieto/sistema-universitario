@@ -20,8 +20,8 @@ public:
     void setNombreCarrera(const std::string& nombre);
 
 private:
-    char _nombreUniversidad[30];
-    char _nombreCarrera[30];
+    char _nombreUniversidad[50];
+    char _nombreCarrera[50];
     char _legajo[15];
     char _nombreEstudiante[30];
 

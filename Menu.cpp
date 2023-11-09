@@ -23,8 +23,7 @@ int Menu::mostrar()
                 }
 
             cout << "Seleccione una opcion (0 para salir/volver): ";
-            opcionElegida =obtenerNumeroEntero("Seleccione una opcion (0 para salir/volver): ");
-            cout << endl ;
+            opcionElegida=validar<int>();
 
             if (opcionElegida < 0 || opcionElegida > tamanio)
                 {
