@@ -7,6 +7,7 @@ using namespace std;
 #include "Menu.h"
 #include "func_utiles.h"
 
+
 Menu::Menu(const vector<string> &opciones, string titulo) : _opciones(opciones), _titulo(titulo) {}
 
 int Menu::mostrar()

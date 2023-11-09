@@ -1,6 +1,6 @@
 #ifndef ARCHIVO_H
 #define ARCHIVO_H
-
+#include <cstring>
 #include <vector>
 #include <cstring>
 
