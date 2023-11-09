@@ -24,6 +24,7 @@ class Sistema
         Sistema();
 
         void iniciar();
+        void menuCargaInicial();
         bool cargaInicial();
         void crearDirectoriosEsenciales();
 
