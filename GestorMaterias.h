@@ -26,11 +26,12 @@ public:
     bool guardarIDsMatRequeridas(int cant, Materia& datosMateria);
     bool AgregarUnaMateria();
     std::string buscarIDMateria();
+    std::string mostrarNombrePorID(std::string IDMateria);
     bool buscarMateria(std::string& IDmateria, Materia& datosMateria, int& pos) ;
     bool modificarUnaMateria();
 
     /// Devuelve idMateria luego de permitir seleccionar de forma interactiva (para uso por otros gestores)
-    string seleccionarIdMateria();
+    std::string seleccionarIdMateria();
 
 };
 

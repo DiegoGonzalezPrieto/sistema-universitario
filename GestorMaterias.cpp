@@ -88,7 +88,7 @@ void GestorMaterias::CargarMaterias()
             break ;
         case 2:
         {
-            GestorCsv csv("","");
+            GestorCsv csv("","","");
             csv.iniciar();
             break;
         }
