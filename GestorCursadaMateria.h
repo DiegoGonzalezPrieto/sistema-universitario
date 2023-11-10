@@ -20,9 +20,12 @@ class GestorCursadaMateria
 
         // ---------- ABML ------------- //
 
-        void altaCursadaMateriaPorConsola(); // WIP
+        /// Permite al usuario hacer un alta de una cursada para este cuatrimestre
+        void altaCursadaMateriaPorConsola();
+
+        /// Muestra todas las materias en dicho estado
+        void mostrarCursadasMateriaPorEstado(EstadoMateria e); // Funciona?
         void mostrarTodasCursadaMateria(); // TODO
-        void mostrarCursadasMateriaEnCurso(); // TODO
         void buscarCursadaMateria(); // TODO
         void modificarCursadaMateria(); // TODO
         void eliminarCursadaMateria(); // TODO

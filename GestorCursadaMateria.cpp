@@ -39,8 +39,8 @@ void GestorCursadaMateria::iniciar()
     // 1. Loop principal
     string tituloMenu = "\n=====================================\n** Gestión de Cursadas de Materias **\n=====================================";
     Menu m({"Ingresar nueva cursada de materia.",
+            "Ver cursadas de materias según su estado.",
             "Ver todas las cursadas de materias.",
-            "Ver cursadas de materias en curso.",
             "Buscar cursada de materia.",
             "Modificar cursada de materia.",
             "Eliminar cursada de materia."},
@@ -59,10 +59,21 @@ void GestorCursadaMateria::iniciar()
                     altaCursadaMateriaPorConsola(); // TODO
                     break;
                 case 2:
-                    mostrarTodasCursadaMateria(); // TODO
+                {
+                    EstadoMateria estado;
+                    Menu m({"En curso", "Regularizadas", "Aprobadas", "Anuladas"}, "Seleccionar estado de las materias a visualizar");
+                    int e = m.mostrar();
+                    if (e==0) break;
+                    if (e==1) estado = MAT_EN_CURSO;
+                    if (e==2) estado = MAT_REGULARIZADA;
+                    if (e==3) estado = MAT_APROBADA;
+                    if (e==4) estado = MAT_ANULADA;
+
+                    mostrarCursadasMateriaPorEstado(estado);
                     break;
+                }
                 case 3:
-                    mostrarCursadasMateriaEnCurso(); // TODO
+                    mostrarTodasCursadaMateria(); // TODO
                     break;
                 case 4:
                     buscarCursadaMateria(); // TODO
@@ -92,13 +103,13 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
 
     string idMateria = gm.seleccionarIdMateria();
     if (!gc.validarSisepuedeCursar(idMateria))
-    {
-        _mensajero.mensajeAdvertencia("La materia seleccionada tiene las siguientes correlativas sin aprobar:");
-        gc.mostrarCorrelativas(idMateria);
-        Menu mCor({"Continuar de todos modos."}, "Desea continuar registrando la cursada de esta materia?");
-        int seguir = mCor.mostrar();
-        if (seguir==0) return;
-    }
+        {
+            _mensajero.mensajeAdvertencia("La materia seleccionada tiene correlativas sin aprobar");
+            gc.mostrarCorrelativas(idMateria);
+            Menu mCor({"Continuar de todos modos."}, "Desea continuar registrando la cursada de esta materia?");
+            int seguir = mCor.mostrar();
+            if (seguir==0) return;
+        }
     Archivo<Materia> archiMat = gm.getArchivoMaterias();
     int cantMat = archiMat.contarRegistros();
 
@@ -121,8 +132,8 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
                     break;
                 }
         }
-        cout << "\nLas materias correlativas de " << aux.getNombreMateria() << "son: " << endl;
-        gc.mostrarCorrelativas(aux.getIdMateria());
+    cout << "\nLas materias correlativas de " << aux.getNombreMateria() << "son: " << endl;
+    gc.mostrarCorrelativas(aux.getIdMateria());
 
 
     CursadaMateria cursadaMateria(aux);
@@ -173,8 +184,8 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
         {
             _mensajero.mensajeError("No se pudo guardar la cursada ingresada.");
         }
-        else
-            {
+    else
+        {
             _mensajero.mensajeInformacion("Cursada guardada correctamente.");
         }
 }
@@ -184,9 +195,42 @@ void GestorCursadaMateria::mostrarTodasCursadaMateria() // TODO
     // Evitar anuladas:
     MAT_ANULADA;
 }
-void GestorCursadaMateria::mostrarCursadasMateriaEnCurso() // TODO
-{
 
+void GestorCursadaMateria::mostrarCursadasMateriaPorEstado(EstadoMateria e) // TODO
+{
+    vector<CursadaMateria> vec;
+    if (!_archivo.leerRegistros(vec))
+        {
+            _mensajero.mensajeError("No se pudo leer el archivo de datos.");
+            return;
+        }
+    string estado = "*Sin Definir*";
+    switch (e)
+        {
+        case 0:
+            estado = "*En Curso*";
+            break;
+        case 1:
+            estado = "*Regularizada*";
+            break;
+        case 2:
+            estado = "*Aprobada*";
+            break;
+        case 3:
+            estado = "*Anulada*";
+            break;
+
+        }
+
+    cout << "\nMaterias actualmente en estado "<< estado  <<  " :\n\n";
+    for (CursadaMateria cm : vec)
+        {
+            if (cm.getEstado() == e)
+                {
+                    cout << cm.toString();
+                    cout << "-------------------------------------" << endl;
+                }
+        }
 }
 void GestorCursadaMateria::buscarCursadaMateria() // TODO
 {
@@ -316,9 +360,9 @@ bool GestorCursadaMateria::cargarDatosCursada(vector<DatosCursada> &vec, int can
                     _mensajero.mensajeAdvertencia("Datos descartados, intentar nuevamente.");
                 }
             if (cantCargada >= cantMax)
-            {
-                _mensajero.mensajeInformacion("Se alcanzó la cantidad máxima de datos de cursada.");
-            }
+                {
+                    _mensajero.mensajeInformacion("Se alcanzó la cantidad máxima de datos de cursada.");
+                }
         }
 
     cout << "Datos de cursada confirmados:"<< endl<< endl;
@@ -328,7 +372,7 @@ bool GestorCursadaMateria::cargarDatosCursada(vector<DatosCursada> &vec, int can
             cout << endl << "*********************" << endl;
         }
 
-        vec = vecAux;
+    vec = vecAux;
     return true;
 }
 

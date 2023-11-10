@@ -158,7 +158,7 @@ string CursadaMateria::toFullString()
     aux += "\n\nDatos de Cursada:\n";
     aux += "\nEstado: " + getEstadoToString();
     aux += "\nCuatrimestre de Inicio: " + getIdCuatrimestreInicio();
-    aux += "\nHorarios de Cursada: " + getDatosCursadaToString() + "\n";
+    aux += "\nHorarios de Cursada: " + getDatosCursadaToString();
     return aux;
 }
 string CursadaMateria::toString()
@@ -167,6 +167,6 @@ string CursadaMateria::toString()
     aux += getIdMateria() +" - " +getNombreMateria();
     aux += "\nEstado: " + getEstadoToString();
     aux += "\nCuatrimestre de Inicio: " + getIdCuatrimestreInicio();
-    aux += "\nHorarios de Cursada:\n" + getDatosCursadaToString() + "\n";
+    aux += "\nHorarios de Cursada:\n" + getDatosCursadaToString();
     return aux;
 }
