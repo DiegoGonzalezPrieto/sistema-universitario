@@ -59,7 +59,7 @@ void GestorCuatrimestre::iniciarCuatrimestre()
     int nuevoAnio = validar<int>();
     nuevoCuatrimestre.setAnio(nuevoAnio);
 
-    std::cout << "Ingrese el perÌodo del nuevo cuatrimestre (1 o 2): ";
+    std::cout << "Ingrese el per√≠odo del nuevo cuatrimestre (1 o 2): ";
     int nuevoPeriodo = validar<int>();
     nuevoCuatrimestre.setPeriodo(nuevoPeriodo);
     bool cargaMatCuatrimestre=true;
@@ -76,10 +76,10 @@ void GestorCuatrimestre::iniciarCuatrimestre()
 
         else
         {
-            msj.mensajeAdvertencia("Hay correlativas de esta materia que no est·n aprobadas.");
-            msj.mensajeAdvertencia("Le sugerimos para proporcionarle una informaciÛn exacta");
+            msj.mensajeAdvertencia("Hay correlativas de esta materia que no est√°n aprobadas.");
+            msj.mensajeAdvertencia("Le sugerimos para proporcionarle una informaci√≥n exacta");
             msj.mensajeAdvertencia("que no agregue materias al cuatrimestre que no puede cursar.");
-             std::cout << "øDesea continuar y agregar esta materia al cuatrimestre actual? (S/N): ";
+             std::cout << "¬øDesea continuar y agregar esta materia al cuatrimestre actual? (S/N): ";
              bool continuar= true;
             do
             {
@@ -92,12 +92,12 @@ void GestorCuatrimestre::iniciarCuatrimestre()
                 }
                 else if (respuesta == 'N' || respuesta == 'n')
                 {
-                    std::cout << "No se agregar· la materia al cuatrimestre." << std::endl;
+                    std::cout << "No se agregar√° la materia al cuatrimestre." << std::endl;
                     continuar = false;
                 }
                 else
                 {
-                    std::cout << "Respuesta no v·lida. Por favor, ingrese 'S' o 'N'." << std::endl;
+                    std::cout << "Respuesta no v√°lida. Por favor, ingrese 'S' o 'N'." << std::endl;
                 }
 
             }
@@ -106,7 +106,7 @@ void GestorCuatrimestre::iniciarCuatrimestre()
 
         }
         limpiarPantalla();
-        std::cout << "øTermino la carga de Materias? : "<<endl;
+        std::cout << "¬øTermino la carga de Materias? : "<<endl;
             bool continuar= true;
             do
             {
@@ -123,7 +123,7 @@ void GestorCuatrimestre::iniciarCuatrimestre()
                 }
                 else
                 {
-                    std::cout << "Respuesta no v·lida. Por favor, ingrese 'S' o 'N'." << std::endl;
+                    std::cout << "Respuesta no v√°lida. Por favor, ingrese 'S' o 'N'." << std::endl;
                 }
 
             }
@@ -140,7 +140,7 @@ void GestorCuatrimestre::iniciarCuatrimestre()
             }
             else
             {
-                msj.mensajeError("Error al iniciar el cuatrimestre. IntÈntelo nuevamente.");
+                msj.mensajeError("Error al iniciar el cuatrimestre. Int√©ntelo nuevamente.");
             }
         }
         else {
@@ -158,13 +158,13 @@ void GestorCuatrimestre::iniciarCuatrimestre()
 
             // Ejemplo:
             // Obtener el cuatrimestre que se va a cerrar
-            Cuatrimestre cuatrimestreACerrar;
-            // Configurar la informaciÛn del cuatrimestre
+            //Cuatrimestre cuatrimestreACerrar;
+            // Configurar la informaci√≥n del cuatrimestre
             // ...
             // Actualizar el cuatrimestre en el archivo
             //archivoCuatrimestres.modificarRegistro(pos, cuatrimestreACerrar);
 
-            std::cout << "Cuatrimestre cerrado correctamente." << std::endl;
+            //std::cout << "Cuatrimestre cerrado correctamente." << std::endl;
         }
 
         void GestorCuatrimestre::modificarCuatrimestreActual()
@@ -174,12 +174,12 @@ void GestorCuatrimestre::iniciarCuatrimestre()
 
             // Ejemplo:
             // Obtener el cuatrimestre que se va a cerrar
-            Cuatrimestre cuatrimestreACerrar;
-            // Configurar la informaciÛn del cuatrimestre
+            //Cuatrimestre cuatrimestreACerrar;
+            // Configurar la informaci√≥n del cuatrimestre
             // ...
             // Actualizar el cuatrimestre en el archivo
             //archivoCuatrimestres.modificarRegistro(pos, cuatrimestreACerrar);
 
-            std::cout << "Cuatrimestre cerrado correctamente." << std::endl;
+            //std::cout << "Cuatrimestre cerrado correctamente." << std::endl;
         }
 
