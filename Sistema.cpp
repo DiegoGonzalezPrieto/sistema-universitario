@@ -78,7 +78,6 @@ void Sistema::iniciar()
 
 
             opc = menu.mostrar();
-            limpiarPantalla();
             switch(opc)
                 {
 
@@ -91,7 +90,7 @@ void Sistema::iniciar()
                 }
                 case 2:
                 {
-                    _gestorCuatrimestre.iniciarCuatrimestre();
+                    _gestorCuatrimestre.iniciarGestorCuatrimestre();
                 }
                 break;
                 case 3:
