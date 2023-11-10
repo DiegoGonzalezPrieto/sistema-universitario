@@ -257,10 +257,56 @@ void GestorCursadaMateria::mostrarCursadasMateriaPorEstado(EstadoMateria e) // T
                 }
         }
 }
-void GestorCursadaMateria::buscarCursadaMateria() // TODO
+CursadaMateria GestorCursadaMateria::buscarCursadaMateria()
 {
+    cout << endl;
+    cout << "***********************************"<< endl;
+    cout << "***  Buscar cursada de materia  ***" << endl;
+    cout << "***********************************" << endl;
+    cout << endl;
 
+    CursadaMateria cursadaElegida;
+    cursadaElegida.setIdMateria("");
+
+    string cuatrimestre;
+    if (!seleccionarCuatrimestre(cuatrimestre))
+        return cursadaElegida;
+
+    vector<CursadaMateria> cursadas = buscarCursadasDeMateriaPorCuatrimestre(cuatrimestre);
+
+    if (cursadas.size()==0)
+        {
+            _mensajero.mensajeInformacion("No hay registros de cursadas en el cuatrimestre seleccionado");
+            return cursadaElegida;
+        }
+
+    cout << "Materias del cuatrimestre " << cuatrimestre << ":"<<endl;
+    for (int i=0; i<cursadas.size(); i++)
+        {
+            cout <<"\t" << i+1 << ". " << cursadas[i].getNombreMateria()<< endl;
+        }
+    cout << endl << "Seleccionar número de cursada a revisar: ";
+    int seleccion;
+    while (true)
+        {
+            seleccion = validar<int>();
+            if (seleccion > 0 && seleccion <= cursadas.size())
+                break;
+            cout << "Seleccionar un número entre 1 y " << cursadas.size() << endl;
+        }
+    cursadaElegida = cursadas[seleccion -1];
+    cout << endl;
+    cout << "\tCursada seleccionada:" << endl;
+    cout << cursadaElegida.toFullString() << endl;
+    return cursadaElegida;
 }
+
+bool sePuedeCursar(string idCursadaMateria, string &mensajeError)
+{
+    // TODO
+    // chequear que no haya cursada con ese id=idCuatri+idMateria, salvo que sea anulada
+}
+
 void GestorCursadaMateria::modificarCursadaMateria() // TODO
 {
     /*
@@ -295,6 +341,27 @@ bool GestorCursadaMateria::guardarNuevaCursadaMateria(CursadaMateria cm)
 
 }
 
+vector<CursadaMateria> GestorCursadaMateria::buscarCursadasDeMateriaPorCuatrimestre(string idCuatrimestreInicio)
+{
+    vector<CursadaMateria> vec;
+    vector<CursadaMateria> aux;
+    if(!_archivo.leerRegistros(vec))
+        {
+            _mensajero.mensajeError("No se pudo leer el archivo de cursadas.");
+            return vec;
+        }
+
+    for (CursadaMateria cm : vec)
+        {
+            if (cm.getIdCuatrimestreInicio()==idCuatrimestreInicio)
+                {
+                    aux.push_back(cm);
+                }
+        }
+
+    return aux;
+
+}
 
 
 bool GestorCursadaMateria::anularRegistroCursadaMateria()
