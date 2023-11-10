@@ -29,7 +29,7 @@ class GestorCursadaMateria
         /// Muestra todos los registros, salvo anuladas
         void mostrarTodasCursadaMateria();
 
-        /// Permite al usuario modificar una cursada indicando en qué cuatrimestre se cursa/ó
+        /// Permite al usuario modificar una cursada luego de buscarla
         void modificarCursadaMateria(); // TODO
 
         /// Permite al usuario buscar una materia por el cuatrimestre de inicio y la muestra por pantalla (también la retorna)
@@ -43,8 +43,8 @@ class GestorCursadaMateria
         /// Recibe una Cursada Materia y la guarda al final del archivo. Si el archivo no existe, intenta crearlo.
         bool guardarNuevaCursadaMateria(CursadaMateria);
 
-        /// Busca CursadaMateria por su id
-        bool buscarCursadaMateriaPorId(string idCursadaMateria, CursadaMateria&); // TODO
+        /// Busca CursadaMateria por su id (excepto si está ANULADA), devuelve false si no encontró nada
+        bool buscarCursadaMateriaPorId(string idCursadaMateria, CursadaMateria&);
 
         /// Busca todas las cursadas del cuatrimestre indicado
         vector<CursadaMateria> buscarCursadasDeMateriaPorCuatrimestre(string idCuatrimestreInicio); // TODO

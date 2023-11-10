@@ -56,7 +56,7 @@ void GestorCursadaMateria::iniciar()
                     break;
                 // ABM
                 case 1:
-                    altaCursadaMateriaPorConsola(); // TODO
+                    altaCursadaMateriaPorConsola();
                     break;
                 case 2:
                 {
@@ -102,6 +102,18 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
     cout << "Qué materia se va a cursar?" << endl<< endl;
 
     string idMateria = gm.seleccionarIdMateria();
+    Fecha hoy;
+    int periodo = hoy.getMes() > 6 ? 1 : 2;
+    string idCuatrimestre = to_string(hoy.getAnio()) + "0" + to_string(periodo);
+    string futuroIdCursadaMateria = idMateria + idCuatrimestre;
+    string erroresValidacion = "";
+    if (!sePuedeCursar(futuroIdCursadaMateria, erroresValidacion))
+    {
+        _mensajero.mensajeError("La materia seleccionada no se puede cursar.");
+        cout << erroresValidacion << endl;
+        return;
+    }
+
     if (!gc.validarSisepuedeCursar(idMateria))
         {
             _mensajero.mensajeAdvertencia("La materia seleccionada tiene correlativas sin aprobar");
@@ -171,10 +183,7 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
 
     cursadaMateria.setUnidades(vUnidad);
 
-    // 1.c Generar datos automáticos
-    Fecha hoy;
-    int periodo = hoy.getMes() > 6 ? 1 : 2;
-    string idCuatrimestre = to_string(hoy.getAnio()) + "0" + to_string(periodo);
+    // guardar idCuatrimestre generado al inicio
     cursadaMateria.setIdCuatrimestreInicio(idCuatrimestre);
 
     _mensajero.mensajeInformacion("Guardando cursada...");
@@ -301,10 +310,20 @@ CursadaMateria GestorCursadaMateria::buscarCursadaMateria()
     return cursadaElegida;
 }
 
-bool sePuedeCursar(string idCursadaMateria, string &mensajeError)
+bool GestorCursadaMateria::sePuedeCursar(string idCursadaMateria, string &mensajeError)
 {
-    // TODO
-    // chequear que no haya cursada con ese id=idCuatri+idMateria, salvo que sea anulada
+    bool cursable = true;
+    CursadaMateria cm;
+    if (buscarCursadaMateriaPorId(idCursadaMateria,cm))
+    {
+        cursable = false;
+        mensajeError += "\n- Ya hay una cursada de de esta materia en este cuatrimestre:\n";
+        mensajeError += cm.toString();
+    }
+
+    // Otras validaciones posibles
+
+    return cursable;
 }
 
 void GestorCursadaMateria::modificarCursadaMateria() // TODO
@@ -339,6 +358,27 @@ bool GestorCursadaMateria::guardarNuevaCursadaMateria(CursadaMateria cm)
     // 2. Agregar registro
     return ac.agregarRegistro(cm);
 
+}
+
+bool GestorCursadaMateria::buscarCursadaMateriaPorId(string idCursadaMateria, CursadaMateria& cm)
+{
+    bool encontrada = false;
+    vector<CursadaMateria> cursadas;
+    if(!_archivo.leerRegistros(cursadas))
+        {
+            _mensajero.mensajeError("No se pudo leer el archivo de cursadas.");
+            return false;
+        }
+
+    for (CursadaMateria cursada : cursadas)
+        {
+            if (cursada.getIdCursadaMateria()==idCursadaMateria && cursada.getEstado() != MAT_ANULADA)
+                {
+                    cm = cursada;
+                    encontrada = true;
+                }
+        }
+    return encontrada;
 }
 
 vector<CursadaMateria> GestorCursadaMateria::buscarCursadasDeMateriaPorCuatrimestre(string idCuatrimestreInicio)
