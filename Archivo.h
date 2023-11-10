@@ -126,9 +126,7 @@ public:
         T aux;
         int cantReg = contarRegistros();
         if (cantReg < 1) return false;
-        std::string nombreBup;
-        std::string snom = getNombreBackup();
-        nombreBup = snom;
+        std::string nombreBup = getNombreBackup();
         FILE* pi = fopen(nombreBup.c_str(), "rb");
         FILE* po = fopen(_nombre.c_str(), "wb");
         if (pi == NULL || po == NULL) return false;
@@ -163,7 +161,7 @@ public:
         T aux;
         int cantReg = contarRegistros();
         if (cantReg < 1) return false;
-        std::string nombreBup = getNombreBackup();
+        std::string nombreBup;
         FILE* pi = fopen(_nombre.c_str(), "rb");
         FILE* po = fopen(nombreBup.c_str(), "wb");
         if (pi == NULL || po == NULL) return false;

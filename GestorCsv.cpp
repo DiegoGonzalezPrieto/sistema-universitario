@@ -72,10 +72,12 @@ void GestorCsv::iniciar(){
             {
                 if(grabarDatosImportados(materias) == true){
                     cout << "Se han grabado todos los registros cargados en el sistema" << endl;
+                    CargaInicial datos;
+                    _cargaInicial.leerRegistro(0,datos);
+                    datos.aumentarcontadorDatosCargados();
+                    datos.setMateriasCargadas(true); // prupuesta para discernir qué dato se cargó
+                    _cargaInicial.modificarRegistro(0,datos);
 
-                    CargaInicial aux;
-                    aux.setEstado(false);
-                    _cargaInicial.modificarRegistro(0,aux);
                 }
                 cout << "Carga inicial de materias finalizada" << endl;
                 return;

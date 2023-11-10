@@ -58,3 +58,20 @@ float obtenerNumeroDecimal(std::string mensajeError)
             if (salir) return resultado;
         }
 }
+void limpiarPantalla(){
+    std::cout<<"Presione una tecla para continuar . . . ";
+    std::cin.get();
+#ifdef _WIN32
+#define SISTEMA "Windows"
+#elif __linux__
+#define SISTEMA "Linux"
+#endif
+#ifdef _WIN32
+    system("cls");
+#elif __linux__
+    system("clear");
+#endif
+
+}
+
+

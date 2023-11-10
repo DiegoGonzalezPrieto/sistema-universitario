@@ -28,7 +28,7 @@ int contarArchivos(string ruta)
     return archivos;
 }
 
-bool crearDirectorios(string ruta)
+/*bool crearDirectorios(string ruta)
 {
     return filesystem::create_directories(ruta);
-}
+}*/
