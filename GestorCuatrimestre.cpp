@@ -153,7 +153,7 @@ void GestorCuatrimestre::iniciarCuatrimestre()
 
         void GestorCuatrimestre::cerrarCuatrimestre()
         {
-            // EN DESARROLLO
+           cout<< "EN DESARROLLO"<<endl;
             // ...
 
             // Ejemplo:
@@ -169,7 +169,7 @@ void GestorCuatrimestre::iniciarCuatrimestre()
 
         void GestorCuatrimestre::modificarCuatrimestreActual()
         {
-            // EL DESARROLLO
+            cout<< "EN DESARROLLO"<<endl;
             // ...
 
             // Ejemplo:
