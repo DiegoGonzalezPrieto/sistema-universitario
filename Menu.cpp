@@ -20,10 +20,10 @@ int Menu::mostrar()
 
             for (int i = 0; i < tamanio; ++i)
                 {
-                    cout << "Opcion " << i + 1 << ". " << _opciones[i] << endl;
+                    cout << "\t" << i + 1 << ". " << _opciones[i] << endl;
                 }
 
-            cout << "Seleccione una opcion (0 para salir/volver): ";
+            cout << "\nSeleccione una opcion (0 para salir/volver): ";
             opcionElegida=validar<int>();
 
             if (opcionElegida < 0 || opcionElegida > tamanio)
