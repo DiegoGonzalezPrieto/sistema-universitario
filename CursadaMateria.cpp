@@ -73,7 +73,7 @@ string CursadaMateria::getDatosCursadaToString()
         {
             if (dc.getAula() != "")
                 {
-                    aux += dc.toString() + " ";
+                    aux += dc.toString() + "\n\n";
                 }
         }
     return aux;
@@ -167,6 +167,6 @@ string CursadaMateria::toString()
     aux += getIdMateria() +" - " +getNombreMateria();
     aux += "\nEstado: " + getEstadoToString();
     aux += "\nCuatrimestre de Inicio: " + getIdCuatrimestreInicio();
-    aux += "\nHorarios de Cursada: " + getDatosCursadaToString() + "\n";
+    aux += "\nHorarios de Cursada:\n" + getDatosCursadaToString() + "\n";
     return aux;
 }

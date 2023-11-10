@@ -91,6 +91,14 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
     cout << "Qué materia se va a cursar?" << endl<< endl;
 
     string idMateria = gm.seleccionarIdMateria();
+    if (!gc.validarSisepuedeCursar(idMateria))
+    {
+        _mensajero.mensajeAdvertencia("La materia seleccionada tiene las siguientes correlativas sin aprobar:");
+        gc.mostrarCorrelativas(idMateria);
+        Menu mCor({"Continuar de todos modos."}, "Desea continuar registrando la cursada de esta materia?");
+        int seguir = mCor.mostrar();
+        if (seguir==0) return;
+    }
     Archivo<Materia> archiMat = gm.getArchivoMaterias();
     int cantMat = archiMat.contarRegistros();
 
@@ -117,7 +125,6 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
         gc.mostrarCorrelativas(aux.getIdMateria());
 
 
-    // leerMateria
     CursadaMateria cursadaMateria(aux);
 
     // 1.b Pedir y validar datos de CursadaMateria, setearlos
@@ -159,7 +166,7 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
     string idCuatrimestre = to_string(hoy.getAnio()) + "0" + to_string(periodo);
     cursadaMateria.setIdCuatrimestreInicio(idCuatrimestre);
 
-    cout << "*** Guardando cursada...****"<< endl;
+    _mensajero.mensajeInformacion("Guardando cursada...");
     cout <<cursadaMateria.toString() << endl;
 
     if (!guardarNuevaCursadaMateria(cursadaMateria))
@@ -253,6 +260,7 @@ bool GestorCursadaMateria::seleccionarEstadoCursadaMateria(EstadoMateria &estado
 bool GestorCursadaMateria::cargarDatosCursada(vector<DatosCursada> &vec, int cantMax)
 {
     DatosCursada aux;
+    vector<DatosCursada> vecAux;
     Menu mDias({"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"}, "Seleccionar día de cursada:");
 
     int cantCargada = 0;
@@ -260,7 +268,7 @@ bool GestorCursadaMateria::cargarDatosCursada(vector<DatosCursada> &vec, int can
         {
             int diaCursada = mDias.mostrar();
             if (diaCursada==0) return false;
-            aux.setDiaSemana(diaCursada+1);
+            aux.setDiaSemana(diaCursada);
             while (true)
                 {
                     cout << "Ingresar horario de la cursada:" << endl<< endl;
@@ -296,8 +304,9 @@ bool GestorCursadaMateria::cargarDatosCursada(vector<DatosCursada> &vec, int can
 
             if (respuesta != "n" && respuesta != "N")
                 {
-                    vec.push_back(aux);
-                    Menu m({"Cargar otro horario de cursada", "Continuar"});
+                    vecAux.push_back(aux);
+                    aux.setAula("");
+                    Menu m({"Cargar otro horario de cursada", "Continuar"}, "Carga de Datos de Cursada");
                     int op = m.mostrar();
                     if (op != 1) break;
                     cantCargada++;
@@ -306,15 +315,20 @@ bool GestorCursadaMateria::cargarDatosCursada(vector<DatosCursada> &vec, int can
                 {
                     _mensajero.mensajeAdvertencia("Datos descartados, intentar nuevamente.");
                 }
+            if (cantCargada >= cantMax)
+            {
+                _mensajero.mensajeInformacion("Se alcanzó la cantidad máxima de datos de cursada.");
+            }
         }
 
     cout << "Datos de cursada confirmados:"<< endl<< endl;
-    for (int i=0; i<vec.size(); i++)
+    for (int i=0; i<vecAux.size(); i++)
         {
-            cout << vec[i].toString()<< endl;
+            cout << vecAux[i].toString()<< endl;
             cout << endl << "*********************" << endl;
         }
 
+        vec = vecAux;
     return true;
 }
 
