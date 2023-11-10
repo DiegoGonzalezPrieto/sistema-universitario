@@ -73,7 +73,7 @@ void GestorCursadaMateria::iniciar()
                     break;
                 }
                 case 3:
-                    mostrarTodasCursadaMateria(); // TODO
+                    mostrarTodasCursadaMateria();
                     break;
                 case 4:
                     buscarCursadaMateria(); // TODO
@@ -192,37 +192,62 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
 
 void GestorCursadaMateria::mostrarTodasCursadaMateria() // TODO
 {
-    // Evitar anuladas:
-    MAT_ANULADA;
-}
 
-void GestorCursadaMateria::mostrarCursadasMateriaPorEstado(EstadoMateria e) // TODO
-{
+    cout << endl;
+    cout << "****************************" << endl;
+    cout << "***  Todas las Cursadas  ***" << endl;
+    cout << "****************************" << endl;
+    cout << endl;
     vector<CursadaMateria> vec;
     if (!_archivo.leerRegistros(vec))
         {
             _mensajero.mensajeError("No se pudo leer el archivo de datos.");
             return;
         }
+
+    for (CursadaMateria cm : vec)
+        {
+            if (cm.getEstado() != MAT_ANULADA)
+                {
+                    cout << cm.toString();
+                    cout << "-------------------------------------" << endl;
+                }
+        }
+}
+
+void GestorCursadaMateria::mostrarCursadasMateriaPorEstado(EstadoMateria e) // TODO
+{
     string estado = "*Sin Definir*";
     switch (e)
         {
-        case 0:
+        case MAT_EN_CURSO:
             estado = "*En Curso*";
             break;
-        case 1:
+        case MAT_REGULARIZADA:
             estado = "*Regularizada*";
             break;
-        case 2:
+        case MAT_APROBADA:
             estado = "*Aprobada*";
             break;
-        case 3:
+        case MAT_ANULADA:
             estado = "*Anulada*";
             break;
 
         }
+    cout << endl;
+    cout << "****************************************" << endl;
+    cout << "***  Cursadas en estado " + estado +" ***" << endl;
+    cout << "****************************************" << endl;
+    cout << endl;
 
-    cout << "\nMaterias actualmente en estado "<< estado  <<  " :\n\n";
+    vector<CursadaMateria> vec;
+    if (!_archivo.leerRegistros(vec))
+        {
+            _mensajero.mensajeError("No se pudo leer el archivo de datos.");
+            return;
+        }
+
+
     for (CursadaMateria cm : vec)
         {
             if (cm.getEstado() == e)

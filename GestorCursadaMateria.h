@@ -23,11 +23,13 @@ class GestorCursadaMateria
         /// Permite al usuario hacer un alta de una cursada para este cuatrimestre
         void altaCursadaMateriaPorConsola();
 
-        /// Muestra todas las materias en dicho estado
-        void mostrarCursadasMateriaPorEstado(EstadoMateria e); // Funciona?
-        void mostrarTodasCursadaMateria(); // TODO
-        void buscarCursadaMateria(); // TODO
+        /// Muestra todas las materias en dicho estado (puede mostrar anuladas)
+        void mostrarCursadasMateriaPorEstado(EstadoMateria e);
+        /// Muestra todos los registros, salvo anuladas
+        void mostrarTodasCursadaMateria();
+
         void modificarCursadaMateria(); // TODO
+        void buscarCursadaMateria(); // TODO
         void eliminarCursadaMateria(); // TODO
 
 
