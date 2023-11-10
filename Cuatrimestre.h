@@ -1,11 +1,10 @@
 #ifndef CUATRIMESTRE_H
 #define CUATRIMESTRE_H
-
 #include <string>
 #include "func_utiles.h"
 
-const int CANTMATERIAS = 16;
-const int LONGMAX = 10;
+const int CANTMATERIASC = 16;
+const int LONGMAXC = 10;
 
 class Cuatrimestre
 {
@@ -28,7 +27,7 @@ class Cuatrimestre
     private:
         int _anio;
         int _periodo;
-        char _idsCursadaMateria[CANTMATERIAS][LONGMAX];
+        char _idsCursadaMateria[CANTMATERIASC][LONGMAXC];
         bool _finalizado;
 };
 

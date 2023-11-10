@@ -14,7 +14,7 @@ bool crearDirectorios(string ruta)
 
 Sistema::Sistema() :
     _gestorCarrera("Archivos/datos/carrera.dat","carga_inicial.dat"), _gestorEventos("Archivos/datos/eventos.dat"), _gestorMaterias("Archivos/datos/materias.dat"),
-    _gestorNotasFinales("Archivos/datos/notas.dat"), _cargaInicial("carga_inicial.dat"),
+    _gestorNotasFinales("Archivos/datos/notas.dat"), _cargaInicial("carga_inicial.dat"),_gestorCuatrimestre("Archivos/datos/cuatrimestre.dat"),
     _gestorCsv("archivoImportacion.csv", "Archivos/datos/materias.dat", "carga_inicial.dat")
 {
     //ctor
@@ -78,7 +78,7 @@ void Sistema::iniciar()
 
 
             opc = menu.mostrar();
-
+            limpiarPantalla();
             switch(opc)
                 {
 
@@ -91,7 +91,7 @@ void Sistema::iniciar()
                 }
                 case 2:
                 {
-                    cout<<" En desarrollo "<<endl;
+                    _gestorCuatrimestre.iniciarCuatrimestre();
                 }
                 break;
                 case 3:

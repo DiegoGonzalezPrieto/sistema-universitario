@@ -57,10 +57,10 @@
 		<Unit filename="GestorCarrera.h" />
 		<Unit filename="GestorCorrelativas.cpp" />
 		<Unit filename="GestorCorrelativas.h" />
-		<Unit filename="GestorEventos.cpp" />
-		<Unit filename="GestorEventos.h" />
 		<Unit filename="GestorCsv.cpp" />
 		<Unit filename="GestorCsv.h" />
+		<Unit filename="GestorCuatrimestre.cpp" />
+		<Unit filename="GestorCuatrimestre.h" />
 		<Unit filename="GestorEventos.cpp" />
 		<Unit filename="GestorEventos.h" />
 		<Unit filename="GestorMaterias.cpp" />

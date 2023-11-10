@@ -6,8 +6,8 @@ Cuatrimestre::Cuatrimestre()
 {
 
     ///Le coloco un valor inicial a los códigos de cursadaMateria para comparar en el setIdCursadaMateria contra este valor
-    for(int i = 0; i < CANTMATERIAS; i++){
-        cargarCadenaConString("N/A", _idsCursadaMateria[i], LONGMAX);
+    for(int i = 0; i < CANTMATERIASC; i++){
+        cargarCadenaConString("N/A", _idsCursadaMateria[i], LONGMAXC);
     }
 
 }
@@ -27,7 +27,7 @@ void Cuatrimestre::setIdCursadaMateria(const std::string& nuevoIdMateria){
     // Buscar el primer espacio disponible
     int index = -1;
 
-    for (int i = 0; i < CANTMATERIAS; ++i) {
+    for (int i = 0; i < CANTMATERIASC; ++i) {
 
         if (strcmp(_idsCursadaMateria[i], "N/A") == 0) {
 
@@ -39,7 +39,7 @@ void Cuatrimestre::setIdCursadaMateria(const std::string& nuevoIdMateria){
     // Verificar si se encontró un espacio disponible
     if (index != -1) {
 
-        cargarCadenaConString(nuevoIdMateria, _idsCursadaMateria[index], LONGMAX);
+        cargarCadenaConString(nuevoIdMateria, _idsCursadaMateria[index], LONGMAXC);
 
 
     } else {
@@ -67,7 +67,7 @@ int Cuatrimestre::getPeriodo() const{
 
 std::string Cuatrimestre::getIdsCursadaMateria(int pos) const{
 
-    if(pos >= 0 && pos <= CANTMATERIAS){
+    if(pos >= 0 && pos <= CANTMATERIASC){
 
         // Verificar que el índice esté dentro del rango
         return _idsCursadaMateria[pos];
@@ -112,11 +112,11 @@ std::string Cuatrimestre::toString() const{
 
     bool hayMaterias = false;
 
-    for(int i = 0; i < CANTMATERIAS; i++){
+    for(int i = 0; i < CANTMATERIASC; i++){
 
         if(getIdsCursadaMateria(i) != "N/A"){
 
-            if(i != CANTMATERIAS-1){
+            if(i != CANTMATERIASC-1){
 
                 aux += getIdsCursadaMateria(i);
                 aux += "    ";

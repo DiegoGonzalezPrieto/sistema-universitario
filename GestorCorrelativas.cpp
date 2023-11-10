@@ -121,7 +121,7 @@ void GestorCorrelativas::mostrarCorrelativas(std::string idMateria)
     int registros = archivoMaterias.contarRegistros();
     Materia datosMateria;
     bool hayCorrelativas = false;
-    const int CANTMATERIAS = 10;
+    const int CANTMATERIASCO = 10;
     std::vector<std::string> materias;
     int cantreg = archivoMaterias.contarRegistros();
 
@@ -132,7 +132,7 @@ void GestorCorrelativas::mostrarCorrelativas(std::string idMateria)
 
         if (datosMateria.getIdMateria() == idMateria)
         {
-            for (int i = 0; i < CANTMATERIAS; i++)
+            for (int i = 0; i < CANTMATERIASCO; i++)
             {
                 if (datosMateria.getIdMateriasRequeridas(i) != "N/A" && datosMateria.getIdMateriasRequeridas(i) != "")
                 {
