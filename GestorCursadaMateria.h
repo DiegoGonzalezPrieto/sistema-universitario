@@ -50,11 +50,12 @@ class GestorCursadaMateria
         vector<CursadaMateria> buscarCursadasDeMateriaPorCuatrimestre(string idCuatrimestreInicio); // TODO
 
         int buscarPosicionEnArchivoPorId(string idCursadaMateria); // TODO
-        bool guardarCursadaMateriaModificada(CursadaMateria); // TODO
+
+        bool guardarCursadaMateriaModificada(CursadaMateria);
         bool anularRegistroCursadaMateria(); // TODO
 
         /// Chequea que la materia se pueda cursar en este cuatrimestre (no revisa correlatividades)
-        bool sePuedeCursar(string idMateria, string &mensajeError); // TODO
+        bool sePuedeCursar(string idMateria, string &mensajeError);
 
         /// Permite al usuario seleccionar un estado de cursada-materia, o cancelar la seleccion (false)
         bool seleccionarEstadoCursadaMateria(EstadoMateria &);

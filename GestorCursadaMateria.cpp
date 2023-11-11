@@ -76,10 +76,10 @@ void GestorCursadaMateria::iniciar()
                     mostrarTodasCursadaMateria();
                     break;
                 case 4:
-                    buscarCursadaMateria(); // TODO
+                    buscarCursadaMateria();
                     break;
                 case 5:
-                    modificarCursadaMateria(); // TODO
+                    modificarCursadaMateria();
                     break;
                 case 6:
                     eliminarCursadaMateria(); // TODO
@@ -108,11 +108,11 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
     string futuroIdCursadaMateria = idMateria + idCuatrimestre;
     string erroresValidacion = "";
     if (!sePuedeCursar(futuroIdCursadaMateria, erroresValidacion))
-    {
-        _mensajero.mensajeError("La materia seleccionada no se puede cursar.");
-        cout << erroresValidacion << endl;
-        return;
-    }
+        {
+            _mensajero.mensajeError("La materia seleccionada no se puede cursar.");
+            cout << erroresValidacion << endl;
+            return;
+        }
 
     if (!gc.validarSisepuedeCursar(idMateria))
         {
@@ -315,11 +315,11 @@ bool GestorCursadaMateria::sePuedeCursar(string idCursadaMateria, string &mensaj
     bool cursable = true;
     CursadaMateria cm;
     if (buscarCursadaMateriaPorId(idCursadaMateria,cm))
-    {
-        cursable = false;
-        mensajeError += "\n- Ya hay una cursada de de esta materia en este cuatrimestre:\n";
-        mensajeError += cm.toString();
-    }
+        {
+            cursable = false;
+            mensajeError += "\n- Ya hay una cursada de de esta materia en este cuatrimestre:\n";
+            mensajeError += cm.toString();
+        }
 
     // Otras validaciones posibles
 
@@ -335,6 +335,81 @@ void GestorCursadaMateria::modificarCursadaMateria() // TODO
         ya que en base a estos atributos se arma el id de CursadaMateria.
 
     */
+
+    cout << endl;
+    cout << "******************************************" << endl;
+    cout << "***  Modificar información de Cursada  ***" << endl;
+    cout << "******************************************" << endl;
+    cout << endl;
+    cout << "1) Seleccionar la materia a modificar" << endl;
+    cout << "..................................." << endl;
+
+    CursadaMateria cm = buscarCursadaMateria();
+    if (cm.getIdMateria()=="") return;
+
+    cout << "2) Seleccionar el campo a a modificar" << endl;
+    cout << "....................................." << endl;
+
+    Menu m({"Estado de la cursada",
+            "Reemplazar datos de cursada (horario - aula)",
+            "Agregar dato de cursada (horario - aula)",
+            "Guardar cambios"
+           }, "Campo a modificar:");
+    int opc;
+    bool guardar = false;
+    while (!guardar)
+        {
+            opc = m.mostrar();
+            if (opc==0) return;
+            switch (opc)
+                {
+                case 1:
+                {
+                    EstadoMateria e;
+                    if(!seleccionarEstadoCursadaMateria(e)) break;
+                    cm.setEstado(e);
+                    break;
+                }
+                case 2:
+                {
+                    _mensajero.mensajeAdvertencia("Si se continúa, los datos de cursada serán reemplazados, perdiendo los datos previos.");
+                    cout << "Continuar (s/N)" << endl;
+                    string respuesta;
+                    getline(cin>>ws, respuesta);
+                    if (respuesta !="S" && respuesta != "s") break;
+
+                    vector<DatosCursada> aux;
+                    int maxDC = cm.getMaxDatosCursada();
+                    cargarDatosCursada(aux, maxDC);
+                    cm.setDatosCursada(aux);
+                    break;
+                }
+                case 3:
+                {
+                    vector<DatosCursada> aux, datosCursadaActuales = cm.getDatosCursada();
+                    cout << "\n\tDatos de cursada actualmente registrados:\n";
+                    cout << cm.getDatosCursadaToString();
+
+                    int maxDC = cm.getMaxDatosCursada() - datosCursadaActuales.size();
+                    cargarDatosCursada(aux, maxDC);
+                    datosCursadaActuales.insert(datosCursadaActuales.end(), aux.begin(), aux.end());
+                    cm.setDatosCursada(datosCursadaActuales);
+                    break;
+                }
+                case 4:
+                    guardar = true;
+                    break;
+                }
+        }
+
+    if(guardarCursadaMateriaModificada(cm)) // TODO
+        {
+            _mensajero.mensajeInformacion("Cursada editada correctamente.");
+        }
+        else
+        {
+            _mensajero.mensajeError("No se pudo guardar la cursada editada.");
+        }
 }
 void GestorCursadaMateria::eliminarCursadaMateria()// TODO
 {
@@ -393,7 +468,7 @@ vector<CursadaMateria> GestorCursadaMateria::buscarCursadasDeMateriaPorCuatrimes
 
     for (CursadaMateria cm : vec)
         {
-            if (cm.getIdCuatrimestreInicio()==idCuatrimestreInicio)
+            if (cm.getIdCuatrimestreInicio()==idCuatrimestreInicio && cm.getEstado()!= MAT_ANULADA)
                 {
                     aux.push_back(cm);
                 }
@@ -410,9 +485,35 @@ bool GestorCursadaMateria::anularRegistroCursadaMateria()
     MAT_ANULADA;
 }
 
+int GestorCursadaMateria::buscarPosicionEnArchivoPorId(string idCursadaMateria)
+{
+    vector<CursadaMateria> aux;
+    if(!_archivo.leerRegistros(aux))
+    {
+        return -1;
+    }
+
+    for (int i=0;i<aux.size();i++)
+    {
+        if (idCursadaMateria== aux[i].getIdCursadaMateria())
+            return i;
+    }
+    return -1;
+}
+
+bool GestorCursadaMateria::guardarCursadaMateriaModificada(CursadaMateria cm)
+{
+    int pos = buscarPosicionEnArchivoPorId(cm.getIdCursadaMateria());
+
+    if (pos<0) return false;
+
+    return _archivo.modificarRegistro(pos, cm);
+
+}
+
 bool GestorCursadaMateria::seleccionarEstadoCursadaMateria(EstadoMateria &estado)
 {
-    Menu m({"En curso", "Regularizada", "Aprobada", "Anulada"}, "Seleccionar estado de la cursada.");
+    Menu m({"En curso", "Regularizada", "Aprobada", "Anulada - Eliminada"}, "Seleccionar estado de la cursada.");
     int seleccion = m.mostrar();
     if (seleccion==0) return false;
     switch (seleccion)
