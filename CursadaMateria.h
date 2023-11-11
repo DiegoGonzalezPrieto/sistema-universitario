@@ -22,13 +22,12 @@ class CursadaMateria: public Materia
 {
 public:
     CursadaMateria();
+    CursadaMateria(Materia);
 
     const int getMaxUnidades();
     const int getMaxDatosCursada();
     string getIdCuatrimestreInicio();
     void setIdCuatrimestreInicio(string);
-    string getIdCuatrimestreActual();
-    void setIdCuatrimestreActual(string);
     string getEstadoToString();
     EstadoMateria getEstado();
     void setEstado(EstadoMateria);
@@ -52,7 +51,6 @@ private:
     const static int MAX_UNIDADES = 14;
     const static int MAX_DATOS_CURSADA = 4;
     char _idCuatrimestreInicio[7];
-    char _idCuatrimestreActual[7];
     EstadoMateria _estado;
     DatosCursada _datosCursada[MAX_DATOS_CURSADA];
     Unidad _unidades[MAX_UNIDADES];
