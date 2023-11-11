@@ -109,6 +109,7 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
     string erroresValidacion = "";
     if (!sePuedeCursar(futuroIdCursadaMateria, erroresValidacion))
         {
+            cout << endl;
             _mensajero.mensajeError("La materia seleccionada no se puede cursar.");
             cout << erroresValidacion << endl;
             return;
@@ -410,9 +411,26 @@ void GestorCursadaMateria::modificarCursadaMateria() // TODO
             _mensajero.mensajeError("No se pudo guardar la cursada editada.");
         }
 }
+
 void GestorCursadaMateria::eliminarCursadaMateria()// TODO
 {
-//    anularRegistroCursadaMateria();
+    cout << endl;
+    cout << "*************************************" << endl;
+    cout << "***  Eliminar Cursada de Materia  ***" << endl;
+    cout << "*************************************" << endl;
+    cout << endl;
+    _mensajero.mensajeAdvertencia("La cursada seleccionada será marcada como Anulada y no podrá recuperarse.\n\tSolo podrá visualizarse en la búsqueda por estados.");
+
+    CursadaMateria cm = buscarCursadaMateria();
+    if (anularRegistroCursadaMateria(cm.getIdCursadaMateria()))
+    {
+
+    _mensajero.mensajeInformacion("Cursada eliminada correctamente.");
+    }
+    else
+    {
+    _mensajero.mensajeError("La cursada no pudo ser eliminada.");
+    }
 }
 
 // ---------------- Métodos de Apoyo ----------------------- //
@@ -478,10 +496,17 @@ vector<CursadaMateria> GestorCursadaMateria::buscarCursadasDeMateriaPorCuatrimes
 }
 
 
-bool GestorCursadaMateria::anularRegistroCursadaMateria()
+bool GestorCursadaMateria::anularRegistroCursadaMateria(string idCursadaMateria)
 {
-    // PASA A estado 3
-    MAT_ANULADA;
+    int pos = buscarPosicionEnArchivoPorId(idCursadaMateria);
+    if (pos<0) return false;
+
+    CursadaMateria aux;
+    if (!_archivo.leerRegistro(pos, aux)) return false;
+
+    aux.setEstado(MAT_ANULADA);
+
+    return _archivo.modificarRegistro(pos, aux);
 }
 
 int GestorCursadaMateria::buscarPosicionEnArchivoPorId(string idCursadaMateria)
@@ -582,7 +607,7 @@ bool GestorCursadaMateria::cargarDatosCursada(vector<DatosCursada> &vec, int can
                 {
                     vecAux.push_back(aux);
                     aux.setAula("");
-                    Menu m({"Cargar otro horario de cursada", "Continuar"}, "Carga de Datos de Cursada");
+                    Menu m({"Cargar otro horario de cursada", "Continuar"}, "Carga de Horarios de Cursada");
                     int op = m.mostrar();
                     if (op != 1) break;
                     cantCargada++;

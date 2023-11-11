@@ -47,12 +47,16 @@ class GestorCursadaMateria
         bool buscarCursadaMateriaPorId(string idCursadaMateria, CursadaMateria&);
 
         /// Busca todas las cursadas del cuatrimestre indicado
-        vector<CursadaMateria> buscarCursadasDeMateriaPorCuatrimestre(string idCuatrimestreInicio); // TODO
+        vector<CursadaMateria> buscarCursadasDeMateriaPorCuatrimestre(string idCuatrimestreInicio);
 
-        int buscarPosicionEnArchivoPorId(string idCursadaMateria); // TODO
+        /// Devuelve la posicion en el archivo, para sobreescribir registro (-1 si falla)
+        int buscarPosicionEnArchivoPorId(string idCursadaMateria);
 
+        /// Sobreescribe el registro buscándolo en base al idCursadaMateria
         bool guardarCursadaMateriaModificada(CursadaMateria);
-        bool anularRegistroCursadaMateria(); // TODO
+
+        /// Pasa a ANULADA el registro con id ingresado en parámetro.
+        bool anularRegistroCursadaMateria(string idCursadaMateria); // TODO
 
         /// Chequea que la materia se pueda cursar en este cuatrimestre (no revisa correlatividades)
         bool sePuedeCursar(string idMateria, string &mensajeError);
