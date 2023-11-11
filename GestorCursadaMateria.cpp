@@ -39,7 +39,7 @@ void GestorCursadaMateria::iniciar()
     // 1. Loop principal
     string tituloMenu = "\n=====================================\n** Gestión de Cursadas de Materias **\n=====================================";
     Menu m({"Ingresar nueva cursada de materia.",
-            "Ver cursadas de materias según su estado.",
+            "Ver cursadas de materias según su estado (incluye anuladas).",
             "Ver todas las cursadas de materias.",
             "Buscar cursada de materia.",
             "Modificar cursada de materia.",
@@ -103,7 +103,7 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
 
     string idMateria = gm.seleccionarIdMateria();
     Fecha hoy;
-    int periodo = hoy.getMes() > 6 ? 1 : 2;
+    int periodo = hoy.getMes() > 6 ? 2 : 1;
     string idCuatrimestre = to_string(hoy.getAnio()) + "0" + to_string(periodo);
     string futuroIdCursadaMateria = idMateria + idCuatrimestre;
     string erroresValidacion = "";
@@ -148,23 +148,21 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
     gc.mostrarCorrelativas(aux.getIdMateria());
 
 
+    // Carga de datos específicos de CM //
+
     CursadaMateria cursadaMateria(aux);
 
-    // 1.b Pedir y validar datos de CursadaMateria, setearlos
-
-    // En el alta siempre están en estado: EN_CURSO
+        // ESTADO
     EstadoMateria estado = MAT_EN_CURSO;
-//    if (!seleccionarEstadoCursadaMateria(estado)) return;
     cursadaMateria.setEstado(estado);
 
+        // DATOS:CURSADA
     int maxDatosCursada = cursadaMateria.getMaxDatosCursada(); // para validar
     vector<DatosCursada> datosCursada;
     if (!cargarDatosCursada(datosCursada, maxDatosCursada)) return;
     cursadaMateria.setDatosCursada(datosCursada);
 
-
-    char _idCuatrimestreInicio[7];
-
+        // UNIDADES
     int maxUnidades = cursadaMateria.getMaxUnidades(); // para validar
     cout << "Cantidad de unidades que posee la materia (0 para ignorar): ";
     int cantUnidades = validar<int>();
@@ -183,7 +181,7 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
 
     cursadaMateria.setUnidades(vUnidad);
 
-    // guardar idCuatrimestre generado al inicio
+        // ID_CUATRIMESTRE (generado al inicio)
     cursadaMateria.setIdCuatrimestreInicio(idCuatrimestre);
 
     _mensajero.mensajeInformacion("Guardando cursada...");
@@ -368,6 +366,7 @@ void GestorCursadaMateria::modificarCursadaMateria() // TODO
                     EstadoMateria e;
                     if(!seleccionarEstadoCursadaMateria(e)) break;
                     cm.setEstado(e);
+                    _mensajero.mensajeInformacion("Estado actualizado: " + cm.getEstadoToString() + "\n");
                     break;
                 }
                 case 2:
@@ -402,7 +401,7 @@ void GestorCursadaMateria::modificarCursadaMateria() // TODO
                 }
         }
 
-    if(guardarCursadaMateriaModificada(cm)) // TODO
+    if(guardarCursadaMateriaModificada(cm))
         {
             _mensajero.mensajeInformacion("Cursada editada correctamente.");
         }
