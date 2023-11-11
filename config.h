@@ -41,14 +41,18 @@ public:
     /// Crea archivo de config con valores por defecto.
     static bool crearConfig(std::string rutaConfig);
 
-//    std::string getNombreArchivo()
-//    {
-//        return nombreArchivo;
-//    }
-//    void setNombreArchivo(std::string na)
-//    {
-//        nombreArchivo = na;
-//    }
+    /// Agrega una entrada de configuración al archivo
+    static bool agregarConfig(std::string rutaConfig, std::string clave, std::string valor, TipoConfig t);
+
+    TipoConfig getTipoConfig()
+    {
+        return tipo;
+    }
+
+    void setTipoConfig(TipoConfig t)
+    {
+        tipo = t;
+    }
 
 private:
     char clave[40];

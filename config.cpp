@@ -26,9 +26,9 @@ bool Config::leerConfig(string rutaConfig)
     for (Config c : configuraciones)
         {
             if (c.getClave()=="DIAS_DE_AVISO_EVENTO")
-            {
-                DIAS_DE_AVISO_EVENTO = stoi(c.getValor());
-            }
+                {
+                    DIAS_DE_AVISO_EVENTO = stoi(c.getValor());
+                }
             // Acá se agregarían nuevas variables posibles
 
         }
@@ -37,13 +37,20 @@ bool Config::leerConfig(string rutaConfig)
     return true;
 }
 
-bool Config::crearConfig(string rutaConfig)
+bool Config::agregarConfig(string rutaConfig, string clave, string valor, TipoConfig t)
 {
     Archivo<Config> configFile(rutaConfig);
-    Mensajero m;
     Config c;
-    c.setClave("DIAS_DE_AVISO_EVENTO");
-    c.setValor("8");
-    configFile.agregarRegistro(c);
+    c.setClave(clave);
+    c.setValor(valor);
+    c.setTipoConfig(t);
+    return configFile.agregarRegistro(c);
+}
+
+bool Config::crearConfig(string rutaConfig)
+{
+    if (agregarConfig(rutaConfig, "DIAS_DE_AVISO_EVENTO", "7", ENTERO))
+        return true;
+    else return false;
 }
 
