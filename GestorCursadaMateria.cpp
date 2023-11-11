@@ -82,13 +82,13 @@ void GestorCursadaMateria::iniciar()
                     modificarCursadaMateria();
                     break;
                 case 6:
-                    eliminarCursadaMateria(); // TODO
+                    eliminarCursadaMateria();
                     break;
                 }
         }
 }
 
-void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
+void GestorCursadaMateria::altaCursadaMateriaPorConsola()
 {
     cout << endl;
     cout << "***********************" << endl;
@@ -96,8 +96,6 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
     cout << "***********************" << endl;
     cout << endl;
 
-
-// 1. Pedir y validar datos para construir el objeto
 
     cout << "Qué materia se va a cursar?" << endl<< endl;
 
@@ -153,17 +151,17 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
 
     CursadaMateria cursadaMateria(aux);
 
-        // ESTADO
+    // ESTADO
     EstadoMateria estado = MAT_EN_CURSO;
     cursadaMateria.setEstado(estado);
 
-        // DATOS:CURSADA
+    // DATOS:CURSADA
     int maxDatosCursada = cursadaMateria.getMaxDatosCursada(); // para validar
     vector<DatosCursada> datosCursada;
     if (!cargarDatosCursada(datosCursada, maxDatosCursada)) return;
     cursadaMateria.setDatosCursada(datosCursada);
 
-        // UNIDADES
+    // UNIDADES
     int maxUnidades = cursadaMateria.getMaxUnidades(); // para validar
     cout << "Cantidad de unidades que posee la materia (0 para ignorar): ";
     int cantUnidades = validar<int>();
@@ -182,7 +180,7 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
 
     cursadaMateria.setUnidades(vUnidad);
 
-        // ID_CUATRIMESTRE (generado al inicio)
+    // ID_CUATRIMESTRE (generado al inicio)
     cursadaMateria.setIdCuatrimestreInicio(idCuatrimestre);
 
     _mensajero.mensajeInformacion("Guardando cursada...");
@@ -406,7 +404,7 @@ void GestorCursadaMateria::modificarCursadaMateria() // TODO
         {
             _mensajero.mensajeInformacion("Cursada editada correctamente.");
         }
-        else
+    else
         {
             _mensajero.mensajeError("No se pudo guardar la cursada editada.");
         }
@@ -423,14 +421,14 @@ void GestorCursadaMateria::eliminarCursadaMateria()// TODO
 
     CursadaMateria cm = buscarCursadaMateria();
     if (anularRegistroCursadaMateria(cm.getIdCursadaMateria()))
-    {
+        {
 
-    _mensajero.mensajeInformacion("Cursada eliminada correctamente.");
-    }
+            _mensajero.mensajeInformacion("Cursada eliminada correctamente.");
+        }
     else
-    {
-    _mensajero.mensajeError("La cursada no pudo ser eliminada.");
-    }
+        {
+            _mensajero.mensajeError("La cursada no pudo ser eliminada.");
+        }
 }
 
 // ---------------- Métodos de Apoyo ----------------------- //
@@ -513,15 +511,15 @@ int GestorCursadaMateria::buscarPosicionEnArchivoPorId(string idCursadaMateria)
 {
     vector<CursadaMateria> aux;
     if(!_archivo.leerRegistros(aux))
-    {
-        return -1;
-    }
+        {
+            return -1;
+        }
 
-    for (int i=0;i<aux.size();i++)
-    {
-        if (idCursadaMateria== aux[i].getIdCursadaMateria())
-            return i;
-    }
+    for (int i=0; i<aux.size(); i++)
+        {
+            if (idCursadaMateria== aux[i].getIdCursadaMateria())
+                return i;
+        }
     return -1;
 }
 
@@ -636,20 +634,33 @@ bool GestorCursadaMateria::cargarDatosCursada(vector<DatosCursada> &vec, int can
 bool GestorCursadaMateria::seleccionarCuatrimestre(string &cuatrimestre)
 {
     int anio=0;
+    bool actual = false;
+    Fecha hoy;
     while (true)
         {
-            cout << "Año del cuatrimestre: ";
+            cout << "Año del cuatrimestre (0 para cuatrimestre actual): ";
             anio = validar<int>();
-            Fecha hoy;
-            if (anio > hoy.getAnio())
+            if (anio == 0)
                 {
-                    _mensajero.mensajeError("No se puede seleccionar un año a futuro.");
+                    anio = hoy.getAnio();
+                    actual = true;
+                    break;
+                }
+            else if (anio > hoy.getAnio() || anio < 1900)
+                {
+                    _mensajero.mensajeError("No se puede seleccionar un año a futuro ni anterior a 1900.");
                 }
             else
                 {
                     break;
                 }
 
+        }
+    if (actual)
+        {
+            int periodo = hoy.getMes() > 6 ? 2 : 1;
+            cuatrimestre = std::to_string(anio) + "0"+ to_string(periodo);
+            return true;
         }
     Menu m({"Primer Cuatrimestre", "Segundo Cuatrimestre"});
     int periodo = m.mostrar();

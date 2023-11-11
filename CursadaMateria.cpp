@@ -78,6 +78,7 @@ string CursadaMateria::getDatosCursadaToString()
         }
     return aux;
 }
+
 vector<DatosCursada> CursadaMateria::getDatosCursada()
 {
     vector<DatosCursada> v;
@@ -91,7 +92,6 @@ vector<DatosCursada> CursadaMateria::getDatosCursada()
         return v;
 }
 
-/// TODO: el GestorCursadaMateria debe validar la cantidad de datos ingresados o dar error/mensaje
 void CursadaMateria::setDatosCursada(vector<DatosCursada> v)
 {
     if (v.size() > getMaxDatosCursada())
@@ -158,7 +158,7 @@ string CursadaMateria::toFullString()
     aux += "\n\nDatos de Cursada:\n";
     aux += "\nEstado: " + getEstadoToString();
     aux += "\nCuatrimestre de Inicio: " + getIdCuatrimestreInicio();
-    aux += "\nHorarios de Cursada:\n" + getDatosCursadaToString();
+    aux += "\n\n\tHorarios de Cursada\n\t-------------------\n\n" + getDatosCursadaToString();
     return aux;
 }
 string CursadaMateria::toString()
@@ -167,6 +167,6 @@ string CursadaMateria::toString()
     aux += getIdMateria() +" - " +getNombreMateria();
     aux += "\nEstado: " + getEstadoToString();
     aux += "\nCuatrimestre de Inicio: " + getIdCuatrimestreInicio();
-    aux += "\nHorarios de Cursada:\n" + getDatosCursadaToString();
+    aux += "\n\n\tHorarios de Cursada\n\t-------------------\n\n" + getDatosCursadaToString();
     return aux;
 }

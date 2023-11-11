@@ -56,7 +56,7 @@ class GestorCursadaMateria
         bool guardarCursadaMateriaModificada(CursadaMateria);
 
         /// Pasa a ANULADA el registro con id ingresado en parámetro.
-        bool anularRegistroCursadaMateria(string idCursadaMateria); // TODO
+        bool anularRegistroCursadaMateria(string idCursadaMateria);
 
         /// Chequea que la materia se pueda cursar en este cuatrimestre (no revisa correlatividades)
         bool sePuedeCursar(string idMateria, string &mensajeError);
