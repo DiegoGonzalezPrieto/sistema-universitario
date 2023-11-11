@@ -5,11 +5,13 @@
 #include "Evento.h"
 #include "Fecha.h"
 #include "Mensajero.h"
+#include "GestorMaterias.h"
+#include "GestorCursadaMateria.h"
 
 class GestorEventos
 {
 public:
-    GestorEventos(std::string nombreArchivo);
+    GestorEventos(std::string nombreArchivo, std::string archivoMaterias, std::string archivoCursadaMaterias);
     ~GestorEventos(); // TODO
 
     Archivo<Evento> getArchivo();
@@ -44,6 +46,8 @@ public:
     void eliminarEvento();
 
 
+    // --------- METODOS DE APOYO --------------//
+
     /// Guardar nuevo objeto evento en el archivo.
     bool guardarNuevoEvento(Evento);
     /// Guardar evento modificado en el archivo.
@@ -67,12 +71,15 @@ public:
     bool hayEventoEnLosProximosDias(int dias);
     /// Devuelve los eventos activos de los próximos N días
     std::vector<Evento> obtenerEventosDeLosProximosDias(int dias);
+    /// Devuelve un string con la información del evento y el nombre de la materia asociada
+    std::string eventoToStringCompleto(Evento e);
 protected:
 
 private:
     Archivo<Evento> _archivo;
     Mensajero _mensajero;
-
+    GestorMaterias gm;
+    GestorCursadaMateria gcm;
     /// Brinda opciones de tipos de evento y devuelve el código del tipo seleccionado
     char seleccionarTipoEvento(); // TODO
 

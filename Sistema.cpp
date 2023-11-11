@@ -13,8 +13,12 @@ bool crearDirectorios(string ruta)
 }
 
 Sistema::Sistema() :
-    _gestorCarrera("Archivos/datos/carrera.dat","carga_inicial.dat"), _gestorEventos("Archivos/datos/eventos.dat"), _gestorMaterias("Archivos/datos/materias.dat"),
-    _gestorNotasFinales("Archivos/datos/notas.dat"), _cargaInicial("carga_inicial.dat"),_gestorCuatrimestre("Archivos/datos/cuatrimestre.dat"),
+    _gestorCarrera("Archivos/datos/carrera.dat","carga_inicial.dat"),
+    _gestorEventos("Archivos/datos/eventos.dat", "Archivos/datos/materias.dat", "Archivos/datos/cursada_materias.dat" ),
+    _gestorMaterias("Archivos/datos/materias.dat"),
+    _gestorNotasFinales("Archivos/datos/notas.dat"),
+    _cargaInicial("carga_inicial.dat"),
+    _gestorCuatrimestre("Archivos/datos/cuatrimestre.dat"),
     _gestorCsv("archivoImportacion.csv", "Archivos/datos/materias.dat", "carga_inicial.dat")
 {
     //ctor

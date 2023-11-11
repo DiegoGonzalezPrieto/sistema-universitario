@@ -9,7 +9,10 @@ using namespace std;
 #include "func_utiles.h"
 
 
-GestorEventos::GestorEventos(string nombreArchivo): _archivo(nombreArchivo)
+GestorEventos::GestorEventos(string nombreArchivo, string archivoMaterias, string archivoCursadaMaterias):
+    _archivo(nombreArchivo),
+    gm(archivoMaterias),
+    gcm(archivoCursadaMaterias, archivoMaterias)
 {}
 
 GestorEventos::~GestorEventos()
@@ -49,8 +52,8 @@ void GestorEventos::iniciar()
     // 1. Loop principal
     string tituloMenu = "\n========================\n** Gestión de Eventos **\n========================";
     Menu m({ "Ver eventos próximos." + alertaEventosProximos,
-             "Ver todos los eventos.",
              "Ver eventos de este mes y el siguiente",
+             "Ver todos los eventos.",
              "Ingresar nuevo evento",
              "Modificar evento existente",
              "Buscar evento por fecha",
@@ -70,10 +73,10 @@ void GestorEventos::iniciar()
                     mostrarEventosProximos(diasDeChequeoEventosProximos); // TODO : pasar parámetro a lectura de config
                     break;
                 case 2:
-                    mostrarTodosEventos();
+                    mostrarEventosDeEsteMesYSiguiente();
                     break;
                 case 3:
-                    mostrarEventosDeEsteMesYSiguiente();
+                    mostrarTodosEventos();
                     break;
                 case 4:
                     altaEventoPorConsola();
@@ -123,7 +126,7 @@ int GestorEventos::seleccionarEvento()
             if ( fechaEvento.getAnio() == anio && fechaEvento.getMes() == mes)
                 {
                     eventosSeleccionados.push_back(e);
-                    cout << "Evento " << eventosSeleccionados.size() << ":" << endl << e.toString() << endl;
+                    cout << "Evento " << eventosSeleccionados.size() << ":" << endl << eventoToStringCompleto(e) << endl;
                     cout << "--------" << endl;
                 }
         }
@@ -165,18 +168,18 @@ void GestorEventos::mostrarEventosProximos(int diasLimite)
     cout << "****************************************" << endl;
     cout << endl;
     if (!hayEventoEnLosProximosDias(diasLimite))
-    {
-        _mensajero.mensajeInformacion("No hay eventos en los próximos " + to_string(diasLimite) + " días.");
-        return;
-    }
+        {
+            _mensajero.mensajeInformacion("No hay eventos en los próximos " + to_string(diasLimite) + " días.");
+            return;
+        }
 
     vector<Evento> vec = obtenerEventosDeLosProximosDias(diasLimite);
 
     for (Evento e : vec)
-    {
-        cout << e.toString() << endl;
-        cout << endl;
-    }
+        {
+            cout << eventoToStringCompleto(e) << endl;
+            cout << endl;
+        }
 
 }
 
@@ -199,7 +202,7 @@ void GestorEventos::mostrarTodosEventos()
 
     for (Evento e : ve)
         {
-            cout << e.toString() << endl;
+            cout << eventoToStringCompleto(e) << endl;
             cout << "--------" << endl;
         }
 }
@@ -272,22 +275,21 @@ void GestorEventos::altaEventoPorConsola()
     getline(cin>>ws, informacion);
     e.setInformacion(informacion);
 
+
     char opc;
     cout<< "Está asociado a alguna materia actualmente en curso? (S/N) ";
     cin >> opc;
     if (opc == 's' || opc == 'S')
         {
-            string idCursadaMateria;
-            cout << "Indicar materia asociada: ";
-            getline(cin>>ws, idCursadaMateria);
-
-            // TODO : selector de Materias
-
-            e.setIdCursadaMateria(idCursadaMateria);
+            CursadaMateria cm;
+            if(!gcm.seleccionarCursadaActualmenteEnCurso(cm))
+                {
+                    e.setIdCursadaMateria("");
+                }
+            e.setIdCursadaMateria(cm.getIdCursadaMateria());
         }
     else
         {
-
             e.setIdCursadaMateria("");
         }
 
@@ -314,7 +316,7 @@ void GestorEventos::altaEventoPorConsola()
     if (guardo)
         {
             cout << endl;
-            _mensajero.mensajeInformacion("Evento guardado correctamente:\n\n" + e.toString() + "\n");
+            _mensajero.mensajeInformacion("Evento guardado correctamente:\n\n" + eventoToStringCompleto(e) + "\n");
         }
     else
         {
@@ -339,7 +341,7 @@ bool GestorEventos::modificarEvento()
 
     Evento e = buscarPorId(idEvento);
 
-    cout << "\nEvento seleccionado:\n\n" << e.toString() << endl << endl;
+    cout << "\nEvento seleccionado:\n\n" << eventoToStringCompleto(e) << endl << endl;
 
     while (opcion != 0)
         {
@@ -471,9 +473,27 @@ bool GestorEventos::modificarEvento()
                 }
                 break;
                 case 5:
-                    _mensajero.mensajeAdvertencia("Funcionalidad aún no implementada.");
-                    // TODO: modificar materia asociada (ID cursadaMateria)
-                    break;
+                {
+                    CursadaMateria cm;
+                    if(!gcm.seleccionarCursadaActualmenteEnCurso(cm))
+                        {
+                            e.setIdCursadaMateria("");
+                        }
+                    else
+                        {
+                            e.setIdCursadaMateria(cm.getIdCursadaMateria());
+                            bool guardo = guardarEventoModificado(e);
+                            if (!guardo)
+                                {
+                                    _mensajero.mensajeError("El evento modificado no pudo guardarse.\n");
+                                }
+                            else
+                                {
+                                    _mensajero.mensajeInformacion("Cursada asociada al evento modificada correctamente");
+                                }
+                        }
+                }
+                break;
                 default:
                     break;
                 }
@@ -491,12 +511,16 @@ void GestorEventos::eliminarEvento()
     cout << endl;
 
     int idEvento = seleccionarEvento();
+    if (idEvento==0)
+        {
+            return;
+        }
     if (!bajaEvento(idEvento))
         {
             _mensajero.mensajeError("No se pudo eliminar el evento seleccionado.");
             exit(1);
         }
-        cout << endl;
+    cout << endl;
     _mensajero.mensajeInformacion("Registro eliminado.");
 }
 
@@ -537,7 +561,7 @@ void GestorEventos::mostrarEventosDeEsteMesYSiguiente()
             if (!mostrar) continue;
 
             cout << "------------------------------" << endl;
-            cout << e.toString() << endl;
+            cout << eventoToStringCompleto(e) << endl;
             cout << "------------------------------" << endl;
         }
 
@@ -595,14 +619,14 @@ void GestorEventos::mostrarEventosEnFecha()
                     if (!buscarPorDia)
                         {
                             hayEventos = true;
-                            resultado += e.toString() + "\n-------------------\n";
+                            resultado += eventoToStringCompleto(e) + "\n-------------------\n";
                             cantEventos++;
 
                         }
                     else if (fechaEvento.getDia() == dia)
                         {
                             hayEventos = true;
-                            resultado += e.toString() + "\n-------------------\n";
+                            resultado += eventoToStringCompleto(e) + "\n-------------------\n";
                             cantEventos++;
                         }
                 }
@@ -774,6 +798,17 @@ std::vector<Evento> GestorEventos::obtenerEventosDeLosProximosDias(int dias)
                 {
                     aux.push_back(e);
                 }
+        }
+    return aux;
+}
+
+string GestorEventos::eventoToStringCompleto(Evento e)
+{
+    string materia, aux = e.toString();
+    CursadaMateria cm;
+    if (gcm.buscarCursadaMateriaPorId(e.getIdCursadaMateria(), cm))
+        {
+            aux += "\n\nCursada vinculada: " + cm.getNombreMateria() + " - Cuatrimestre: " + cm.getIdCuatrimestreInicio() + "\n";
         }
     return aux;
 }
