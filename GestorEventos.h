@@ -22,10 +22,14 @@ public:
     bool crearArchivo();
 
 
+    /// Muestra los eventos próximos, según el limite definido en parámetro (TODO : en config).
+    void mostrarEventosProximos(int);
+
     /// Listar todos los eventos.
-    void mostrarTodosEventos(); // TODO : ordenar por fechaHorario
+    void mostrarTodosEventos();
+
     /// Mostrar eventos de este mes y del mes que viene
-    void mostrarEventosProximos();
+    void mostrarEventosDeEsteMesYSiguiente();
 
     /// Alta interactiva de Evento
     void altaEventoPorConsola(); // TODO : seleccionar materia asociada
@@ -58,6 +62,11 @@ public:
     void ordenarEventosPorFecha(std::vector<Evento>&, bool descendente=true);
     /// Revisa este mes y el siguiente por algún evento.
     bool hayEventoProximo();
+
+    /// Confirma si hay algún evento activo en los próximos N días
+    bool hayEventoEnLosProximosDias(int dias);
+    /// Devuelve los eventos activos de los próximos N días
+    std::vector<Evento> obtenerEventosDeLosProximosDias(int dias);
 protected:
 
 private:
