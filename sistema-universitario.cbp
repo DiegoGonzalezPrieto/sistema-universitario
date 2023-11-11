@@ -61,6 +61,8 @@
 		<Unit filename="GestorCsv.h" />
 		<Unit filename="GestorCursadaMateria.cpp" />
 		<Unit filename="GestorCursadaMateria.h" />
+		<Unit filename="GestorCuatrimestre.cpp" />
+		<Unit filename="GestorCuatrimestre.h" />
 		<Unit filename="GestorEventos.cpp" />
 		<Unit filename="GestorEventos.h" />
 		<Unit filename="GestorMaterias.cpp" />
