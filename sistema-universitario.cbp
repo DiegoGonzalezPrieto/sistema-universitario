@@ -59,6 +59,8 @@
 		<Unit filename="GestorCorrelativas.h" />
 		<Unit filename="GestorCsv.cpp" />
 		<Unit filename="GestorCsv.h" />
+		<Unit filename="GestorCursadaMateria.cpp" />
+		<Unit filename="GestorCursadaMateria.h" />
 		<Unit filename="GestorCuatrimestre.cpp" />
 		<Unit filename="GestorCuatrimestre.h" />
 		<Unit filename="GestorEventos.cpp" />

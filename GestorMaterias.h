@@ -11,7 +11,7 @@ private:
 
     Archivo<Materia> archivoMaterias;
     std::vector<Materia> registros;
-    Mensajero msj ;
+    Mensajero msj;
 
 public:
 
@@ -32,6 +32,8 @@ public:
 
     /// Devuelve idMateria luego de permitir seleccionar de forma interactiva (para uso por otros gestores)
     std::string seleccionarIdMateria();
+
+    Archivo<Materia> getArchivoMaterias();
 
 };
 

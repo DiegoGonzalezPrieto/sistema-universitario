@@ -6,8 +6,18 @@ using namespace std;
 #include "CursadaMateria.h"
 #include "func_utiles.h"
 
-/// Asigna cadenas vacias a _idCuatrimestreInicio e _idCuatrimestreActual
-CursadaMateria::CursadaMateria(): Materia(), _idCuatrimestreInicio(""), _idCuatrimestreActual("") {
+/// Asigna cadenas vacias a _idCuatrimestreInicio
+CursadaMateria::CursadaMateria(): Materia(), _idCuatrimestreInicio("") {
+}
+/// Recibe Materia como parámetro. Asigna cadenas vacias a _idCuatrimestreInicio
+CursadaMateria::CursadaMateria(Materia m): _idCuatrimestreInicio("") {
+ setNombreMateria(m.getNombreMateria());
+ setIdMateria(m.getIdMateria());
+ setCuatrimestreSugerido(m.getCuatrimestreSugerido());
+ setCuatrimestreDeDuracion(m.getCuatrimestreDeDuracion());
+
+// TODO : Ver cómo asignar id materias correlativas
+// setIdMateriasRequeridas(int pos, const std::string& idMateriaRequerida)
 }
 
 const int CursadaMateria::getMaxUnidades()
@@ -26,14 +36,6 @@ string CursadaMateria::getIdCuatrimestreInicio()
 void CursadaMateria::setIdCuatrimestreInicio(string id)
 {
     cargarCadenaConString(id, _idCuatrimestreInicio, 7);
-}
-string CursadaMateria::getIdCuatrimestreActual()
-{
-    return string(_idCuatrimestreActual);
-}
-void CursadaMateria::setIdCuatrimestreActual(string id)
-{
-    cargarCadenaConString(id, _idCuatrimestreActual, 7);
 }
 string CursadaMateria::getEstadoToString()
 {
@@ -71,11 +73,12 @@ string CursadaMateria::getDatosCursadaToString()
         {
             if (dc.getAula() != "")
                 {
-                    aux += dc.toString() + " ";
+                    aux += ">> " + dc.toString() + "\n\n";
                 }
         }
     return aux;
 }
+
 vector<DatosCursada> CursadaMateria::getDatosCursada()
 {
     vector<DatosCursada> v;
@@ -89,7 +92,6 @@ vector<DatosCursada> CursadaMateria::getDatosCursada()
         return v;
 }
 
-/// TODO: el GestorCursadaMateria debe validar la cantidad de datos ingresados o dar error/mensaje
 void CursadaMateria::setDatosCursada(vector<DatosCursada> v)
 {
     if (v.size() > getMaxDatosCursada())
@@ -156,8 +158,7 @@ string CursadaMateria::toFullString()
     aux += "\n\nDatos de Cursada:\n";
     aux += "\nEstado: " + getEstadoToString();
     aux += "\nCuatrimestre de Inicio: " + getIdCuatrimestreInicio();
-    aux += "\nCuatrimestre Actual: " + getIdCuatrimestreActual();
-    aux += "\nHorarios de Cursada: " + getDatosCursadaToString() + "\n";
+    aux += "\n\n\tHorarios de Cursada\n\t-------------------\n\n" + getDatosCursadaToString();
     return aux;
 }
 string CursadaMateria::toString()
@@ -166,7 +167,6 @@ string CursadaMateria::toString()
     aux += getIdMateria() +" - " +getNombreMateria();
     aux += "\nEstado: " + getEstadoToString();
     aux += "\nCuatrimestre de Inicio: " + getIdCuatrimestreInicio();
-    aux += "\nCuatrimestre Actual: " + getIdCuatrimestreActual();
-    aux += "\nHorarios de Cursada: " + getDatosCursadaToString() + "\n";
+    aux += "\n\n\tHorarios de Cursada\n\t-------------------\n\n" + getDatosCursadaToString();
     return aux;
 }

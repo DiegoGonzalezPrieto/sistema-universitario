@@ -49,7 +49,8 @@ void DatosCursada::setAula(string a)
 
 string DatosCursada::toString()
     {
-        string horario = to_string(getHorario().getHora()) + ":" + to_string(getHorario().getMinuto()) + " hs";
+        string minutos = getHorario().getMinuto() > 9 ? to_string(getHorario().getMinuto()) : "0" + to_string(getHorario().getMinuto());
+        string horario = to_string(getHorario().getHora()) + ":" + minutos + " hs";
         string s = getNombreDiaSemana() + " " + horario + " - Aula: " + getAula();
         return s;
     }
