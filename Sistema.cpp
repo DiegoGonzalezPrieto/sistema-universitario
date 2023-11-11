@@ -20,6 +20,17 @@ Sistema::Sistema() :
     //ctor
 }
 
+bool Sistema::preInicio()
+{
+    if (!Config::leerConfig("Archivos/configuracion/config.dat") && _cargaInicial.archivoExiste())
+    {
+        _mensajero.mensajeError("No se encuentra el archivo de configuración, se creará uno nuevo y se usarán valores por defecto.");
+
+    }
+        Archivo<Config> ac("Archivos/configuracion/config.dat");
+        ac.crearArchivo();
+}
+
 void Sistema::iniciar()
 {
 //    system("color B1");

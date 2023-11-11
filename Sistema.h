@@ -1,6 +1,7 @@
 #ifndef SISTEMA_H
 #define SISTEMA_H
 #include <string>
+#include "config.h"
 #include "GestorCarrera.h"
 #include "GestorMaterias.h"
 #include "GestorNotasFinales.h"
@@ -20,6 +21,7 @@ class Sistema
         Sistema();
 
         void iniciar();
+        bool preInicio();
         void menuCargaInicial();
         bool cargaInicial();
         void crearDirectoriosEsenciales();
