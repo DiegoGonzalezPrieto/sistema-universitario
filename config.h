@@ -35,7 +35,11 @@ public:
         cargarCadenaConString(s, clave, sizeof(clave));
     }
 
+    /// Levanta valores del archivo config.
     static bool leerConfig(std::string rutaConfig);
+
+    /// Crea archivo de config con valores por defecto.
+    static bool crearConfig(std::string rutaConfig);
 
 //    std::string getNombreArchivo()
 //    {

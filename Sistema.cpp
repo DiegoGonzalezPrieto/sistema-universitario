@@ -15,7 +15,9 @@ bool crearDirectorios(string ruta)
 Sistema::Sistema() :
     _gestorCarrera("Archivos/datos/carrera.dat","carga_inicial.dat"), _gestorEventos("Archivos/datos/eventos.dat"), _gestorMaterias("Archivos/datos/materias.dat"),
     _gestorNotasFinales("Archivos/datos/notas.dat"), _cargaInicial("carga_inicial.dat"),_gestorCuatrimestre("Archivos/datos/cuatrimestre.dat"),
-    _gestorCsv("archivoImportacion.csv", "Archivos/datos/materias.dat", "carga_inicial.dat")
+    _gestorCsv("archivoImportacion.csv", "Archivos/datos/materias.dat", "carga_inicial.dat"),
+
+    _gestorConfig("Archivos/configuracion/config.dat")
 {
     //ctor
 }
@@ -25,10 +27,8 @@ bool Sistema::preInicio()
     if (!Config::leerConfig("Archivos/configuracion/config.dat") && _cargaInicial.archivoExiste())
     {
         _mensajero.mensajeError("No se encuentra el archivo de configuración, se creará uno nuevo y se usarán valores por defecto.");
-
+        Config::crearConfig("Archivos/configuracion/config.dat");
     }
-        Archivo<Config> ac("Archivos/configuracion/config.dat");
-        ac.crearArchivo();
 }
 
 void Sistema::iniciar()
@@ -115,7 +115,7 @@ void Sistema::iniciar()
                     break;
                 case 6:
                 {
-                    cout<<" En desarrollo "<<endl;
+                    _gestorConfig.iniciar();
                 }
                 break;
                 default:

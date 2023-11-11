@@ -8,6 +8,7 @@
 #include "GestorEventos.h"
 #include "GestorCsv.h"
 #include "GestorCuatrimestre.h"
+#include "GestorConfig.h"
 ///FALTA GESTORCURSADAMATERIA
 ///FALTAN LOS DIRECTORIOS
 ///FALTA LA CONFIGURACION
@@ -33,6 +34,7 @@ class Sistema
         GestorEventos _gestorEventos;
         GestorCsv _gestorCsv; ///VER SI SE INICIALIZA AQUI, O EN GESTOR MATERIAS
         GestorCuatrimestre _gestorCuatrimestre;
+        GestorConfig _gestorConfig;
 
         Mensajero _mensajero;
         Archivo <CargaInicial> _cargaInicial;

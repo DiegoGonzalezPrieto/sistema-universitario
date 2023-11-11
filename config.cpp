@@ -6,9 +6,9 @@
 using namespace std;
 
 
-/// Aquí van las variables con sus valores por defecto (si están en config.dat se usaran esos valores)
+/// Aquí van las variables con sus valores por defecto (se reemplazan por los valores que haya en el archivo)
 
-int DIAS_DE_AVISO_EVENTO = 8;
+int DIAS_DE_AVISO_EVENTO = 0;
 
 
 bool Config::leerConfig(string rutaConfig)
@@ -33,7 +33,17 @@ bool Config::leerConfig(string rutaConfig)
 
         }
 
-    cout << "CONFIG LEIDO - "<< configuraciones.size() << " VALORES" <<endl;
+    cout << "CONFIG LEIDO - "<< configuraciones.size() << " VALOR/ES" <<endl;
     return true;
+}
+
+bool Config::crearConfig(string rutaConfig)
+{
+    Archivo<Config> configFile(rutaConfig);
+    Mensajero m;
+    Config c;
+    c.setClave("DIAS_DE_AVISO_EVENTO");
+    c.setValor("8");
+    configFile.agregarRegistro(c);
 }
 
