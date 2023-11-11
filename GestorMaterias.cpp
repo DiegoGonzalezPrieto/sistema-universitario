@@ -9,7 +9,8 @@ using namespace std;
 #include "func_utiles.h"
 
 
-GestorMaterias::GestorMaterias(std::string nombre) : archivoMaterias(nombre) {}
+GestorMaterias::GestorMaterias(std::string nombreArchivo) : archivoMaterias(nombreArchivo) {}
+
 
 void GestorMaterias::iniciarGestorMaterias()
 {
@@ -19,8 +20,9 @@ void GestorMaterias::iniciarGestorMaterias()
         "Modificar una materia",
         "Mostrar materias"
     };
+    string tituloMenu = "\n=====================================\n    ** Gestión de Materias **\n=====================================";
 
-    Menu menuPrincipal(opciones,"------ MATERIAS ------") ;
+    Menu menuPrincipal(opciones,tituloMenu) ;
 
     int op;
     do
@@ -140,9 +142,6 @@ void GestorMaterias::mostrarMaterias()
 }
 
 
-
-
-
 bool GestorMaterias::AgregarUnaMateria()
 {
     if (!archivoMaterias.archivoExiste())
@@ -183,7 +182,7 @@ bool GestorMaterias::AgregarUnaMateria()
     else if (archivoMaterias.contarRegistros()==0)
     {
 
-        datosMateria.setIdMateriasRequeridas(0,"");
+        datosMateria.setIdMateriasRequeridas(0,"N/A");
     }
 
     cout << "Ingrese el cuatrimestre sugerido: ";
@@ -253,6 +252,7 @@ bool GestorMaterias::modificarUnaMateria()
                 cout << "Ingrese el nuevo nombre de la Materia: ";
                 getline(cin >> ws, nuevoNombreMateria);
                 datosMateria.setNombreMateria(nuevoNombreMateria);
+                break ;
             }
             break;
             case 2:
@@ -261,6 +261,7 @@ bool GestorMaterias::modificarUnaMateria()
                 cout << "Ingrese el nuevo ID de la materia: ";
                 getline(cin >> ws, nuevoIDmateria);
                 datosMateria.setIdMateria(nuevoIDmateria);
+                break ;
             }
             break;
             case 3:
@@ -274,7 +275,7 @@ bool GestorMaterias::modificarUnaMateria()
                     mostrarNombresMaterias();
                     guardarIDsMatRequeridas(cant, datosMateria) ;
                 }
-
+            break ;
             }
             break;
             case 4:
@@ -284,6 +285,7 @@ bool GestorMaterias::modificarUnaMateria()
                 cin >> nuevoCuatrimestreSugerido;
                 cin.ignore();
                 datosMateria.setCuatrimestreSugerido(nuevoCuatrimestreSugerido);
+                break ;
             }
             case 5:
             {
@@ -293,7 +295,10 @@ bool GestorMaterias::modificarUnaMateria()
                 cin.ignore();
                 datosMateria.setCuatrimestreDeDuracion(nuevoCuatrimestresDuracion);
             }
+            break;
+
             }
+
             char op ;
             cin.ignore();
             cout << "Desea modificar otro dato de esta materia? (S/N): " ;
@@ -359,18 +364,18 @@ bool GestorMaterias::guardarIDsMatRequeridas(int cant, Materia& datosMateria)
     Materia dataMateria;
     int op ;
     cout << "Seleccione las materias requeridas" << endl ;
-    for (int i=0; i<cant; i++) ///ITERO POR LA CANTIDAD DE MATERIAS REQUERIDAS QUE EL USUARIO HABIA INGRESADO PREVIAMENTE
+    for (int i=0; i<cant; i++)
     {
-        /// PIDO INGRESAR LOS NUMEROS QUE CORRESPONDEN A LAS MATERIAS REQUERIDAS
-        cin >> op ;
+
+        cin >> op ; ///CAMBIAR CIN CIN.IGNORE
         cin.ignore();
-        if (op >= 1 && op <= archivoMaterias.contarRegistros()) ///VALIDO EL NUMERO
+        if (op >= 1 && op <= archivoMaterias.contarRegistros())
         {
 
-            if (archivoMaterias.leerRegistro(op-1,dataMateria)) ///ABRO EL REGISTRO DE LA MATERIA QUE EL USUARIO SELECCIONO
+            if (archivoMaterias.leerRegistro(op-1,dataMateria))
             {
-                nuevoID = dataMateria.getIdMateria() ; ///COPIO EL ID DE ESA MATERIA SELECCIONADA
-                datosMateria.setIdMateriasRequeridas(i, nuevoID); ///SETEO EL ID COMO ID DE MATERIA REQUERIDA
+                nuevoID = dataMateria.getIdMateria() ;
+                datosMateria.setIdMateriasRequeridas(i, nuevoID);
             }
         }
         else

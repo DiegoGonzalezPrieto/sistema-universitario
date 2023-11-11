@@ -74,7 +74,7 @@ std::string Materia::toString() const{
 
 
 ///OBSERVACION: Como no hay datos por defecto en el constructor, si no seteamos datos en algún atributo toString() mostrará basura
-    GestorMaterias gMat("Materias.dat");
+    GestorMaterias gMat("Archivos/datos/materias.dat");
     std::string aux = "";
 
     aux = "Materia: ";
@@ -86,9 +86,10 @@ std::string Materia::toString() const{
 
     aux += "\nMaterias correlativas: ";
 
+
     for(int i = 0; i < CANTMATERIAS; i++){
 
-        if(getIdMateriasRequeridas(i) != ""){
+        if(getIdMateriasRequeridas(i) != "N/A"){
 
             if(i != (CANTMATERIAS -1)){
 
@@ -106,11 +107,10 @@ std::string Materia::toString() const{
         }
     }
 
-    if(hayCorrelativas == false){
+    if(!hayCorrelativas){
 
         aux +="No tiene";
     }
-
 
     aux += "\nCuatrimestre sugerido: ";
     aux += std::to_string(getCuatrimestreSugerido());
