@@ -11,10 +11,10 @@
 class GestorCursadaMateria
 {
     public:
-        GestorCursadaMateria(string rutaArchivo, string rutaMaterias);
+        GestorCursadaMateria(std::string rutaArchivo, std::string rutaMaterias);
         virtual ~GestorCursadaMateria();
         Archivo<CursadaMateria> getArchivo();
-        void setArchivo(string ruta);
+        void setArchivo(std::string ruta);
 
         void iniciar();
 
@@ -44,29 +44,29 @@ class GestorCursadaMateria
         bool guardarNuevaCursadaMateria(CursadaMateria);
 
         /// Busca CursadaMateria por su id (excepto si está ANULADA), devuelve false si no encontró nada
-        bool buscarCursadaMateriaPorId(string idCursadaMateria, CursadaMateria&);
+        bool buscarCursadaMateriaPorId(std::string idCursadaMateria, CursadaMateria&);
 
         /// Busca todas las cursadas del cuatrimestre indicado
-        vector<CursadaMateria> buscarCursadasDeMateriaPorCuatrimestre(string idCuatrimestreInicio);
+        std::vector<CursadaMateria> buscarCursadasDeMateriaPorCuatrimestre(std::string idCuatrimestreInicio);
 
         /// Devuelve la posicion en el archivo, para sobreescribir registro (-1 si falla)
-        int buscarPosicionEnArchivoPorId(string idCursadaMateria);
+        int buscarPosicionEnArchivoPorId(std::string idCursadaMateria);
 
         /// Sobreescribe el registro buscándolo en base al idCursadaMateria
         bool guardarCursadaMateriaModificada(CursadaMateria);
 
         /// Pasa a ANULADA el registro con id ingresado en parámetro.
-        bool anularRegistroCursadaMateria(string idCursadaMateria);
+        bool anularRegistroCursadaMateria(std::string idCursadaMateria);
 
         /// Chequea que la materia se pueda cursar en este cuatrimestre (no revisa correlatividades)
-        bool sePuedeCursar(string idMateria, string &mensajeError);
+        bool sePuedeCursar(std::string idMateria, std::string &mensajeError);
 
         /// Permite al usuario seleccionar un estado de cursada-materia, o cancelar la seleccion (false)
         bool seleccionarEstadoCursadaMateria(EstadoMateria &);
         /// Permite al usuario cargar los datos de la cursada (horario día aula), o cancelar la selección (false)
-        bool cargarDatosCursada(vector<DatosCursada>&, int cantMax);
+        bool cargarDatosCursada(std::vector<DatosCursada>&, int cantMax);
         /// Permite al usuario seleccionar un cuatrimestre (año + 1|2)
-        bool seleccionarCuatrimestre(string &cuatrimestre);
+        bool seleccionarCuatrimestre(std::string &cuatrimestre);
     protected:
 
     private:
