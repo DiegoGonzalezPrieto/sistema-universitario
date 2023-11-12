@@ -116,7 +116,7 @@ void Sistema::iniciar()
                     break;
                 case 1:
                 {
-                    _gestorMaterias.iniciarGestorMaterias();
+                    _gestorMaterias.menuCortoGMaterias();
                 }
                 case 2:
                 {
