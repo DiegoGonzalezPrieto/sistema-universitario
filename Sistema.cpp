@@ -26,7 +26,7 @@ Sistema::Sistema() :
     //ctor
 }
 
-bool Sistema::preInicio()
+void Sistema::preInicio()
 {
     if (!Config::leerConfig("Archivos/configuracion/config.dat"))
     {

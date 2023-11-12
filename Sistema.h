@@ -22,7 +22,7 @@ class Sistema
         Sistema();
 
         void iniciar();
-        bool preInicio();
+        void preInicio();
         void menuCargaInicial();
         bool cargaInicial();
         void crearDirectoriosEsenciales();
