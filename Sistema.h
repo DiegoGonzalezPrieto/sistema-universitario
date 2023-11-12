@@ -17,6 +17,7 @@
 #include "CargaInicial.h"
 #include "Mensajero.h"
 #include "Archivo.h"
+#include "GestorDirectorios.h"
 
 class Sistema
 {
