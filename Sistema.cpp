@@ -13,11 +13,15 @@ bool crearDirectorios(string ruta)
 }
 
 Sistema::Sistema() :
-    _gestorCarrera("Archivos/datos/carrera.dat","carga_inicial.dat"), _gestorEventos("Archivos/datos/eventos.dat"), _gestorMaterias("Archivos/datos/materias.dat"),
-    _gestorNotasFinales("Archivos/datos/notas.dat"), _cargaInicial("carga_inicial.dat"),_gestorCuatrimestre("Archivos/datos/cuatrimestre.dat"),
+    _gestorCarrera("Archivos/datos/carrera.dat","carga_inicial.dat"),
+    _gestorEventos("Archivos/datos/eventos.dat", "Archivos/datos/materias.dat", "Archivos/datos/cursada_materias.dat" ),
+    _gestorMaterias("Archivos/datos/materias.dat"),
+    _gestorNotasFinales("Archivos/datos/notas.dat"),
+    _cargaInicial("carga_inicial.dat"),
+    _gestorCuatrimestre("Archivos/datos/cuatrimestre.dat"),
     _gestorCsv("archivoImportacion.csv", "Archivos/datos/materias.dat", "carga_inicial.dat"),
-
     _gestorConfig("Archivos/configuracion/config.dat")
+
 {
     //ctor
 }
@@ -26,7 +30,7 @@ bool Sistema::preInicio()
 {
     if (!Config::leerConfig("Archivos/configuracion/config.dat") && _cargaInicial.archivoExiste())
     {
-        _mensajero.mensajeError("No se encuentra el archivo de configuraciÛn, se crear· uno nuevo y se usar·n valores por defecto.");
+        _mensajero.mensajeError("No se encuentra el archivo de configuraci√≥n, se crear√° uno nuevo y se usar√°n valores por defecto.");
         Config::crearConfig("Archivos/configuracion/config.dat");
     }
 }
@@ -36,11 +40,6 @@ void Sistema::iniciar()
 //    system("color B1");
     crearDirectoriosEsenciales();
 
-
-    vector <string> opcMenu = {"Materias", "Cuatrimestres cursados", "Eventos", "Notas finales", "Carrera", "Configuracion"};
-
-    Menu menu(opcMenu, "Sistema de Gestion de Carrera Universitaria");
-    int opc;
     int datosAgregadoss=0;
     bool materiaCargada = false, carreraCargada =false;
 
@@ -67,7 +66,7 @@ void Sistema::iniciar()
     mensaje += "\n";
 
 
-    ///Si falta 1 o 2 datos entra el bucle de carga inicial
+    ///Si falta 1 o  los 2 datos entra el bucle de carga inicial
     if(!materiaCargada || !carreraCargada)
         {
             menuCargaInicial();
@@ -82,6 +81,26 @@ void Sistema::iniciar()
             _mensajero.mensajeAdvertencia("No se puede continuar hasta no finalizar la carga inicial de datos. Reiniciar el programa.");
             return;
         }
+
+    // Chequeo eventos pr√≥ximos
+    string alertaEvento = "";
+    // TODO : leer limite de d√≠as de CONFIG
+    int diasDeChequeoEventosProximos = 8;
+    if (_gestorEventos.hayEventoEnLosProximosDias(diasDeChequeoEventosProximos))
+        {
+            alertaEvento = " (!)";
+        }
+
+    vector <string> opcMenu = {"Materias",
+                               "Cuatrimestres cursados",
+                               "Eventos" + alertaEvento,
+                               "Notas finales",
+                               "Carrera",
+                               "Configuracion"
+                              };
+
+    Menu menu(opcMenu, "Sistema de Gestion de Carrera Universitaria");
+    int opc;
 
     /// Una vez finalizada la carga inicial
     while(true)
@@ -153,7 +172,7 @@ void Sistema::menuCargaInicial()
     _mensajero.mensajeInformacion(mensaje);
 
 
-    _mensajero.mensajeInformacion("Como primer paso, se debe cargar la informaciÛn de la carrera y de todas las materias de la misma.");
+    _mensajero.mensajeInformacion("Como primer paso, se debe cargar la informaci√≥n de la carrera y de todas las materias de la misma.");
 
     vector <string> opcMenuInicial = {"> Cargar datos de la carrera ","> Cargar de forma manual las materias", "> Cargar las materias mediante archivo csv "};
     Menu menuInicial(opcMenuInicial, "MENU DE CARGA INICIAL");
@@ -205,8 +224,8 @@ void Sistema::menuCargaInicial()
 
                     _gestorMaterias.iniciarGestorMaterias();
 
-                    std::cout << "Luego de confirmar la carga actual, no podr·n agregarse nuevas materias." << std::endl;
-                    std::cout << "Si selecciona 'N', se guardar· informaciÛn parcial de las materias, permitiendo continuar luego." << std::endl;
+                    std::cout << "Luego de confirmar la carga actual, no podr√°n agregarse nuevas materias." << std::endl;
+                    std::cout << "Si selecciona 'N', se guardar√° informaci√≥n parcial de las materias, permitiendo continuar luego." << std::endl;
                     std::cout << "Desea dar por finalizada la carga de todas materias? (S/N) " << std::endl;
                     std::cin.clear();
 
@@ -214,7 +233,7 @@ void Sistema::menuCargaInicial()
                     respuesta = validar<char>();
                     if(respuesta=='S' || respuesta=='s')
                         {
-                            _mensajero.mensajeInformacion("Se ha guardado la informaciÛn total de las materias.\nPara el correcto funcionamiento del sistema, no pueden agregarse m·s materias.");
+                            _mensajero.mensajeInformacion("Se ha guardado la informaci√≥n total de las materias.\nPara el correcto funcionamiento del sistema, no pueden agregarse m√°s materias.");
                             CargaInicial datos;
                             _cargaInicial.leerRegistro(0,datos);
                             datos.aumentarcontadorDatosCargados();
@@ -224,7 +243,7 @@ void Sistema::menuCargaInicial()
                         }
                     else
                         {
-                            _mensajero.mensajeInformacion("Se ha guardado informaciÛn parcial de las materias.\nA˙n pueden agregarse m·s materias.");
+                            _mensajero.mensajeInformacion("Se ha guardado informaci√≥n parcial de las materias.\nA√∫n pueden agregarse m√°s materias.");
                         }
 
                     break;

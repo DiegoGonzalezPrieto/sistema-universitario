@@ -669,3 +669,56 @@ bool GestorCursadaMateria::seleccionarCuatrimestre(string &cuatrimestre)
 
     return true;
 }
+
+bool GestorCursadaMateria::seleccionarCursadaActualmenteEnCurso(CursadaMateria& cm)
+{
+    vector <CursadaMateria> vec, enCurso;
+    if (!_archivo.leerRegistros(vec))
+        {
+            _mensajero.mensajeError("No se pudo leer el archivo.");
+            return false;
+        }
+    if (!vec.size()>0)
+        {
+            _mensajero.mensajeError("No hay cursadas de materias en curso.");
+            return false;
+        }
+
+
+        for (int i=0; i<vec.size(); i++)
+        {
+            if (vec[i].getEstado()== MAT_EN_CURSO)
+                {
+                    enCurso.push_back(vec[i]);
+                }
+        }
+
+    cout << "Materias en curso:\n";
+    for (int i=0; i<enCurso.size(); i++)
+        {
+            if (enCurso[i].getEstado()== MAT_EN_CURSO)
+                {
+                    cout<< endl;
+                    cout << i+1 << ": " << enCurso[i].getNombreMateria();
+                }
+        }
+
+    cout << endl << "Seleccionar materia en curso: ";
+    int seleccion;
+    while (true)
+        {
+            seleccion = validar<int>();
+            if (seleccion<1 || seleccion> enCurso.size())
+                {
+                    _mensajero.mensajeError("Seleccionar un número entre 1 y " + to_string(enCurso.size()) + ".");
+                }
+            else
+                {
+                    break;
+                }
+        }
+
+    cm = enCurso[seleccion-1];
+    return true;
+
+}

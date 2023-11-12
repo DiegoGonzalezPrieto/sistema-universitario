@@ -125,7 +125,7 @@ std::string Evento::toString() const{
 
     aux += auxFecha.toString();
 
-    aux += ", hora: ";
+    aux += "- Hora: ";
 
     Horario auxHora = _fechaHorario.getHorario();
 
