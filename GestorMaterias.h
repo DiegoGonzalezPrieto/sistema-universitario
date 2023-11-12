@@ -10,7 +10,7 @@ class GestorMaterias {
 private:
 
     Archivo<Materia> archivoMaterias;
-    std::vector<Materia> registros;
+    std::vector<Materia> materias;
     Mensajero msj;
 
 public:
