@@ -55,6 +55,8 @@
 		<Unit filename="FechaHorario.h" />
 		<Unit filename="GestorCarrera.cpp" />
 		<Unit filename="GestorCarrera.h" />
+		<Unit filename="GestorConfig.cpp" />
+		<Unit filename="GestorConfig.h" />
 		<Unit filename="GestorCorrelativas.cpp" />
 		<Unit filename="GestorCorrelativas.h" />
 		<Unit filename="GestorCsv.cpp" />
@@ -83,6 +85,8 @@
 		<Unit filename="Sistema.h" />
 		<Unit filename="Unidad.cpp" />
 		<Unit filename="Unidad.h" />
+		<Unit filename="config.cpp" />
+		<Unit filename="config.h" />
 		<Unit filename="func_archivos.cpp" />
 		<Unit filename="func_archivos.h" />
 		<Unit filename="func_csv.cpp" />
