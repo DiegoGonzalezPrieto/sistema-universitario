@@ -134,7 +134,18 @@ void GestorConfig::editarValoresDeConfig()
     }
     else
     {
-        _m.mensajeError("Error al modificar la configuración.");
+        _m.mensajeError("No se pudo modificar la configuración.");
+        return;
     }
+    if (Config::leerConfig(_archivo.getNombre()))
+    {
+        _m.mensajeInformacion("Configuración del programa actualizada.");
+    }
+    else
+    {
+        _m.mensajeError("No se pudo actualizar la configuración, reiniciar el programa para que los cambios tengan efecto.");
+        return;
+    }
+
 
 }

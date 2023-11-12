@@ -4,6 +4,7 @@
 
 using namespace std;
 
+#include "config.h"
 #include "GestorEventos.h"
 #include "Menu.h"
 #include "func_utiles.h"
@@ -41,11 +42,10 @@ void GestorEventos::iniciar()
 
     string alertaEventosProximos = "";
     // TODO : leer limite de días de CONFIG
-    int diasDeChequeoEventosProximos = 8;
-    if (hayEventoEnLosProximosDias(diasDeChequeoEventosProximos))
+    if (hayEventoEnLosProximosDias(DIAS_DE_AVISO_EVENTO))
         {
             cout << endl;
-            _mensajero.mensajeAdvertencia("Hay eventos dentro de los próximos " + to_string(diasDeChequeoEventosProximos) + " días!");
+            _mensajero.mensajeAdvertencia("Hay eventos dentro de los próximos " + to_string(DIAS_DE_AVISO_EVENTO) + " días!");
             alertaEventosProximos = " (!)";
         }
 
@@ -70,7 +70,7 @@ void GestorEventos::iniciar()
                     break;
                 // ABM
                 case 1:
-                    mostrarEventosProximos(diasDeChequeoEventosProximos); // TODO : pasar parámetro a lectura de config
+                    mostrarEventosProximos(DIAS_DE_AVISO_EVENTO);
                     break;
                 case 2:
                     mostrarEventosDeEsteMesYSiguiente();
