@@ -19,9 +19,20 @@ Sistema::Sistema() :
     _gestorNotasFinales("Archivos/datos/notas.dat"),
     _cargaInicial("carga_inicial.dat"),
     _gestorCuatrimestre("Archivos/datos/cuatrimestre.dat"),
-    _gestorCsv("archivoImportacion.csv", "Archivos/datos/materias.dat", "carga_inicial.dat")
+    _gestorCsv("archivoImportacion.csv", "Archivos/datos/materias.dat", "carga_inicial.dat"),
+    _gestorConfig("Archivos/configuracion/config.dat")
+
 {
     //ctor
+}
+
+bool Sistema::preInicio()
+{
+    if (!Config::leerConfig("Archivos/configuracion/config.dat") && _cargaInicial.archivoExiste())
+    {
+        _mensajero.mensajeError("No se encuentra el archivo de configuraci√≥n, se crear√° uno nuevo y se usar√°n valores por defecto.");
+        Config::crearConfig("Archivos/configuracion/config.dat");
+    }
 }
 
 void Sistema::iniciar()
@@ -71,9 +82,9 @@ void Sistema::iniciar()
             return;
         }
 
-    // Chequeo eventos prÛximos
+    // Chequeo eventos pr√≥ximos
     string alertaEvento = "";
-    // TODO : leer limite de dÌas de CONFIG
+    // TODO : leer limite de d√≠as de CONFIG
     int diasDeChequeoEventosProximos = 8;
     if (_gestorEventos.hayEventoEnLosProximosDias(diasDeChequeoEventosProximos))
         {
@@ -123,7 +134,7 @@ void Sistema::iniciar()
                     break;
                 case 6:
                 {
-                    cout<<" En desarrollo "<<endl;
+                    _gestorConfig.iniciar();
                 }
                 break;
                 default:
@@ -161,7 +172,7 @@ void Sistema::menuCargaInicial()
     _mensajero.mensajeInformacion(mensaje);
 
 
-    _mensajero.mensajeInformacion("Como primer paso, se debe cargar la informaciÛn de la carrera y de todas las materias de la misma.");
+    _mensajero.mensajeInformacion("Como primer paso, se debe cargar la informaci√≥n de la carrera y de todas las materias de la misma.");
 
     vector <string> opcMenuInicial = {"> Cargar datos de la carrera ","> Cargar de forma manual las materias", "> Cargar las materias mediante archivo csv "};
     Menu menuInicial(opcMenuInicial, "MENU DE CARGA INICIAL");
@@ -213,8 +224,8 @@ void Sistema::menuCargaInicial()
 
                     _gestorMaterias.iniciarGestorMaterias();
 
-                    std::cout << "Luego de confirmar la carga actual, no podr·n agregarse nuevas materias." << std::endl;
-                    std::cout << "Si selecciona 'N', se guardar· informaciÛn parcial de las materias, permitiendo continuar luego." << std::endl;
+                    std::cout << "Luego de confirmar la carga actual, no podr√°n agregarse nuevas materias." << std::endl;
+                    std::cout << "Si selecciona 'N', se guardar√° informaci√≥n parcial de las materias, permitiendo continuar luego." << std::endl;
                     std::cout << "Desea dar por finalizada la carga de todas materias? (S/N) " << std::endl;
                     std::cin.clear();
 
@@ -222,7 +233,7 @@ void Sistema::menuCargaInicial()
                     respuesta = validar<char>();
                     if(respuesta=='S' || respuesta=='s')
                         {
-                            _mensajero.mensajeInformacion("Se ha guardado la informaciÛn total de las materias.\nPara el correcto funcionamiento del sistema, no pueden agregarse m·s materias.");
+                            _mensajero.mensajeInformacion("Se ha guardado la informaci√≥n total de las materias.\nPara el correcto funcionamiento del sistema, no pueden agregarse m√°s materias.");
                             CargaInicial datos;
                             _cargaInicial.leerRegistro(0,datos);
                             datos.aumentarcontadorDatosCargados();
@@ -232,7 +243,7 @@ void Sistema::menuCargaInicial()
                         }
                     else
                         {
-                            _mensajero.mensajeInformacion("Se ha guardado informaciÛn parcial de las materias.\nA˙n pueden agregarse m·s materias.");
+                            _mensajero.mensajeInformacion("Se ha guardado informaci√≥n parcial de las materias.\nA√∫n pueden agregarse m√°s materias.");
                         }
 
                     break;
