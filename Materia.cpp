@@ -89,7 +89,7 @@ std::string Materia::toString() const{
 
     for(int i = 0; i < CANTMATERIAS; i++){
 
-        if(getIdMateriasRequeridas(i) != "N/A"){
+        if(getIdMateriasRequeridas(i) != "N/A" && getIdMateriasRequeridas(i) != ""){
 
             if(i != (CANTMATERIAS -1)){
 
