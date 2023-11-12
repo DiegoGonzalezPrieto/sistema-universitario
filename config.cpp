@@ -27,7 +27,14 @@ bool Config::leerConfig(string rutaConfig)
         {
             if (c.getClave()=="DIAS_DE_AVISO_EVENTO")
                 {
+                    try
+                    {
                     DIAS_DE_AVISO_EVENTO = stoi(c.getValor());
+                    }
+                    catch (...)
+                    {
+                        m.mensajeError("Error al leer el dato " + c.getClave());
+                    }
                 }
             // Acá se agregarían nuevas variables posibles
 
