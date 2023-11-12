@@ -91,9 +91,7 @@ void Sistema::iniciar()
 
     // Chequeo eventos próximos
     string alertaEvento = "";
-    // TODO : leer limite de días de CONFIG
-    int diasDeChequeoEventosProximos = 8;
-    if (_gestorEventos.hayEventoEnLosProximosDias(diasDeChequeoEventosProximos))
+    if (_gestorEventos.hayEventoEnLosProximosDias(DIAS_DE_AVISO_EVENTO))
         {
             alertaEvento = " (!)";
         }
