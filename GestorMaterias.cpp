@@ -58,6 +58,47 @@ void GestorMaterias::iniciarGestorMaterias()
     while (op != 0);
 }
 
+
+void GestorMaterias::menuCortoGMaterias()
+{
+    std::vector<string> opciones =
+    {
+        "Modificar una materia",
+        "Mostrar materias",
+    };
+    string tituloMenu = "\n=====================================\n    ** Gestión de Materias **\n=====================================";
+
+    Menu menuPrincipal(opciones,tituloMenu) ;
+
+    int op;
+    do
+    {
+        op = menuPrincipal.mostrar();
+        switch(op)
+        {
+        case 0:
+            break;
+        case 1:
+            limpiarPantalla();
+            modificarMaterias();
+            limpiarPantalla();
+            break;
+        case 2:
+            limpiarPantalla();
+            mostrarMaterias();
+            limpiarPantalla();
+            break;
+        default:
+            cout << "Opcion no valida. Por favor, ingrese una opcion valida" << endl;
+            break;
+        }
+
+        cout << endl ;
+    }
+    while (op != 0);
+}
+
+
 void GestorMaterias::CargarMaterias()
 {
     while(true)
@@ -152,31 +193,68 @@ bool GestorMaterias::AgregarUnaMateria()
             return false ;
         }
     }
+
     Materia datosMateria;
     string datoString;
     int datoInt ;
+    bool grabo ;
 
-    cout << "Ingrese el nombre de la Materia: ";
-    getline(cin >> ws, datoString);
-    datosMateria.setNombreMateria(datoString);
+    do
+    {
+        cout << "Ingrese el nombre de la Materia: ";
+        getline(cin >> ws, datoString);
+        if (!nombreExiste(datoString))
+        {
+            datosMateria.setNombreMateria(datoString);
+            grabo = true;
+        }
+        else
+        {
+            msj.mensajeError("Ese nombre de materia ya existe. Intente nuevamente");
+            grabo = false;
+        }
+    }
+    while(!grabo);
 
-    cout << "Ingrese el ID de la Materia: ";
-    getline(cin >> ws, datoString);
-    datosMateria.setIdMateria(datoString);
+    do
+    {
+        cout << "Ingrese el ID de la Materia: ";
+        getline(cin >> ws, datoString);
+
+        if(!IDExiste(datoString))
+        {
+            datosMateria.setIdMateria(datoString);
+            grabo = true;
+        }
+        else
+        {
+            msj.mensajeError("Ese ID de materia ya existe. Intente nuevamente");
+            grabo = false;
+        }
+
+    }
+    while (!grabo);
+
+    string IDPropio = datoString;
 
     if(archivoMaterias.contarRegistros()>0)
     {
-        cout << "Ingrese la cantidad de materias requeridas: ";
-        datoInt=validar<int>();
-
-        if (datoInt>0)
+        bool valorValido;
+        do
         {
-            mostrarNombresMaterias();
-            if (!guardarIDsMatRequeridas(datoInt, datosMateria))
+            cout << "Ingrese la cantidad de materias requeridas: ";
+            datoInt=validar<int>();
+            ///LA CANTIDAD DE MATERIAS REQUERIDAS NO PUEDE SER MAYOR A LA CANTIDAD DE MATERIAS CARGADAS
+            if (datoInt>0 && datoInt<archivoMaterias.contarRegistros())
             {
-                msj.mensajeError("No se pudieron guardar las correlativas");
+                mostrarNombresMaterias();
+                if (!guardarIDsMatRequeridas(datoInt,IDPropio, datosMateria))
+                {
+                    msj.mensajeError("No se pudieron guardar las correlativas");
+                }
             }
         }
+        while(!valorValido);
 
     }
     else if (archivoMaterias.contarRegistros()==0)
@@ -185,16 +263,41 @@ bool GestorMaterias::AgregarUnaMateria()
         datosMateria.setIdMateriasRequeridas(0,"N/A");
     }
 
-    cout << "Ingrese el cuatrimestre sugerido: ";
-    cin >> datoInt ;
-    cin.ignore();
-    datosMateria.setCuatrimestreSugerido(datoInt) ;
+    do
+    {
+        cout << "Ingrese el cuatrimestre sugerido: ";
+        datoInt=validar<int>();
 
-    cout << "Ingrese la cantidad de cuatrimestres de duracion: " ;
-    cin >> datoInt ;
-    cin.ignore();
-    datosMateria.setCuatrimestreDeDuracion(datoInt) ;
+        if(datoInt>0 && datoInt<=12)
+        {
+            datosMateria.setCuatrimestreSugerido(datoInt) ;
+            grabo = true;
+        }
+        else
+        {
+            msj.mensajeError("Ingrese un numero de cuatrimestre valido. Intente nuevamente");
+            grabo = false;
+        }
+    }
+    while(!grabo);
 
+    do
+    {
+        cout << "Ingrese la cantidad de cuatrimestres de duracion:(1 o 2) " ;
+        datoInt=validar<int>();
+
+        if(datoInt>0 && datoInt<=2)
+        {
+            datosMateria.setCuatrimestreDeDuracion(datoInt) ;
+            grabo=true;
+        }
+        else
+        {
+            msj.mensajeError("Ingrese una duracion de materia valida. Intente nuevamente");
+            grabo = false;
+        }
+    }
+    while(!grabo);
 
     if (archivoMaterias.agregarRegistro(datosMateria))
     {
@@ -257,52 +360,59 @@ bool GestorMaterias::modificarUnaMateria()
             break;
             case 2:
             {
+                /*
                 string nuevoIDmateria;
                 cout << "Ingrese el nuevo ID de la materia: ";
                 getline(cin >> ws, nuevoIDmateria);
                 datosMateria.setIdMateria(nuevoIDmateria);
+                */
+
+                msj.mensajeInformacion("Los IDs de las materias cargadas ya no se pueden modificar");
                 break ;
             }
             break;
             case 3:
             {
+
+                limpiarCorrelativas(pos,datosMateria);
                 int cant;
                 cout << "Ingrese la cantidad de IDs de materias requeridas: ";
-                cin >> cant;
-                cin.ignore();
+                cant=validar<int>();
                 if (cant>0)
                 {
                     mostrarNombresMaterias();
-                    guardarIDsMatRequeridas(cant, datosMateria) ;
+                    guardarIDsMatRequeridas(cant,IDmateria, datosMateria) ;
                 }
-            break ;
+                break ;
             }
             break;
             case 4:
             {
                 int nuevoCuatrimestreSugerido;
                 cout << "Ingrese el nuevo cuatrimestre sugerido: ";
-                cin >> nuevoCuatrimestreSugerido;
-                cin.ignore();
+                nuevoCuatrimestreSugerido=validar<int>();
                 datosMateria.setCuatrimestreSugerido(nuevoCuatrimestreSugerido);
                 break ;
             }
             case 5:
             {
+                /*
                 int nuevoCuatrimestresDuracion;
                 cout << "Ingrese la cantidad de cuatrimestres de duracion: ";
                 cin >> nuevoCuatrimestresDuracion;
                 cin.ignore();
                 datosMateria.setCuatrimestreDeDuracion(nuevoCuatrimestresDuracion);
+                */
+                msj.mensajeInformacion("La duracion de las materias cargadas ya no se pueden modificar");
+                break ;
             }
             break;
 
             }
 
             char op ;
-            cin.ignore();
             cout << "Desea modificar otro dato de esta materia? (S/N): " ;
-            cin >> op ;
+            op=validar<char>();
             if (op == 'N' || op == 'n')
             {
                 break ;
@@ -337,6 +447,7 @@ void GestorMaterias::mostrarNombresMaterias()
     int cantMat = archivoMaterias.contarRegistros() ;
     if (archivoMaterias.leerRegistros(registros))
     {
+        cout << endl << "--- MATERIAS CARGADAS ---" << endl ;
         for (int i=0; i<cantMat; i++)
         {
             if (archivoMaterias.leerRegistro(i,datosMateria))
@@ -357,36 +468,76 @@ void GestorMaterias::mostrarNombresMaterias()
     }
 }
 
-bool GestorMaterias::guardarIDsMatRequeridas(int cant, Materia& datosMateria)
+bool GestorMaterias::guardarIDsMatRequeridas(int cant,string _IDpropio, Materia& datosMateria)
 {
 
     string nuevoID;
     Materia dataMateria;
+    string *vMat = new string[cant] {};
     int op ;
     cout << "Seleccione las materias requeridas" << endl ;
     for (int i=0; i<cant; i++)
     {
-
-        cin >> op ; ///CAMBIAR CIN CIN.IGNORE
-        cin.ignore();
-        if (op >= 1 && op <= archivoMaterias.contarRegistros())
+        bool IDvalido;
+        do
         {
 
-            if (archivoMaterias.leerRegistro(op-1,dataMateria))
+            op=validar<int>();
+
+            if (op >= 1 && op <= archivoMaterias.contarRegistros())
             {
-                nuevoID = dataMateria.getIdMateria() ;
-                datosMateria.setIdMateriasRequeridas(i, nuevoID);
+
+                if (archivoMaterias.leerRegistro(op-1,dataMateria))
+                {
+
+                    nuevoID = dataMateria.getIdMateria() ;
+
+                    bool repetido = false;
+                    for (int x = 0; x < cant; x++)
+                    {
+                        if (nuevoID == vMat[x])
+                        {
+                            repetido = true;
+                            break;
+                        }
+
+                    }
+
+                    if (nuevoID != _IDpropio)
+                    {
+
+                        if (!repetido)
+                        {
+
+                            datosMateria.setIdMateriasRequeridas(i, nuevoID);
+                            IDvalido = true;
+                            vMat[i]= nuevoID;
+                        }
+                        else
+                        {
+                            msj.mensajeError("Esa materia ya fue agregada");
+                            IDvalido = false;
+                        }
+                    }
+                    else
+                    {
+                        msj.mensajeError("La materia no puede ser correlativa de si misma, vuelva a intentarlo");
+                        IDvalido = false;
+                    }
+                }
+
+            }
+            else
+            {
+                msj.mensajeError("Ingreso no valido. Por favor, ingrese un numero valido.");
+                return false ;
             }
         }
-        else
-        {
-            msj.mensajeError("Ingreso no valido. Por favor, ingrese un numero valido.");
-            return false ;
-        }
-
+        while(!IDvalido);
 
 
     }
+    delete[] vMat;
     return true ;
 }
 
@@ -401,8 +552,7 @@ string GestorMaterias::buscarIDMateria()
         cout << endl << "Seleccione la materia que desea modificar: " ;
 
         /// PIDO INGRESAR LOS NUMEROS QUE CORRESPONDEN A LAS MATERIAS REQUERIDAS
-        cin >> op ;
-        cin.ignore();
+        op=validar<int>();
         if (op >= 1 && op <= archivoMaterias.contarRegistros()) ///VALIDO EL NUMERO
         {
             if (archivoMaterias.leerRegistro(op-1,datosMateria)) ///ABRO EL REGISTRO DE LA MATERIA QUE EL USUARIO SELECCIONO
@@ -423,22 +573,21 @@ string GestorMaterias::mostrarNombrePorID(string IDMateria)
     Materia datosMateria;
     int cantMat = archivoMaterias.contarRegistros() ;
     if (archivoMaterias.leerRegistros(registros))
+    {
+        for (int i=0; i<cantMat; i++)
         {
-            for (int i=0; i<cantMat; i++)
-                {
-                    archivoMaterias.leerRegistro(i,datosMateria);
-                    if (datosMateria.getIdMateria()==IDMateria)
-                        {
-                            return datosMateria.getNombreMateria();
-                        }
+            archivoMaterias.leerRegistro(i,datosMateria);
+            if (datosMateria.getIdMateria()==IDMateria)
+            {
+                return datosMateria.getNombreMateria();
+            }
 
-
-                }
 
         }
-                            return "";
-}
 
+    }
+    return "";
+}
 
 bool GestorMaterias::buscarMateria(std::string& IDmateria, Materia& datosMateria, int &pos)
 {
@@ -541,6 +690,52 @@ std::string GestorMaterias::seleccionarIdMateria()
     }
 
     delete[] filas;
+}
+
+bool GestorMaterias::nombreExiste(string _nombre)
+{
+    ///Chequear si el nombre existe
+    archivoMaterias.leerRegistros(registros);
+    int tam = archivoMaterias.contarRegistros() ;
+
+    for (int i = 0; i < tam; i++)
+    {
+        if (registros[i].getNombreMateria() == _nombre)
+        {
+            return true;
+        }
+    }
+
+    return false;
+
+}
+
+bool GestorMaterias::IDExiste(string _ID)
+{
+
+    ///Chequear si el ID existe
+    archivoMaterias.leerRegistros(registros);
+    int tam = archivoMaterias.contarRegistros() ;
+
+    for (int i = 0; i < tam; i++)
+    {
+        if (registros[i].getIdMateria() == _ID)
+        {
+            return true;
+        }
+    }
+
+    return false;
+
+
+}
+
+void GestorMaterias::limpiarCorrelativas(int pos,Materia& datosMateria)
+{
+        archivoMaterias.leerRegistro(pos,datosMateria);
+        for(int i = 0; i < CANTMATERIAS; i++){
+        datosMateria.setIdMateriasRequeridas(i,"N/A");
+        }
 }
 
 Archivo<Materia> GestorMaterias::getArchivoMaterias()
