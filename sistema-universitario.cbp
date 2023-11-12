@@ -59,10 +59,10 @@
 		<Unit filename="GestorCorrelativas.h" />
 		<Unit filename="GestorCsv.cpp" />
 		<Unit filename="GestorCsv.h" />
-		<Unit filename="GestorCursadaMateria.cpp" />
-		<Unit filename="GestorCursadaMateria.h" />
 		<Unit filename="GestorCuatrimestre.cpp" />
 		<Unit filename="GestorCuatrimestre.h" />
+		<Unit filename="GestorCursadaMateria.cpp" />
+		<Unit filename="GestorCursadaMateria.h" />
 		<Unit filename="GestorEventos.cpp" />
 		<Unit filename="GestorEventos.h" />
 		<Unit filename="GestorMaterias.cpp" />
@@ -90,6 +90,7 @@
 		<Unit filename="func_utiles.cpp" />
 		<Unit filename="func_utiles.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="rlutil.h" />
 		<Unit filename="sistema-universitario.layout" />
 		<Extensions />
 	</Project>

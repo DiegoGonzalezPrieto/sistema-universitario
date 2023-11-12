@@ -1,6 +1,6 @@
 #ifndef MENSAJERO_H
 #define MENSAJERO_H
-
+#include "rlutil.h"
 class Mensajero
 {
 public:

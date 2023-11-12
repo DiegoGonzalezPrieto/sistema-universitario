@@ -1,6 +1,5 @@
 #ifndef GESTORCURSADAMATERIA_H
 #define GESTORCURSADAMATERIA_H
-
 #include "CursadaMateria.h"
 #include "Archivo.h"
 #include "Mensajero.h"
