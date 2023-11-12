@@ -146,10 +146,11 @@ void Sistema::iniciar()
                 }
                 break;
                 case 7:
+                    limpiarPantallaSinPausa();
                     cout << "*******************************************************************" << endl;
                     cout << "*                                                                 *" << endl;
-                    cout << "*                             Créditos                            *" << endl;
-                    cout << "*                             ^^^^^^^^                            *" << endl;
+                    cout << "*                           Créditos                              *" << endl;
+                    cout << "*                           ^^^^^^^^                              *" << endl;
                     cout << "*                                                                 *" << endl;
                     cout << "*  Librerías de terceros:                                         *" << endl;
                     cout << "*                                                                 *" << endl;
