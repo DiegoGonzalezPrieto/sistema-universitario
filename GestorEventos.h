@@ -18,7 +18,7 @@ public:
     void setArchivo(std::string ruta);
 
     /// Loop principal
-    void iniciar(); // WIP
+    void iniciar();
 
     bool archivoExiste();
     bool crearArchivo();

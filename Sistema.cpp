@@ -28,10 +28,17 @@ Sistema::Sistema() :
 
 bool Sistema::preInicio()
 {
-    if (!Config::leerConfig("Archivos/configuracion/config.dat") && _cargaInicial.archivoExiste())
+    if (!Config::leerConfig("Archivos/configuracion/config.dat"))
     {
-        _mensajero.mensajeError("No se encuentra el archivo de configuración, se creará uno nuevo y se usarán valores por defecto.");
+        _mensajero.mensajeAdvertencia("No se encuentra el archivo de configuración, se creará uno nuevo y se usarán valores por defecto.");
         Config::crearConfig("Archivos/configuracion/config.dat");
+    }
+
+    // Crea el archivo de eventos, ya que lo revisa para instanciar el menú inicial
+    if (!_gestorEventos.getArchivo().archivoExiste())
+    {
+        _mensajero.mensajeAdvertencia("No se encuentra el archivo de eventos, se creará uno nuevo sin registros.");
+        _gestorEventos.getArchivo().crearArchivo();
     }
 }
 
