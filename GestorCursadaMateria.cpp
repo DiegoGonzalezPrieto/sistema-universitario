@@ -39,7 +39,7 @@ void GestorCursadaMateria::iniciar()
     // 1. Loop principal
     string tituloMenu = "\n=====================================\n** Gestión de Cursadas de Materias **\n=====================================";
     Menu m({"Ingresar nueva cursada de materia.",
-            "Ver cursadas de materias según su estado (incluye anuladas).",
+            "Ver cursadas de materias según su estado.",
             "Ver todas las cursadas de materias.",
             "Buscar cursada de materia.",
             "Modificar cursada de materia.",
@@ -76,19 +76,19 @@ void GestorCursadaMateria::iniciar()
                     mostrarTodasCursadaMateria();
                     break;
                 case 4:
-                    buscarCursadaMateria();
+                    buscarCursadaMateria(); // TODO
                     break;
                 case 5:
-                    modificarCursadaMateria();
+                    modificarCursadaMateria(); // TODO
                     break;
                 case 6:
-                    eliminarCursadaMateria();
+                    eliminarCursadaMateria(); // TODO
                     break;
                 }
         }
 }
 
-void GestorCursadaMateria::altaCursadaMateriaPorConsola()
+void GestorCursadaMateria::altaCursadaMateriaPorConsola() // WIP
 {
     cout << endl;
     cout << "***********************" << endl;
@@ -97,21 +97,22 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola()
     cout << endl;
 
 
+// 1. Pedir y validar datos para construir el objeto
+
     cout << "Qué materia se va a cursar?" << endl<< endl;
 
     string idMateria = gm.seleccionarIdMateria();
     Fecha hoy;
-    int periodo = hoy.getMes() > 6 ? 2 : 1;
+    int periodo = hoy.getMes() > 6 ? 1 : 2;
     string idCuatrimestre = to_string(hoy.getAnio()) + "0" + to_string(periodo);
     string futuroIdCursadaMateria = idMateria + idCuatrimestre;
     string erroresValidacion = "";
     if (!sePuedeCursar(futuroIdCursadaMateria, erroresValidacion))
-        {
-            cout << endl;
-            _mensajero.mensajeError("La materia seleccionada no se puede cursar.");
-            cout << erroresValidacion << endl;
-            return;
-        }
+    {
+        _mensajero.mensajeError("La materia seleccionada no se puede cursar.");
+        cout << erroresValidacion << endl;
+        return;
+    }
 
     if (!gc.validarSisepuedeCursar(idMateria))
         {
@@ -147,21 +148,23 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola()
     gc.mostrarCorrelativas(aux.getIdMateria());
 
 
-    // Carga de datos específicos de CM //
-
     CursadaMateria cursadaMateria(aux);
 
-    // ESTADO
+    // 1.b Pedir y validar datos de CursadaMateria, setearlos
+
+    // En el alta siempre están en estado: EN_CURSO
     EstadoMateria estado = MAT_EN_CURSO;
+//    if (!seleccionarEstadoCursadaMateria(estado)) return;
     cursadaMateria.setEstado(estado);
 
-    // DATOS:CURSADA
     int maxDatosCursada = cursadaMateria.getMaxDatosCursada(); // para validar
     vector<DatosCursada> datosCursada;
     if (!cargarDatosCursada(datosCursada, maxDatosCursada)) return;
     cursadaMateria.setDatosCursada(datosCursada);
 
-    // UNIDADES
+
+    char _idCuatrimestreInicio[7];
+
     int maxUnidades = cursadaMateria.getMaxUnidades(); // para validar
     cout << "Cantidad de unidades que posee la materia (0 para ignorar): ";
     int cantUnidades = validar<int>();
@@ -180,7 +183,7 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola()
 
     cursadaMateria.setUnidades(vUnidad);
 
-    // ID_CUATRIMESTRE (generado al inicio)
+    // guardar idCuatrimestre generado al inicio
     cursadaMateria.setIdCuatrimestreInicio(idCuatrimestre);
 
     _mensajero.mensajeInformacion("Guardando cursada...");
@@ -198,7 +201,7 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola()
 
 void GestorCursadaMateria::mostrarTodasCursadaMateria() // TODO
 {
-    limpiarPantallaSinPausa();
+
     cout << endl;
     cout << "****************************" << endl;
     cout << "***  Todas las Cursadas  ***" << endl;
@@ -312,11 +315,11 @@ bool GestorCursadaMateria::sePuedeCursar(string idCursadaMateria, string &mensaj
     bool cursable = true;
     CursadaMateria cm;
     if (buscarCursadaMateriaPorId(idCursadaMateria,cm))
-        {   limpiarPantallaSinPausa();
-            cursable = false;
-            mensajeError += "\n- Ya hay una cursada de de esta materia en este cuatrimestre:\n";
-            mensajeError += cm.toString();
-        }
+    {
+        cursable = false;
+        mensajeError += "\n- Ya hay una cursada de de esta materia en este cuatrimestre:\n";
+        mensajeError += cm.toString();
+    }
 
     // Otras validaciones posibles
 
@@ -332,103 +335,10 @@ void GestorCursadaMateria::modificarCursadaMateria() // TODO
         ya que en base a estos atributos se arma el id de CursadaMateria.
 
     */
-
-    cout << endl;
-    cout << "******************************************" << endl;
-    cout << "***  Modificar información de Cursada  ***" << endl;
-    cout << "******************************************" << endl;
-    cout << endl;
-    cout << "1) Seleccionar la materia a modificar" << endl;
-    cout << "..................................." << endl;
-
-    CursadaMateria cm = buscarCursadaMateria();
-    if (cm.getIdMateria()=="") return;
-
-    cout << "2) Seleccionar el campo a a modificar" << endl;
-    cout << "....................................." << endl;
-
-    Menu m({"Estado de la cursada",
-            "Reemplazar datos de cursada (horario - aula)",
-            "Agregar dato de cursada (horario - aula)",
-            "Guardar cambios"
-           }, "Campo a modificar:");
-    int opc;
-    bool guardar = false;
-    while (!guardar)
-        {
-            opc = m.mostrar();
-            if (opc==0) return;
-            switch (opc)
-                {
-                case 1:
-                {
-                    EstadoMateria e;
-                    if(!seleccionarEstadoCursadaMateria(e)) break;
-                    cm.setEstado(e);
-                    _mensajero.mensajeInformacion("Estado actualizado: " + cm.getEstadoToString() + "\n");
-                    break;
-                }
-                case 2:
-                {
-                    _mensajero.mensajeAdvertencia("Si se continúa, los datos de cursada serán reemplazados, perdiendo los datos previos.");
-                    cout << "Continuar (s/N)" << endl;
-                    string respuesta;
-                    getline(cin>>ws, respuesta);
-                    if (respuesta !="S" && respuesta != "s") break;
-
-                    vector<DatosCursada> aux;
-                    int maxDC = cm.getMaxDatosCursada();
-                    cargarDatosCursada(aux, maxDC);
-                    cm.setDatosCursada(aux);
-                    break;
-                }
-                case 3:
-                {
-                    vector<DatosCursada> aux, datosCursadaActuales = cm.getDatosCursada();
-                    cout << "\n\tDatos de cursada actualmente registrados:\n";
-                    cout << cm.getDatosCursadaToString();
-
-                    int maxDC = cm.getMaxDatosCursada() - datosCursadaActuales.size();
-                    cargarDatosCursada(aux, maxDC);
-                    datosCursadaActuales.insert(datosCursadaActuales.end(), aux.begin(), aux.end());
-                    cm.setDatosCursada(datosCursadaActuales);
-                    break;
-                }
-                case 4:
-                    guardar = true;
-                    break;
-                }
-        }
-
-    if(guardarCursadaMateriaModificada(cm))
-        {
-            _mensajero.mensajeInformacion("Cursada editada correctamente.");
-        }
-    else
-        {
-            _mensajero.mensajeError("No se pudo guardar la cursada editada.");
-        }
 }
-
 void GestorCursadaMateria::eliminarCursadaMateria()// TODO
 {
-    cout << endl;
-    cout << "*************************************" << endl;
-    cout << "***  Eliminar Cursada de Materia  ***" << endl;
-    cout << "*************************************" << endl;
-    cout << endl;
-    _mensajero.mensajeAdvertencia("La cursada seleccionada será marcada como Anulada y no podrá recuperarse.\n\tSolo podrá visualizarse en la búsqueda por estados.");
-
-    CursadaMateria cm = buscarCursadaMateria();
-    if (anularRegistroCursadaMateria(cm.getIdCursadaMateria()))
-        {
-
-            _mensajero.mensajeInformacion("Cursada eliminada correctamente.");
-        }
-    else
-        {
-            _mensajero.mensajeError("La cursada no pudo ser eliminada.");
-        }
+//    anularRegistroCursadaMateria();
 }
 
 // ---------------- Métodos de Apoyo ----------------------- //
@@ -483,7 +393,7 @@ vector<CursadaMateria> GestorCursadaMateria::buscarCursadasDeMateriaPorCuatrimes
 
     for (CursadaMateria cm : vec)
         {
-            if (cm.getIdCuatrimestreInicio()==idCuatrimestreInicio && cm.getEstado()!= MAT_ANULADA)
+            if (cm.getIdCuatrimestreInicio()==idCuatrimestreInicio)
                 {
                     aux.push_back(cm);
                 }
@@ -494,48 +404,15 @@ vector<CursadaMateria> GestorCursadaMateria::buscarCursadasDeMateriaPorCuatrimes
 }
 
 
-bool GestorCursadaMateria::anularRegistroCursadaMateria(string idCursadaMateria)
+bool GestorCursadaMateria::anularRegistroCursadaMateria()
 {
-    int pos = buscarPosicionEnArchivoPorId(idCursadaMateria);
-    if (pos<0) return false;
-
-    CursadaMateria aux;
-    if (!_archivo.leerRegistro(pos, aux)) return false;
-
-    aux.setEstado(MAT_ANULADA);
-
-    return _archivo.modificarRegistro(pos, aux);
-}
-
-int GestorCursadaMateria::buscarPosicionEnArchivoPorId(string idCursadaMateria)
-{
-    vector<CursadaMateria> aux;
-    if(!_archivo.leerRegistros(aux))
-        {
-            return -1;
-        }
-
-    for (int i=0; i<aux.size(); i++)
-        {
-            if (idCursadaMateria== aux[i].getIdCursadaMateria())
-                return i;
-        }
-    return -1;
-}
-
-bool GestorCursadaMateria::guardarCursadaMateriaModificada(CursadaMateria cm)
-{
-    int pos = buscarPosicionEnArchivoPorId(cm.getIdCursadaMateria());
-
-    if (pos<0) return false;
-
-    return _archivo.modificarRegistro(pos, cm);
-
+    // PASA A estado 3
+    MAT_ANULADA;
 }
 
 bool GestorCursadaMateria::seleccionarEstadoCursadaMateria(EstadoMateria &estado)
 {
-    Menu m({"En curso", "Regularizada", "Aprobada", "Anulada - Eliminada"}, "Seleccionar estado de la cursada.");
+    Menu m({"En curso", "Regularizada", "Aprobada", "Anulada"}, "Seleccionar estado de la cursada.");
     int seleccion = m.mostrar();
     if (seleccion==0) return false;
     switch (seleccion)
@@ -605,7 +482,7 @@ bool GestorCursadaMateria::cargarDatosCursada(vector<DatosCursada> &vec, int can
                 {
                     vecAux.push_back(aux);
                     aux.setAula("");
-                    Menu m({"Cargar otro horario de cursada", "Continuar"}, "Carga de Horarios de Cursada");
+                    Menu m({"Cargar otro horario de cursada", "Continuar"}, "Carga de Datos de Cursada");
                     int op = m.mostrar();
                     if (op != 1) break;
                     cantCargada++;
@@ -634,33 +511,20 @@ bool GestorCursadaMateria::cargarDatosCursada(vector<DatosCursada> &vec, int can
 bool GestorCursadaMateria::seleccionarCuatrimestre(string &cuatrimestre)
 {
     int anio=0;
-    bool actual = false;
-    Fecha hoy;
     while (true)
         {
-            cout << "Año del cuatrimestre (0 para cuatrimestre actual): ";
+            cout << "Año del cuatrimestre: ";
             anio = validar<int>();
-            if (anio == 0)
+            Fecha hoy;
+            if (anio > hoy.getAnio())
                 {
-                    anio = hoy.getAnio();
-                    actual = true;
-                    break;
-                }
-            else if (anio > hoy.getAnio() || anio < 1900)
-                {
-                    _mensajero.mensajeError("No se puede seleccionar un año a futuro ni anterior a 1900.");
+                    _mensajero.mensajeError("No se puede seleccionar un año a futuro.");
                 }
             else
                 {
                     break;
                 }
 
-        }
-    if (actual)
-        {
-            int periodo = hoy.getMes() > 6 ? 2 : 1;
-            cuatrimestre = std::to_string(anio) + "0"+ to_string(periodo);
-            return true;
         }
     Menu m({"Primer Cuatrimestre", "Segundo Cuatrimestre"});
     int periodo = m.mostrar();
@@ -668,57 +532,4 @@ bool GestorCursadaMateria::seleccionarCuatrimestre(string &cuatrimestre)
     cuatrimestre = std::to_string(anio) + "0"+ to_string(periodo);
 
     return true;
-}
-
-bool GestorCursadaMateria::seleccionarCursadaActualmenteEnCurso(CursadaMateria& cm)
-{
-    vector <CursadaMateria> vec, enCurso;
-    if (!_archivo.leerRegistros(vec))
-        {
-            _mensajero.mensajeError("No se pudo leer el archivo.");
-            return false;
-        }
-    if (!vec.size()>0)
-        {
-            _mensajero.mensajeError("No hay cursadas de materias en curso.");
-            return false;
-        }
-
-
-        for (int i=0; i<vec.size(); i++)
-        {
-            if (vec[i].getEstado()== MAT_EN_CURSO)
-                {
-                    enCurso.push_back(vec[i]);
-                }
-        }
-
-    cout << "Materias en curso:\n";
-    for (int i=0; i<enCurso.size(); i++)
-        {
-            if (enCurso[i].getEstado()== MAT_EN_CURSO)
-                {
-                    cout<< endl;
-                    cout << i+1 << ": " << enCurso[i].getNombreMateria();
-                }
-        }
-
-    cout << endl << "Seleccionar materia en curso: ";
-    int seleccion;
-    while (true)
-        {
-            seleccion = validar<int>();
-            if (seleccion<1 || seleccion> enCurso.size())
-                {
-                    _mensajero.mensajeError("Seleccionar un número entre 1 y " + to_string(enCurso.size()) + ".");
-                }
-            else
-                {
-                    break;
-                }
-        }
-
-    cm = enCurso[seleccion-1];
-    return true;
-
 }
