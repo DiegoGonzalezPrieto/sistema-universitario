@@ -6,8 +6,11 @@
 #include "func_utiles.h"
 
 
-GestorNotasFinales::GestorNotasFinales(std::string ruta) : _auxArchivo(ruta)
+GestorNotasFinales::GestorNotasFinales(std::string rutaNotas, std::string rutaMaterias, std::string rutaCursadaMaterias) :
+    _auxArchivo(rutaNotas),
+    gcm(rutaCursadaMaterias, rutaMaterias)
 {
+
 
 }
 
@@ -161,11 +164,9 @@ bool GestorNotasFinales::altaNotaFinal(){
 
     NotaFinal notaCargada;
 
-    std::string idMateria;
+    std::string idCursadaMateria = gcm.buscarCursadaMateria().getIdCursadaMateria();
     int nota, dia, mes, anio;
 
-    std::cout << "ID de la materia: ";
-    std::cin >> idMateria;
     std::cout << "Calificacion: ";
     nota = validar<int>("Por favor, reingrese la calificacion: ");
 
@@ -188,7 +189,7 @@ bool GestorNotasFinales::altaNotaFinal(){
     ///Verificamos si la fecha es valida, caso contrario se asigna la fecha de hoy
     Fecha fecha(dia,mes,anio);
 
-    notaCargada.setIdMateria(idMateria);
+    notaCargada.setIdCursadaMateria(idCursadaMateria);
     notaCargada.setNota(nota);
 
     if(fecha.esFechaValida() == false){
@@ -243,10 +244,7 @@ int GestorNotasFinales::eliminarNotaFinal(){
         return -1;
     }
 
-    std::string idMateria;
-
-    std::cout << "Ingrese el ID de materia correspondiente al registro a eliminar: ";
-    std::cin >> idMateria;
+    std::string idCursadaMateria = gcm.buscarCursadaMateria().getIdCursadaMateria();
 
 
     int cantRegistros = _auxArchivo.contarRegistros();
@@ -255,7 +253,7 @@ int GestorNotasFinales::eliminarNotaFinal(){
     std::vector <NotaFinal> listaNotas;
 
     ///Solamente estaran las notas con el ID Solicitado
-    std::vector <NotaFinal> notasIdMateriaSolicitado;
+    std::vector <NotaFinal> notasIdCursadaMateriaSolicitado;
 
     ///Guardamos la posicion frente al listado de todas las notas
     std::vector <int> posNotasIdMateriasSolicitado;
@@ -268,14 +266,14 @@ int GestorNotasFinales::eliminarNotaFinal(){
     ///Buscamos todas las notas para el IDMateria ingresado
     for(int i = 0; i < cantRegistros; i++){
 
-        if(listaNotas[i].getIdMateria() == idMateria){
+        if(listaNotas[i].getIdCursadaMateria() == idCursadaMateria){
 
-            notasIdMateriaSolicitado.push_back(listaNotas[i]);
+            notasIdCursadaMateriaSolicitado.push_back(listaNotas[i]);
             posNotasIdMateriasSolicitado.push_back(i);
         }
     }
 
-    int cantNotasIdSolicitado = notasIdMateriaSolicitado.size();
+    int cantNotasIdSolicitado = notasIdCursadaMateriaSolicitado.size();
 
 
     ///En caso de no haber coincidencias
@@ -288,7 +286,7 @@ int GestorNotasFinales::eliminarNotaFinal(){
     ///Mostramos las notas encontradas que coincidan con el ID ingresado
     for(int i = 0; i < cantNotasIdSolicitado; i++){
 
-        std::cout << "#" << i+1 << ": " << notasIdMateriaSolicitado[i].toString() << std::endl;
+        std::cout << "#" << i+1 << ": " << notasIdCursadaMateriaSolicitado[i].toString() << std::endl;
 
     }
 
@@ -305,10 +303,6 @@ int GestorNotasFinales::eliminarNotaFinal(){
         opc = validar<int>("Opcion: ");
     }
 
-
-
-
-
     char decisionFinal;
     std::cout << "¿Esta seguro que desea eliminarlo? (S - si, N - no): ";
     std::cin >> decisionFinal;
@@ -318,7 +312,6 @@ int GestorNotasFinales::eliminarNotaFinal(){
 
     case 's':
     case 'S':
-
         _auxArchivo.borrarRegistro(posNotasIdMateriasSolicitado[opc-1]);
         return 0;
         break;
@@ -331,7 +324,6 @@ int GestorNotasFinales::eliminarNotaFinal(){
         break;
 
     default:
-
         return -4;
         break;
 
@@ -383,10 +375,10 @@ int GestorNotasFinales::modificarNotaFinal(){
         return -1;
     }
 
-    std::string idMateria;
+    std::string idCursadaMateria;
 
-    std::cout << "Ingrese el ID de materia correspondiente al registro a modificar: ";
-    std::cin >> idMateria;
+    std::cout << "Seleccionar la Cursada cuya nota final desea modificar:";
+    idCursadaMateria = gcm.buscarCursadaMateria().getIdCursadaMateria();
 
 
     int cantRegistros = _auxArchivo.contarRegistros();
@@ -395,10 +387,10 @@ int GestorNotasFinales::modificarNotaFinal(){
     std::vector <NotaFinal> listaNotas;
 
     ///Solamente estaran las notas con el ID Solicitado
-    std::vector <NotaFinal> notasIdMateriaSolicitado;
+    std::vector <NotaFinal> notasIdCursadaMateriaSolicitado;
 
     ///Guardamos la posicion frente al listado de todas las notas
-    std::vector <int> posNotasIdMateriasSolicitado;
+    std::vector <int> posNotasIdCursadaMateriasSolicitado;
 
     if (_auxArchivo.leerRegistros(listaNotas) == false){
 
@@ -408,14 +400,14 @@ int GestorNotasFinales::modificarNotaFinal(){
     ///Buscamos todas las notas para el IDMateria ingresado
     for(int i = 0; i < cantRegistros; i++){
 
-        if(listaNotas[i].getIdMateria() == idMateria){
+        if(listaNotas[i].getIdCursadaMateria() == idCursadaMateria){
 
-            notasIdMateriaSolicitado.push_back(listaNotas[i]);
-            posNotasIdMateriasSolicitado.push_back(i);
+            notasIdCursadaMateriaSolicitado.push_back(listaNotas[i]);
+            posNotasIdCursadaMateriasSolicitado.push_back(i);
         }
     }
 
-    int cantNotasIdSolicitado = notasIdMateriaSolicitado.size();
+    int cantNotasIdSolicitado = notasIdCursadaMateriaSolicitado.size();
 
 
     ///En caso de no haber coincidencias
@@ -428,7 +420,7 @@ int GestorNotasFinales::modificarNotaFinal(){
     ///Mostramos las notas encontradas que coincidan con el ID ingresado
     for(int i = 0; i < cantNotasIdSolicitado; i++){
 
-        std::cout << "#" << i+1 << ": " << notasIdMateriaSolicitado[i].toString() << std::endl;
+        std::cout << "#" << i+1 << ": " << notasIdCursadaMateriaSolicitado[i].toString() << std::endl;
 
     }
 
@@ -447,7 +439,7 @@ int GestorNotasFinales::modificarNotaFinal(){
 
     ///No uso la clase menu porque me da la opcion de ingresar cero para salir
     std::cout << "Indique el campo que desea modificar: " << std::endl;
-    std::cout << "1 - ID Materia" << std::endl;
+    std::cout << "1 - Cursada Materia Asociada" << std::endl;
     std::cout << "2 - Fecha" << std::endl;
     std::cout << "3 - Calificacion" << std::endl;
     std::cout << "4 - Modificar todo el registro" << std::endl;
@@ -469,14 +461,11 @@ int GestorNotasFinales::modificarNotaFinal(){
 
         case 1:
         {
-            std::string nuevoIdMateria;
+            std::string nuevoIdCursadaMateria = gcm.buscarCursadaMateria().getIdCursadaMateria();
 
-            std::cout << "Ingrese el nuevo Id de materia: ";
-            std::cin >> nuevoIdMateria;
-
-            auxRegistro = listaNotas[posNotasIdMateriasSolicitado[opc-1]];
-            auxRegistro.setIdMateria(nuevoIdMateria);
-            _auxArchivo.modificarRegistro(posNotasIdMateriasSolicitado[opc-1], auxRegistro);
+            auxRegistro = listaNotas[posNotasIdCursadaMateriasSolicitado[opc-1]];
+            auxRegistro.setIdCursadaMateria(nuevoIdCursadaMateria);
+            _auxArchivo.modificarRegistro(posNotasIdCursadaMateriasSolicitado[opc-1], auxRegistro);
 
             break;
         }
@@ -491,7 +480,7 @@ int GestorNotasFinales::modificarNotaFinal(){
             std::cout << "Ingrese el año: ";
             anio = validar<int>("Por favor, reingrese el año: ");
 
-            auxRegistro = listaNotas[posNotasIdMateriasSolicitado[opc-1]];
+            auxRegistro = listaNotas[posNotasIdCursadaMateriasSolicitado[opc-1]];
 
             Fecha fecha(dia,mes,anio);
 
@@ -502,7 +491,7 @@ int GestorNotasFinales::modificarNotaFinal(){
                 auxRegistro.setFecha(Fecha(dia, mes, anio));
             }
 
-            _auxArchivo.modificarRegistro(posNotasIdMateriasSolicitado[opc-1], auxRegistro);
+            _auxArchivo.modificarRegistro(posNotasIdCursadaMateriasSolicitado[opc-1], auxRegistro);
 
             break;
         }
@@ -520,20 +509,18 @@ int GestorNotasFinales::modificarNotaFinal(){
                 nuevaCalificacion = validar<int>("Por favor, reingrese la calificacion: ");
             }
 
-            auxRegistro = listaNotas[posNotasIdMateriasSolicitado[opc-1]];
+            auxRegistro = listaNotas[posNotasIdCursadaMateriasSolicitado[opc-1]];
             auxRegistro.setNota(nuevaCalificacion);
-            _auxArchivo.modificarRegistro(posNotasIdMateriasSolicitado[opc-1], auxRegistro);
+            _auxArchivo.modificarRegistro(posNotasIdCursadaMateriasSolicitado[opc-1], auxRegistro);
 
             break;
         }
         case 4:
         {
 
-            std::string nuevoIdMateria;
+            std::string nuevoIdCursadaMateria = gcm.buscarCursadaMateria().getIdCursadaMateria();
             int nuevaCalificacion, dia, mes, anio;
 
-            std::cout << "ID de la materia: ";
-            std::cin >> nuevoIdMateria;
             std::cout << "Calificacion: ";
             nuevaCalificacion = validar<int>("Por favor, reingrese la calificacion: ");
 
@@ -550,8 +537,8 @@ int GestorNotasFinales::modificarNotaFinal(){
             std::cout << "Ingrese el año: ";
             anio = validar<int>("Por favor, reingrese el año: ");
 
-            auxRegistro = listaNotas[posNotasIdMateriasSolicitado[opc-1]];
-            auxRegistro.setIdMateria(nuevoIdMateria);
+            auxRegistro = listaNotas[posNotasIdCursadaMateriasSolicitado[opc-1]];
+            auxRegistro.setIdCursadaMateria(nuevoIdCursadaMateria);
             auxRegistro.setNota(nuevaCalificacion);
 
             Fecha fecha(dia,mes,anio);
@@ -563,7 +550,7 @@ int GestorNotasFinales::modificarNotaFinal(){
                 auxRegistro.setFecha(Fecha(dia, mes, anio));
             }
 
-            _auxArchivo.modificarRegistro(posNotasIdMateriasSolicitado[opc-1], auxRegistro);
+            _auxArchivo.modificarRegistro(posNotasIdCursadaMateriasSolicitado[opc-1], auxRegistro);
 
             break;
 

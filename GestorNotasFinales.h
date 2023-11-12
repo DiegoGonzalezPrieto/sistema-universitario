@@ -4,6 +4,7 @@
 #include "NotaFinal.h"
 #include "Archivo.h"
 #include "Mensajero.h"
+#include "GestorCursadaMateria.h"
 
 enum TipoError{
 
@@ -20,7 +21,7 @@ enum TipoError{
 class GestorNotasFinales
 {
     public:
-        GestorNotasFinales(std::string ruta);
+        GestorNotasFinales(std::string rutaNotasFinales, std::string rutaMaterias, std::string rutaCursadaMateria);
         virtual ~GestorNotasFinales();
 
 
@@ -31,6 +32,7 @@ class GestorNotasFinales
 
         Archivo <NotaFinal> _auxArchivo;
         Mensajero _mensajero;
+        GestorCursadaMateria gcm;
 
         bool altaNotaFinal();
         int listadoNotasFinales();
