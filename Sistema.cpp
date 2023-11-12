@@ -154,10 +154,11 @@ void Sistema::iniciar()
 
 void Sistema::crearDirectoriosEsenciales()
 {
+    GestorDirectorios gd;
 
-    crearDirectorios("Archivos/datos");
-    crearDirectorios("Archivos/configuracion");
-    crearDirectorios("Archivos/cursada");
+    gd.crearDirectorios("Archivos/datos");
+    gd.crearDirectorios("Archivos/configuracion");
+    gd.crearDirectorios("Archivos/cursada");
 
     return;
 }
