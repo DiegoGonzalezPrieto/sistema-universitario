@@ -1,10 +1,11 @@
 #ifndef GESTORCUATRIMESTRE_H
 #define GESTORCUATRIMESTRE_H
+#include "CursadaMateria.h"
+#include "GestorCursadaMateria.h"
 #include "Cuatrimestre.h"
 #include "Archivo.h"
 #include "Mensajero.h"
-#include "GestorCorrelativas.h"
-#include "GestorMaterias.h"
+#include "Fecha.h"
 
 
 class GestorCuatrimestre {
@@ -15,7 +16,9 @@ public:
     void iniciarCuatrimestre();
     void cerrarCuatrimestre();
     void modificarCuatrimestreActual();
-
+    void mostrarInformacionCuatrimestreActual();
+    void mostrarTodosCuatrimestresCursados();
+    void actualizarMateriasEnCursoEnCuatrimestre();
 private:
 
     Archivo<Cuatrimestre> archivoCuatrimestres;

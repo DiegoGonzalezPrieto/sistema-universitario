@@ -198,7 +198,7 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola()
 
 void GestorCursadaMateria::mostrarTodasCursadaMateria() // TODO
 {
-
+    limpiarPantallaSinPausa();
     cout << endl;
     cout << "****************************" << endl;
     cout << "***  Todas las Cursadas  ***" << endl;
@@ -312,7 +312,7 @@ bool GestorCursadaMateria::sePuedeCursar(string idCursadaMateria, string &mensaj
     bool cursable = true;
     CursadaMateria cm;
     if (buscarCursadaMateriaPorId(idCursadaMateria,cm))
-        {
+        {   limpiarPantallaSinPausa();
             cursable = false;
             mensajeError += "\n- Ya hay una cursada de de esta materia en este cuatrimestre:\n";
             mensajeError += cm.toString();

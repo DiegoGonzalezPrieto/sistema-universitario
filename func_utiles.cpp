@@ -2,6 +2,8 @@
 
 #include "func_utiles.h"
 
+#include "rlutil.h"
+
 bool cargarCadenaConString(std::string input, char* output, size_t tamanioOutput)
 {
     int largoInput = input.size();
@@ -59,8 +61,26 @@ float obtenerNumeroDecimal(std::string mensajeError)
         }
 }
 void limpiarPantalla(){
+    rlutil::saveDefaultColor();
+    rlutil::setBackgroundColor(rlutil::WHITE);
+    rlutil::setColor(rlutil::LIGHTMAGENTA);
     std::cout<<"Presione una tecla para continuar . . . ";
+    rlutil::resetColor();
     std::cin.get();
+
+#ifdef _WIN32
+#define SISTEMA "Windows"
+#elif __linux__
+#define SISTEMA "Linux"
+#endif
+#ifdef _WIN32
+    system("cls");
+#elif __linux__
+    system("clear");
+#endif
+
+}
+void limpiarPantallaSinPausa(){
 #ifdef _WIN32
 #define SISTEMA "Windows"
 #elif __linux__
