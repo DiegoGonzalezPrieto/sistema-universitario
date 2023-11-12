@@ -245,13 +245,23 @@ bool GestorMaterias::AgregarUnaMateria()
             cout << "Ingrese la cantidad de materias requeridas: ";
             datoInt=validar<int>();
             ///LA CANTIDAD DE MATERIAS REQUERIDAS NO PUEDE SER MAYOR A LA CANTIDAD DE MATERIAS CARGADAS
-            if (datoInt>0 && datoInt<archivoMaterias.contarRegistros())
+            if (datoInt>0 && datoInt<=archivoMaterias.contarRegistros())
             {
                 mostrarNombresMaterias();
                 if (!guardarIDsMatRequeridas(datoInt,IDPropio, datosMateria))
                 {
                     msj.mensajeError("No se pudieron guardar las correlativas");
                 }
+                valorValido = true;
+            }
+            else if(datoInt==0)
+            {
+            datosMateria.setIdMateriasRequeridas(0,"N/A");
+            valorValido = true;
+            } else
+            {
+                msj.mensajeError("Numero ingresado no valido. Intente de nuevo");
+                valorValido = false;
             }
         }
         while(!valorValido);
