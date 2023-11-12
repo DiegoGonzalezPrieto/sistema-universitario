@@ -116,7 +116,7 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola()
     if (!gc.validarSisepuedeCursar(idMateria))
         {
             _mensajero.mensajeAdvertencia("La materia seleccionada tiene correlativas sin aprobar");
-            gc.mostrarCorrelativas(idMateria);
+            gc.mostrarCorrelativasConEstado(idMateria);
             Menu mCor({"Continuar de todos modos."}, "Desea continuar registrando la cursada de esta materia?");
             int seguir = mCor.mostrar();
             if (seguir==0) return;
@@ -366,6 +366,7 @@ void GestorCursadaMateria::modificarCursadaMateria() // TODO
                     if(!seleccionarEstadoCursadaMateria(e)) break;
                     cm.setEstado(e);
                     _mensajero.mensajeInformacion("Estado actualizado: " + cm.getEstadoToString() + "\n");
+                    _mensajero.mensajeAdvertencia("Se debe seleccionar la opción de Guardar para hacer efectivos los cambios.\n");
                     break;
                 }
                 case 2:
@@ -380,6 +381,7 @@ void GestorCursadaMateria::modificarCursadaMateria() // TODO
                     int maxDC = cm.getMaxDatosCursada();
                     cargarDatosCursada(aux, maxDC);
                     cm.setDatosCursada(aux);
+                    _mensajero.mensajeAdvertencia("Se debe seleccionar la opción de Guardar para hacer efectivos los cambios.\n");
                     break;
                 }
                 case 3:
@@ -392,6 +394,7 @@ void GestorCursadaMateria::modificarCursadaMateria() // TODO
                     cargarDatosCursada(aux, maxDC);
                     datosCursadaActuales.insert(datosCursadaActuales.end(), aux.begin(), aux.end());
                     cm.setDatosCursada(datosCursadaActuales);
+                    _mensajero.mensajeAdvertencia("Se debe seleccionar la opción de Guardar para hacer efectivos los cambios.\n");
                     break;
                 }
                 case 4:
