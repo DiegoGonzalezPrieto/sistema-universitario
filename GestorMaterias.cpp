@@ -567,20 +567,18 @@ string GestorMaterias::mostrarNombrePorID(string IDMateria)
 
 bool GestorMaterias::buscarMateria(std::string& IDmateria, Materia& datosMateria, int &pos)
 {
-    archivoMaterias.leerRegistros(materias);
+    Materia mat;
     int tam = archivoMaterias.contarRegistros() ;
-
-    for (int i = 0; i < tam; i++)
+    for (int i=0;i<tam;i++)
     {
-        if (materias[i].getIdMateria() == IDmateria)
+        archivoMaterias.leerRegistro(i,mat);
+        if (mat.getIdMateria() == IDmateria)
         {
-
-            datosMateria = materias[i];
+            datosMateria = mat;
             pos = i ;
             return true;
         }
     }
-
     return false;
 
 }
