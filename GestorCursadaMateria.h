@@ -67,6 +67,8 @@ class GestorCursadaMateria
         bool cargarDatosCursada(std::vector<DatosCursada>&, int cantMax);
         /// Permite al usuario seleccionar un cuatrimestre (año + 1|2)
         bool seleccionarCuatrimestre(std::string &cuatrimestre);
+        /// Para obtener una de las cursadas actualmente en curso, útil en otros gestores
+        bool seleccionarCursadaActualmenteEnCurso(CursadaMateria&);
     protected:
 
     private:

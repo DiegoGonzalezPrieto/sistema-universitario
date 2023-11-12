@@ -5,11 +5,13 @@
 #include "Evento.h"
 #include "Fecha.h"
 #include "Mensajero.h"
+#include "GestorMaterias.h"
+#include "GestorCursadaMateria.h"
 
 class GestorEventos
 {
 public:
-    GestorEventos(std::string nombreArchivo);
+    GestorEventos(std::string nombreArchivo, std::string archivoMaterias, std::string archivoCursadaMaterias);
     ~GestorEventos(); // TODO
 
     Archivo<Evento> getArchivo();
@@ -22,10 +24,14 @@ public:
     bool crearArchivo();
 
 
+    /// Muestra los eventos próximos, según el limite definido en parámetro (TODO : en config).
+    void mostrarEventosProximos(int);
+
     /// Listar todos los eventos.
-    void mostrarTodosEventos(); // TODO : ordenar por fechaHorario
+    void mostrarTodosEventos();
+
     /// Mostrar eventos de este mes y del mes que viene
-    void mostrarEventosProximos();
+    void mostrarEventosDeEsteMesYSiguiente();
 
     /// Alta interactiva de Evento
     void altaEventoPorConsola(); // TODO : seleccionar materia asociada
@@ -39,6 +45,8 @@ public:
     /// Eliminar evento de forma interactiva
     void eliminarEvento();
 
+
+    // --------- METODOS DE APOYO --------------//
 
     /// Guardar nuevo objeto evento en el archivo.
     bool guardarNuevoEvento(Evento);
@@ -58,12 +66,20 @@ public:
     void ordenarEventosPorFecha(std::vector<Evento>&, bool descendente=true);
     /// Revisa este mes y el siguiente por algún evento.
     bool hayEventoProximo();
+
+    /// Confirma si hay algún evento activo en los próximos N días
+    bool hayEventoEnLosProximosDias(int dias);
+    /// Devuelve los eventos activos de los próximos N días
+    std::vector<Evento> obtenerEventosDeLosProximosDias(int dias);
+    /// Devuelve un string con la información del evento y el nombre de la materia asociada
+    std::string eventoToStringCompleto(Evento e);
 protected:
 
 private:
     Archivo<Evento> _archivo;
     Mensajero _mensajero;
-
+    GestorMaterias gm;
+    GestorCursadaMateria gcm;
     /// Brinda opciones de tipos de evento y devuelve el código del tipo seleccionado
     char seleccionarTipoEvento(); // TODO
 

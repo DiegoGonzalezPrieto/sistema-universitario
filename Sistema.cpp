@@ -13,8 +13,12 @@ bool crearDirectorios(string ruta)
 }
 
 Sistema::Sistema() :
-    _gestorCarrera("Archivos/datos/carrera.dat","carga_inicial.dat"), _gestorEventos("Archivos/datos/eventos.dat"), _gestorMaterias("Archivos/datos/materias.dat"),
-    _gestorNotasFinales("Archivos/datos/notas.dat"), _cargaInicial("carga_inicial.dat"),_gestorCuatrimestre("Archivos/datos/cuatrimestre.dat"),
+    _gestorCarrera("Archivos/datos/carrera.dat","carga_inicial.dat"),
+    _gestorEventos("Archivos/datos/eventos.dat", "Archivos/datos/materias.dat", "Archivos/datos/cursada_materias.dat" ),
+    _gestorMaterias("Archivos/datos/materias.dat"),
+    _gestorNotasFinales("Archivos/datos/notas.dat"),
+    _cargaInicial("carga_inicial.dat"),
+    _gestorCuatrimestre("Archivos/datos/cuatrimestre.dat"),
     _gestorCsv("archivoImportacion.csv", "Archivos/datos/materias.dat", "carga_inicial.dat")
 {
     //ctor
@@ -25,11 +29,6 @@ void Sistema::iniciar()
 //    system("color B1");
     crearDirectoriosEsenciales();
 
-
-    vector <string> opcMenu = {"Materias", "Cuatrimestres cursados", "Eventos", "Notas finales", "Carrera", "Configuracion"};
-
-    Menu menu(opcMenu, "Sistema de Gestion de Carrera Universitaria");
-    int opc;
     int datosAgregadoss=0;
     bool materiaCargada = false, carreraCargada =false;
 
@@ -56,7 +55,7 @@ void Sistema::iniciar()
     mensaje += "\n";
 
 
-    ///Si falta 1 o 2 datos entra el bucle de carga inicial
+    ///Si falta 1 o  los 2 datos entra el bucle de carga inicial
     if(!materiaCargada || !carreraCargada)
         {
             menuCargaInicial();
@@ -71,6 +70,26 @@ void Sistema::iniciar()
             _mensajero.mensajeAdvertencia("No se puede continuar hasta no finalizar la carga inicial de datos. Reiniciar el programa.");
             return;
         }
+
+    // Chequeo eventos próximos
+    string alertaEvento = "";
+    // TODO : leer limite de días de CONFIG
+    int diasDeChequeoEventosProximos = 8;
+    if (_gestorEventos.hayEventoEnLosProximosDias(diasDeChequeoEventosProximos))
+        {
+            alertaEvento = " (!)";
+        }
+
+    vector <string> opcMenu = {"Materias",
+                               "Cuatrimestres cursados",
+                               "Eventos" + alertaEvento,
+                               "Notas finales",
+                               "Carrera",
+                               "Configuracion"
+                              };
+
+    Menu menu(opcMenu, "Sistema de Gestion de Carrera Universitaria");
+    int opc;
 
     /// Una vez finalizada la carga inicial
     while(true)

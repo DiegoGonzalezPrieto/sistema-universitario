@@ -9,7 +9,10 @@ using namespace std;
 #include "func_utiles.h"
 
 
-GestorEventos::GestorEventos(string nombreArchivo): _archivo(nombreArchivo)
+GestorEventos::GestorEventos(string nombreArchivo, string archivoMaterias, string archivoCursadaMaterias):
+    _archivo(nombreArchivo),
+    gm(archivoMaterias),
+    gcm(archivoCursadaMaterias, archivoMaterias)
 {}
 
 GestorEventos::~GestorEventos()
@@ -30,20 +33,31 @@ void GestorEventos::setArchivo(string ruta)
 
 void GestorEventos::iniciar()
 {
-    // 0. Chequear o crear archivo.
+    // 0. Chequear o crear archivo y revisar por eventos próximos
     if (!getArchivo().archivoExiste())
         {
             getArchivo().crearArchivo();
         }
 
+    string alertaEventosProximos = "";
+    // TODO : leer limite de días de CONFIG
+    int diasDeChequeoEventosProximos = 8;
+    if (hayEventoEnLosProximosDias(diasDeChequeoEventosProximos))
+        {
+            cout << endl;
+            _mensajero.mensajeAdvertencia("Hay eventos dentro de los próximos " + to_string(diasDeChequeoEventosProximos) + " días!");
+            alertaEventosProximos = " (!)";
+        }
+
     // 1. Loop principal
     string tituloMenu = "\n========================\n** Gestión de Eventos **\n========================";
-    Menu m({"Ver todos los eventos.",
-            "Ver eventos de este mes y el siguiente",
-            "Ingresar nuevo evento",
-            "Modificar evento existente",
-            "Buscar evento por fecha",
-            "Eliminar evento"},
+    Menu m({ "Ver eventos próximos." + alertaEventosProximos,
+             "Ver eventos de este mes y el siguiente",
+             "Ver todos los eventos.",
+             "Ingresar nuevo evento",
+             "Modificar evento existente",
+             "Buscar evento por fecha",
+             "Eliminar evento"},
            tituloMenu);
 
     int opc= 1;
@@ -56,21 +70,24 @@ void GestorEventos::iniciar()
                     break;
                 // ABM
                 case 1:
-                    mostrarTodosEventos();
+                    mostrarEventosProximos(diasDeChequeoEventosProximos); // TODO : pasar parámetro a lectura de config
                     break;
                 case 2:
-                    mostrarEventosProximos();
+                    mostrarEventosDeEsteMesYSiguiente();
                     break;
                 case 3:
-                    altaEventoPorConsola();
+                    mostrarTodosEventos();
                     break;
                 case 4:
-                    modificarEvento();
+                    altaEventoPorConsola();
                     break;
                 case 5:
-                    mostrarEventosEnFecha();
+                    modificarEvento();
                     break;
                 case 6:
+                    mostrarEventosEnFecha();
+                    break;
+                case 7:
                     eliminarEvento();
                     break;
                 }
@@ -109,7 +126,7 @@ int GestorEventos::seleccionarEvento()
             if ( fechaEvento.getAnio() == anio && fechaEvento.getMes() == mes)
                 {
                     eventosSeleccionados.push_back(e);
-                    cout << "Evento " << eventosSeleccionados.size() << ":" << endl << e.toString() << endl;
+                    cout << "Evento " << eventosSeleccionados.size() << ":" << endl << eventoToStringCompleto(e) << endl;
                     cout << "--------" << endl;
                 }
         }
@@ -142,6 +159,30 @@ bool GestorEventos::guardarNuevoEvento(Evento e)
     return a.agregarRegistro(e);
 }
 
+
+void GestorEventos::mostrarEventosProximos(int diasLimite)
+{
+    cout << endl;
+    cout << "****************************************" << endl;
+    cout << "***   Eventos de los próximos " + to_string(diasLimite) + " días ***" << endl;
+    cout << "****************************************" << endl;
+    cout << endl;
+    if (!hayEventoEnLosProximosDias(diasLimite))
+        {
+            _mensajero.mensajeInformacion("No hay eventos en los próximos " + to_string(diasLimite) + " días.");
+            return;
+        }
+
+    vector<Evento> vec = obtenerEventosDeLosProximosDias(diasLimite);
+
+    for (Evento e : vec)
+        {
+            cout << eventoToStringCompleto(e) << endl;
+            cout << endl;
+        }
+
+}
+
 void GestorEventos::mostrarTodosEventos()
 {
     vector<Evento> ve = obtenerEventosActivos();
@@ -152,16 +193,16 @@ void GestorEventos::mostrarTodosEventos()
         }
 
     cout << endl;
-    cout << "********************" << endl;
-    cout << "***   Eventos    ***" << endl;
-    cout << "********************" << endl;
+    cout << "******************************" << endl;
+    cout << "***   Todos los Eventos    ***" << endl;
+    cout << "******************************" << endl;
     cout << endl;
 
     ordenarEventosPorFecha(ve);
 
     for (Evento e : ve)
         {
-            cout << e.toString() << endl;
+            cout << eventoToStringCompleto(e) << endl;
             cout << "--------" << endl;
         }
 }
@@ -234,22 +275,21 @@ void GestorEventos::altaEventoPorConsola()
     getline(cin>>ws, informacion);
     e.setInformacion(informacion);
 
+
     char opc;
     cout<< "Está asociado a alguna materia actualmente en curso? (S/N) ";
     cin >> opc;
     if (opc == 's' || opc == 'S')
         {
-            string idCursadaMateria;
-            cout << "Indicar materia asociada: ";
-            getline(cin>>ws, idCursadaMateria);
-
-            // TODO : selector de Materias
-
-            e.setIdCursadaMateria(idCursadaMateria);
+            CursadaMateria cm;
+            if(!gcm.seleccionarCursadaActualmenteEnCurso(cm))
+                {
+                    e.setIdCursadaMateria("");
+                }
+            e.setIdCursadaMateria(cm.getIdCursadaMateria());
         }
     else
         {
-
             e.setIdCursadaMateria("");
         }
 
@@ -275,15 +315,15 @@ void GestorEventos::altaEventoPorConsola()
     guardo = guardarNuevoEvento(e);
     if (guardo)
         {
-            _mensajero.mensajeInformacion("Evento guardado correctamente:\n\n" + e.toString() + "\n");
+            cout << endl;
+            _mensajero.mensajeInformacion("Evento guardado correctamente:\n\n" + eventoToStringCompleto(e) + "\n");
         }
     else
         {
-
+            cout << endl;
             _mensajero.mensajeError("El evento no pudo ser guardado.");
         }
 }
-
 
 bool GestorEventos::modificarEvento()
 {
@@ -301,7 +341,7 @@ bool GestorEventos::modificarEvento()
 
     Evento e = buscarPorId(idEvento);
 
-    cout << "\nEvento seleccionado:\n\n" << e.toString() << endl << endl;
+    cout << "\nEvento seleccionado:\n\n" << eventoToStringCompleto(e) << endl << endl;
 
     while (opcion != 0)
         {
@@ -368,79 +408,97 @@ bool GestorEventos::modificarEvento()
                         }
                 }
                 break;
-        case 2:
-            {
-                string nuevaDescrip = "";
-                cout << "\nLa descripción actual es: " << e.getDescripcion() << endl;
-                cout << "\nIngresar nueva descripción: ";
-                getline(cin>>ws, nuevaDescrip);
-                e.setDescripcion(nuevaDescrip);
-                bool guardo = guardarEventoModificado(e);
-                if (!guardo)
-                    {
-                        _mensajero.mensajeError("El evento modificado no pudo guardarse.\n");
-                    }
-                else
-                    {
-                        _mensajero.mensajeInformacion("Descripción modificada correctamente");
-                    }
-            }
-            break;
-        case 3:
-            {
-                string nuevaInfo = "";
-                cout << "\nLa información actual es: " << e.getInformacion() << endl;
-                cout << "\nIngresar nueva información: ";
-                getline(cin>>ws, nuevaInfo);
-                e.setInformacion(nuevaInfo);
-                bool guardo = guardarEventoModificado(e);
-                if (!guardo)
-                    {
-                        _mensajero.mensajeError("El evento modificado no pudo guardarse.\n");
-                    }
-                else
-                    {
-                        _mensajero.mensajeInformacion("Información modificada correctamente");
-                    }
-            }
-            break;
-        case 4:
-            {
-                int tipoEventoSeleccionado;
-                char tipoEvento;
-                cout << "\nEl tipo de evento actual es: " << e.getCategoriaDeEvento() << endl;
-                Menu menu({"Examen", "Otro"}, "Seleccionar tipo de evento");
-                tipoEventoSeleccionado = menu.mostrar();
-                if (tipoEventoSeleccionado == 0) break;
-                if (tipoEventoSeleccionado == 1)
-                    {
-                        tipoEvento = 'e';
-                    }
-                else
-                    {
-                        tipoEvento = 'o';
-                    }
-                e.setTipoEvento(tipoEvento);
-                bool guardo = guardarEventoModificado(e);
-                if (!guardo)
-                    {
-                        _mensajero.mensajeError("El evento modificado no pudo guardarse.\n");
-                    }
-                else
-                    {
-                        _mensajero.mensajeInformacion("Tipo de evento modificado correctamente");
-                    }
-            }
-            break;
-        case 5:
-            _mensajero.mensajeAdvertencia("Funcionalidad aún no implementada.");
-            // TODO: modificar materia asociada (ID cursadaMateria)
-            break;
-        default:
-            break;
-        }
+                case 2:
+                {
+                    string nuevaDescrip = "";
+                    cout << "\nLa descripción actual es: " << e.getDescripcion() << endl;
+                    cout << "\nIngresar nueva descripción: ";
+                    getline(cin>>ws, nuevaDescrip);
+                    e.setDescripcion(nuevaDescrip);
+                    bool guardo = guardarEventoModificado(e);
+                    if (!guardo)
+                        {
+                            _mensajero.mensajeError("El evento modificado no pudo guardarse.\n");
+                        }
+                    else
+                        {
+                            _mensajero.mensajeInformacion("Descripción modificada correctamente");
+                        }
+                }
+                break;
+                case 3:
+                {
+                    string nuevaInfo = "";
+                    cout << "\nLa información actual es: " << e.getInformacion() << endl;
+                    cout << "\nIngresar nueva información: ";
+                    getline(cin>>ws, nuevaInfo);
+                    e.setInformacion(nuevaInfo);
+                    bool guardo = guardarEventoModificado(e);
+                    if (!guardo)
+                        {
+                            _mensajero.mensajeError("El evento modificado no pudo guardarse.\n");
+                        }
+                    else
+                        {
+                            _mensajero.mensajeInformacion("Información modificada correctamente");
+                        }
+                }
+                break;
+                case 4:
+                {
+                    int tipoEventoSeleccionado;
+                    char tipoEvento;
+                    cout << "\nEl tipo de evento actual es: " << e.getCategoriaDeEvento() << endl;
+                    Menu menu({"Examen", "Otro"}, "Seleccionar tipo de evento");
+                    tipoEventoSeleccionado = menu.mostrar();
+                    if (tipoEventoSeleccionado == 0) break;
+                    if (tipoEventoSeleccionado == 1)
+                        {
+                            tipoEvento = 'e';
+                        }
+                    else
+                        {
+                            tipoEvento = 'o';
+                        }
+                    e.setTipoEvento(tipoEvento);
+                    bool guardo = guardarEventoModificado(e);
+                    if (!guardo)
+                        {
+                            _mensajero.mensajeError("El evento modificado no pudo guardarse.\n");
+                        }
+                    else
+                        {
+                            _mensajero.mensajeInformacion("Tipo de evento modificado correctamente");
+                        }
+                }
+                break;
+                case 5:
+                {
+                    CursadaMateria cm;
+                    if(!gcm.seleccionarCursadaActualmenteEnCurso(cm))
+                        {
+                            e.setIdCursadaMateria("");
+                        }
+                    else
+                        {
+                            e.setIdCursadaMateria(cm.getIdCursadaMateria());
+                            bool guardo = guardarEventoModificado(e);
+                            if (!guardo)
+                                {
+                                    _mensajero.mensajeError("El evento modificado no pudo guardarse.\n");
+                                }
+                            else
+                                {
+                                    _mensajero.mensajeInformacion("Cursada asociada al evento modificada correctamente");
+                                }
+                        }
+                }
+                break;
+                default:
+                    break;
+                }
 
-}
+        }
 
 }
 
@@ -453,15 +511,20 @@ void GestorEventos::eliminarEvento()
     cout << endl;
 
     int idEvento = seleccionarEvento();
+    if (idEvento==0)
+        {
+            return;
+        }
     if (!bajaEvento(idEvento))
         {
             _mensajero.mensajeError("No se pudo eliminar el evento seleccionado.");
             exit(1);
         }
+    cout << endl;
     _mensajero.mensajeInformacion("Registro eliminado.");
 }
 
-void GestorEventos::mostrarEventosProximos()
+void GestorEventos::mostrarEventosDeEsteMesYSiguiente()
 {
     cout << endl;
     cout << "********************************************" << endl;
@@ -498,11 +561,12 @@ void GestorEventos::mostrarEventosProximos()
             if (!mostrar) continue;
 
             cout << "------------------------------" << endl;
-            cout << e.toString() << endl;
+            cout << eventoToStringCompleto(e) << endl;
             cout << "------------------------------" << endl;
         }
 
 }
+
 void GestorEventos::mostrarEventosEnFecha()
 {
     cout << endl;
@@ -555,14 +619,14 @@ void GestorEventos::mostrarEventosEnFecha()
                     if (!buscarPorDia)
                         {
                             hayEventos = true;
-                            resultado += e.toString() + "\n-------------------\n";
+                            resultado += eventoToStringCompleto(e) + "\n-------------------\n";
                             cantEventos++;
 
                         }
                     else if (fechaEvento.getDia() == dia)
                         {
                             hayEventos = true;
-                            resultado += e.toString() + "\n-------------------\n";
+                            resultado += eventoToStringCompleto(e) + "\n-------------------\n";
                             cantEventos++;
                         }
                 }
@@ -576,9 +640,6 @@ void GestorEventos::mostrarEventosEnFecha()
     cout << "\nSe encontraron " << cantEventos << " Eventos en la fecha seleccionada:\n" << endl;
     cout << resultado;
 }
-
-
-
 
 bool GestorEventos::hayEventoProximo()
 {
@@ -678,28 +739,76 @@ void GestorEventos::ordenarEventosPorFecha(vector<Evento>& vec, bool descendente
     Evento aux;
 
     for (i=0; i<cantEventos-1; i++)
-    {
-        for (j=0; j < cantEventos - i - 1; j++)
         {
-            FechaHorario izq = vec[j].getFechaHorario();
-            FechaHorario der = vec[j+1].getFechaHorario();
+            for (j=0; j < cantEventos - i - 1; j++)
+                {
+                    FechaHorario izq = vec[j].getFechaHorario();
+                    FechaHorario der = vec[j+1].getFechaHorario();
 
-            if (izq < der)
-            {
-                aux = vec[j];
-                vec[j] = vec[j+1];
-                vec[j+1] = aux;
+                    if (izq < der)
+                        {
+                            aux = vec[j];
+                            vec[j] = vec[j+1];
+                            vec[j+1] = aux;
 
-            }
+                        }
+                }
         }
-    }
 
     if (!descendente)
-    {
-        // Invertimos el vector
-        reverse(begin(vec), end(vec));
-    }
+        {
+            // Invertimos el vector
+            reverse(begin(vec), end(vec));
+        }
 
 }
 
+bool GestorEventos::hayEventoEnLosProximosDias(int dias)
+{
+    Fecha hoy, limite;
+    limite.agregarDias(dias);
 
+    vector<Evento> aux = obtenerEventosActivos();
+
+    if (aux.size()==0) return false;
+
+    for (Evento e : aux)
+        {
+            if (e.getFechaHorario().getFecha() >= hoy && e.getFechaHorario().getFecha() <= limite)
+                {
+                    return true;
+                }
+        }
+    return false;
+}
+
+/// Devuelve los eventos activos de los próximos N días
+std::vector<Evento> GestorEventos::obtenerEventosDeLosProximosDias(int dias)
+{
+    Fecha hoy, limite;
+    limite.agregarDias(dias);
+
+    vector<Evento> aux, eventos = obtenerEventosActivos();
+
+    if (eventos .size()==0) return aux;
+
+    for (Evento e : eventos)
+        {
+            if (e.getFechaHorario().getFecha() >= hoy && e.getFechaHorario().getFecha() <= limite)
+                {
+                    aux.push_back(e);
+                }
+        }
+    return aux;
+}
+
+string GestorEventos::eventoToStringCompleto(Evento e)
+{
+    string materia, aux = e.toString();
+    CursadaMateria cm;
+    if (gcm.buscarCursadaMateriaPorId(e.getIdCursadaMateria(), cm))
+        {
+            aux += "\n\nCursada vinculada: " + cm.getNombreMateria() + " - Cuatrimestre: " + cm.getIdCuatrimestreInicio() + "\n";
+        }
+    return aux;
+}
