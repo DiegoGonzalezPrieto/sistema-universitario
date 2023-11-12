@@ -40,6 +40,11 @@ class GestorNotasFinales
         int generarPromedio();
         int modificarNotaFinal();
 
+        /// Para uso del Gestor Cuatrimestre, devuelve la nota y la posición.
+        bool seleccionarNotaDeCursadaMateria(std::string idCursadaMateria, NotaFinal& nota, int &pos);
+        /// Para uso del Gestor Cuatrimestre
+        bool modificarNota(NotaFinal, int pos);
+
 };
 
 #endif // GESTORNOTASFINALES_H
