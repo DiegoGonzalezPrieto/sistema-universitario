@@ -44,7 +44,7 @@ string DatosCursada::getAula()
 
 void DatosCursada::setAula(string a)
     {
-        cargarCadenaConString(a, _aula, 200);
+        cargarCadenaConString(a, _aula, sizeof(_aula));
     }
 
 string DatosCursada::toString()

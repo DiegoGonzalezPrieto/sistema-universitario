@@ -121,7 +121,7 @@ void GestorConfig::editarValoresDeConfig()
         }
         case DECIMAL:
         {
-            cout << "NUMERO DECIMAL";
+            cout << "NUMERO DECIMAL: ";
             float valor = validar<float>();
             c.setValor(to_string(valor));
             break;
