@@ -15,6 +15,7 @@
 					<Add option="-g" />
 					<Add directory="include" />
 					<Add directory="./" />
+					<Add directory="../sistema-universitario" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -26,6 +27,7 @@
 					<Add option="-O2" />
 					<Add directory="include" />
 					<Add directory="./" />
+					<Add directory="../sistema-universitario" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -93,6 +95,8 @@
 		<Unit filename="func_csv.h" />
 		<Unit filename="func_utiles.cpp" />
 		<Unit filename="func_utiles.h" />
+		<Unit filename="gestorRespaldos.cpp" />
+		<Unit filename="gestorRespaldos.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="rlutil.h" />
 		<Unit filename="sistema-universitario.layout" />
