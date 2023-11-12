@@ -103,7 +103,8 @@ void Sistema::iniciar()
                                "Eventos" + alertaEvento,
                                "Notas finales",
                                "Carrera",
-                               "Configuracion"
+                               "Configuracion",
+                               "Créditos"
                               };
 
     Menu menu(opcMenu, "Sistema de Gestion de Carrera Universitaria");
@@ -143,6 +144,29 @@ void Sistema::iniciar()
                 {
                     _gestorConfig.iniciar();
                 }
+                break;
+                case 7:
+                    cout << "*******************************************************************" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*                             Créditos                            *" << endl;
+                    cout << "*                             ^^^^^^^^                            *" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*  Librerías de terceros:                                         *" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*     * rlutil                                                    *" << endl;
+                    cout << "*       - Licencia DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE    *" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*  Desarrolladores:                                               *" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*      * José Arias                                               *" << endl;
+                    cout << "*      * Franco Formía                                            *" << endl;
+                    cout << "*      * Diego G. Prieto                                          *" << endl;
+                    cout << "*      * Lucho Santostefano                                       *" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*******************************************************************" << endl;
                 break;
                 default:
                     break;
