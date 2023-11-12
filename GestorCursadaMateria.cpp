@@ -130,13 +130,13 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola()
     }
 
     if (!gc.validarSisepuedeCursar(idMateria))
-    {
-        _mensajero.mensajeAdvertencia("La materia seleccionada tiene correlativas sin aprobar");
-        gc.mostrarCorrelativas(idMateria);
-        Menu mCor({"Continuar de todos modos."}, "Desea continuar registrando la cursada de esta materia?");
-        int seguir = mCor.mostrar();
-        if (seguir==0) return;
-    }
+        {
+            _mensajero.mensajeAdvertencia("La materia seleccionada tiene correlativas sin aprobar");
+            gc.mostrarCorrelativasConEstado(idMateria);
+            Menu mCor({"Continuar de todos modos."}, "Desea continuar registrando la cursada de esta materia?");
+            int seguir = mCor.mostrar();
+            if (seguir==0) return;
+        }
     Archivo<Materia> archiMat = gm.getArchivoMaterias();
     int cantMat = archiMat.contarRegistros();
 
@@ -383,11 +383,51 @@ void GestorCursadaMateria::modificarCursadaMateria() // TODO
         {
         case 1:
         {
-            EstadoMateria e;
-            if(!seleccionarEstadoCursadaMateria(e)) break;
-            cm.setEstado(e);
-            _mensajero.mensajeInformacion("Estado actualizado: " + cm.getEstadoToString() + "\n");
-            break;
+            opc = m.mostrar();
+            if (opc==0) return;
+            switch (opc)
+                {
+                case 1:
+                {
+                    EstadoMateria e;
+                    if(!seleccionarEstadoCursadaMateria(e)) break;
+                    cm.setEstado(e);
+                    _mensajero.mensajeInformacion("Estado actualizado: " + cm.getEstadoToString() + "\n");
+                    _mensajero.mensajeAdvertencia("Se debe seleccionar la opción de Guardar para hacer efectivos los cambios.\n");
+                    break;
+                }
+                case 2:
+                {
+                    _mensajero.mensajeAdvertencia("Si se continúa, los datos de cursada serán reemplazados, perdiendo los datos previos.");
+                    cout << "Continuar (s/N)" << endl;
+                    string respuesta;
+                    getline(cin>>ws, respuesta);
+                    if (respuesta !="S" && respuesta != "s") break;
+
+                    vector<DatosCursada> aux;
+                    int maxDC = cm.getMaxDatosCursada();
+                    cargarDatosCursada(aux, maxDC);
+                    cm.setDatosCursada(aux);
+                    _mensajero.mensajeAdvertencia("Se debe seleccionar la opción de Guardar para hacer efectivos los cambios.\n");
+                    break;
+                }
+                case 3:
+                {
+                    vector<DatosCursada> aux, datosCursadaActuales = cm.getDatosCursada();
+                    cout << "\n\tDatos de cursada actualmente registrados:\n";
+                    cout << cm.getDatosCursadaToString();
+
+                    int maxDC = cm.getMaxDatosCursada() - datosCursadaActuales.size();
+                    cargarDatosCursada(aux, maxDC);
+                    datosCursadaActuales.insert(datosCursadaActuales.end(), aux.begin(), aux.end());
+                    cm.setDatosCursada(datosCursadaActuales);
+                    _mensajero.mensajeAdvertencia("Se debe seleccionar la opción de Guardar para hacer efectivos los cambios.\n");
+                    break;
+                }
+                case 4:
+                    guardar = true;
+                    break;
+                }
         }
         case 2:
         {

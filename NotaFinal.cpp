@@ -6,9 +6,9 @@ NotaFinal::NotaFinal()
     //ctor
 }
 
-void NotaFinal::setIdMateria(const std::string& idMateria){
+void NotaFinal::setIdCursadaMateria(const std::string& idMateria){
 
-    cargarCadenaConString(idMateria, _idMateria, LONGMAX);
+    cargarCadenaConString(idMateria, _idCursadaMateria, LONGMAX);
 }
 
 void NotaFinal::setNota(int nota){
@@ -21,9 +21,9 @@ void NotaFinal::setFecha(const Fecha& fecha){
     _fecha = fecha;
 }
 
-std::string NotaFinal::getIdMateria() const{
+std::string NotaFinal::getIdCursadaMateria() const{
 
-    return _idMateria;
+    return _idCursadaMateria;
 }
 
 int NotaFinal::getNota() const{
@@ -42,8 +42,8 @@ std::string NotaFinal::toString() const{
 
     std::string aux = "";
 
-    aux = "ID Materia: ";
-    aux += getIdMateria();
+    aux = "Cursada de Materia asociada: ";
+    aux += getIdCursadaMateria();
     aux += " --- Nota: ";
     aux += std::to_string(getNota());
     aux += " --- Fecha: ";

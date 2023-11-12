@@ -87,7 +87,7 @@ void GestorCuatrimestre::iniciarCuatrimestre()
 {
     Cuatrimestre datosCuatrimestre;
     datosCuatrimestre.setFinalizado(true);
-    GestorCursadaMateria cursadaM("Archivos/datos/cursadamateria.dat","Archivos/datos/materias.dat");
+    GestorCursadaMateria cursadaM("Archivos/datos/cursada_materias.dat","Archivos/datos/materias.dat");
     if(archivoCuatrimestres.archivoExiste())
     {
         int cantregistros=archivoCuatrimestres.contarRegistros();

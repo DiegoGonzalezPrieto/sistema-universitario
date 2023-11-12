@@ -16,11 +16,13 @@ Sistema::Sistema() :
     _gestorCarrera("Archivos/datos/carrera.dat","carga_inicial.dat"),
     _gestorEventos("Archivos/datos/eventos.dat", "Archivos/datos/materias.dat", "Archivos/datos/cursada_materias.dat" ),
     _gestorMaterias("Archivos/datos/materias.dat"),
-    _gestorNotasFinales("Archivos/datos/notas.dat"),
+    _gestorCorrelativas("Archivos/datos/materias.dat","Archivos/datos/cursada_materias.dat"),
+    _gestorNotasFinales("Archivos/datos/notas.dat", "Archivos/datos/materias.dat", "Archivos/datos/cursada_materias.dat"),
     _cargaInicial("carga_inicial.dat"),
     _gestorCuatrimestre("Archivos/datos/cuatrimestre.dat"),
     _gestorCsv("archivoImportacion.csv", "Archivos/datos/materias.dat", "carga_inicial.dat"),
-    _gestorConfig("Archivos/configuracion/config.dat")
+    _gestorConfig("Archivos/configuracion/config.dat"),
+    _gestorCursadaMaterias("Archivos/datos/cursada_materias.dat", "Archivos/datos/materias.dat")
 
 {
     //ctor
@@ -91,9 +93,7 @@ void Sistema::iniciar()
 
     // Chequeo eventos próximos
     string alertaEvento = "";
-    // TODO : leer limite de días de CONFIG
-    int diasDeChequeoEventosProximos = 8;
-    if (_gestorEventos.hayEventoEnLosProximosDias(diasDeChequeoEventosProximos))
+    if (_gestorEventos.hayEventoEnLosProximosDias(DIAS_DE_AVISO_EVENTO))
         {
             alertaEvento = " (!)";
         }
@@ -103,7 +103,8 @@ void Sistema::iniciar()
                                "Eventos" + alertaEvento,
                                "Notas finales",
                                "Carrera",
-                               "Configuracion"
+                               "Configuracion",
+                               "Créditos"
                               };
 
     Menu menu(opcMenu, "Sistema de Gestion de Carrera Universitaria");
@@ -144,6 +145,30 @@ void Sistema::iniciar()
                     _gestorConfig.iniciar();
                 }
                 break;
+                case 7:
+                    limpiarPantallaSinPausa();
+                    cout << "*******************************************************************" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*                           Créditos                              *" << endl;
+                    cout << "*                           ^^^^^^^^                              *" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*  Librerías de terceros:                                         *" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*     * rlutil                                                    *" << endl;
+                    cout << "*       - Licencia DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE    *" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*  Desarrolladores:                                               *" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*      * José Arias                                               *" << endl;
+                    cout << "*      * Franco Formía                                            *" << endl;
+                    cout << "*      * Diego G. Prieto                                          *" << endl;
+                    cout << "*      * Lucho Santostefano                                       *" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*                                                                 *" << endl;
+                    cout << "*******************************************************************" << endl;
+                break;
                 default:
                     break;
                 }
@@ -154,10 +179,11 @@ void Sistema::iniciar()
 
 void Sistema::crearDirectoriosEsenciales()
 {
+    GestorDirectorios gd;
 
-    crearDirectorios("Archivos/datos");
-    crearDirectorios("Archivos/configuracion");
-    crearDirectorios("Archivos/cursada");
+    gd.crearDirectorios("Archivos/datos");
+    gd.crearDirectorios("Archivos/configuracion");
+    gd.crearDirectorios("Archivos/cursada");
 
     return;
 }

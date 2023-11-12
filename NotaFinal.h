@@ -5,18 +5,18 @@
 #include "Fecha.h"
 #include "func_utiles.h"
 
-const int LONGMAX = 10;
+const int LONGMAX = 17; // 10 ID materia + 6 ID cuatrimestre + 1 \0
 
 class NotaFinal
 {
     public:
         NotaFinal();
 
-        void setIdMateria(const std::string& idMateria);
+        void setIdCursadaMateria(const std::string& idMateria);
         void setNota(int nota);
         void setFecha(const Fecha& fecha);
 
-        std::string getIdMateria() const;
+        std::string getIdCursadaMateria() const;
         int getNota() const;
         Fecha getFecha() const;
 
@@ -24,7 +24,7 @@ class NotaFinal
 
     private:
 
-        char _idMateria[LONGMAX];
+        char _idCursadaMateria[LONGMAX];
         int _nota;
         Fecha _fecha;
 };
