@@ -292,7 +292,7 @@ void GestorCuatrimestre::mostrarInformacionCuatrimestreActual()
         Archivo<Materia> archivoMaterias("Archivos/datos/materias.dat");
         int regMaterias = archivoMaterias.contarRegistros();
         Materia materia;
-        cout<<" Materias Registradas en el Cuatrimestre : "<<endl;
+        cout<<"Materias Registradas en el Cuatrimestre : "<<endl;
 
         for (const auto &idMateria : idsMaterias)
         {
@@ -310,7 +310,8 @@ void GestorCuatrimestre::mostrarInformacionCuatrimestreActual()
     }
 
     cout << "ID del Cuatrimestre: " << ultimoCuatrimestre.getIdCuatrimestre() << endl;
-    cout << "Fin de la informacion de este cuatrimestre." << endl<<endl;
+    cout << endl;
+    msj.mensajeInformacion("Fin de la informacion de este cuatrimestre.");
 }
 void GestorCuatrimestre::mostrarTodosCuatrimestresCursados()
 {
@@ -362,7 +363,7 @@ void GestorCuatrimestre::mostrarTodosCuatrimestresCursados()
             Archivo<Materia> archivoMaterias("Archivos/datos/materias.dat");
             int regMaterias = archivoMaterias.contarRegistros();
             Materia materia;
-            cout<<" Materias Registradas en el Cuatrimestre : "<<endl;
+            cout << "Materias Registradas en el Cuatrimestre : "<<endl;
 
             for (const auto &idMateria : idsMaterias)
             {
@@ -380,7 +381,8 @@ void GestorCuatrimestre::mostrarTodosCuatrimestresCursados()
         }
 
         cout << "ID del Cuatrimestre: " << ultimoCuatrimestre.getIdCuatrimestre() << endl;
-        cout << "Fin de la informacion de este cuatrimestre." << endl<<endl;
+        cout << endl;
+        msj.mensajeInformacion("Fin de la informacion de este cuatrimestre.");
 
 
 
