@@ -16,7 +16,7 @@ void GestorCuatrimestre::actualizarMateriasEnCursoEnCuatrimestre()
     actualizarcuatrimestre.setAnio(anio);
     actualizarcuatrimestre.setPeriodo(periodo);
 
-    Archivo<CursadaMateria> archivoCursada("Archivos/datos/cursadamateria.dat");
+    Archivo<CursadaMateria> archivoCursada("Archivos/datos/cursada_materias.dat");
     int cantRegCursada = archivoCursada.contarRegistros();
     for (int j = 0; j < cantRegCursada; ++j)
     {
@@ -126,7 +126,7 @@ void GestorCuatrimestre::iniciarCuatrimestre()
         }
         while (!termino);
 
-        Archivo<CursadaMateria> archivoCursada("Archivos/datos/cursadamateria.dat");
+        Archivo<CursadaMateria> archivoCursada("Archivos/datos/cursada_materias.dat");
         int cantRegCursada = archivoCursada.contarRegistros();
         for (int j = 0; j < cantRegCursada; ++j)
         {
@@ -181,7 +181,7 @@ void GestorCuatrimestre::cerrarCuatrimestre()
         return;
     }
 
-    Archivo<CursadaMateria> archivoCursada("Archivos/datos/cursadamateria.dat");
+    Archivo<CursadaMateria> archivoCursada("Archivos/datos/cursada_materias.dat");
     int cantRegCursada = archivoCursada.contarRegistros();
     bool seEstaCursando = false;
 
@@ -238,7 +238,7 @@ void GestorCuatrimestre::cerrarCuatrimestre()
 void GestorCuatrimestre::modificarCuatrimestreActual()
 {
 
-    GestorCursadaMateria cursadaM("Archivos/datos/cursadamateria.dat","Archivos/datos/materias.dat");
+    GestorCursadaMateria cursadaM("Archivos/datos/cursada_materias.dat","Archivos/datos/materias.dat");
     cursadaM.iniciar();
 
 
