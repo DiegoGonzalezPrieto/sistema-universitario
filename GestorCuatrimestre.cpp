@@ -53,7 +53,7 @@ void GestorCuatrimestre::iniciarGestorCuatrimestre()
 
     };
 
-    Menu menuPrincipal(opciones, "------ GESTION CUATRIMESTRE ------");
+    Menu menuPrincipal(opciones, "** Cursadas de Cuatrimestre ** ");
 
     int op;
     do

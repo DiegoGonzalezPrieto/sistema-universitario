@@ -37,7 +37,7 @@ void GestorCursadaMateria::iniciar()
         }
 
     // 1. Loop principal
-    string tituloMenu = "** Gestión de Cursadas de Materias **";
+    string tituloMenu = "** Cursadas de Materias **";
     Menu m({"Ingresar nueva cursada de materia.",
             "Ver cursadas de materias según su estado (incluye anuladas).",
             "Ver todas las cursadas de materias.",
