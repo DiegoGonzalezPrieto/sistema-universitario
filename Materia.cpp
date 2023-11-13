@@ -92,7 +92,7 @@ std::string Materia::toString() const{
 
     aux = "Materia: ";
     aux += getNombreMateria();
-    aux += " - ID:";
+    aux += " - ID: ";
     aux += getIdMateria();
 
     bool hayCorrelativas = false;

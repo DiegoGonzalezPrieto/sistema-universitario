@@ -96,6 +96,12 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola()
     cout << "***********************" << endl;
     cout << endl;
 
+    // Crear archivo de cursadas en caso de que no exista. (Primera ejecución)
+
+    if (!_archivo.archivoExiste())
+    {
+        _archivo.crearArchivo();
+    }
 
     cout << "Qué materia se va a cursar?" << endl<< endl;
 
@@ -143,7 +149,7 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola()
                     break;
                 }
         }
-    cout << "\nLas materias correlativas de " << aux.getNombreMateria() << "son: " << endl;
+    cout << "\nLas materias correlativas de " << aux.getNombreMateria() << " son: " << endl;
     gc.mostrarCorrelativas(aux.getIdMateria());
 
 
