@@ -149,7 +149,7 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola()
                     break;
                 }
         }
-    cout << "\nLas materias correlativas de " << aux.getNombreMateria() << "son: " << endl;
+    cout << "\nLas materias correlativas de " << aux.getNombreMateria() << " son: " << endl;
     gc.mostrarCorrelativas(aux.getIdMateria());
 
 
