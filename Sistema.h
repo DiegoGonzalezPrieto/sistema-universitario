@@ -9,6 +9,7 @@
 #include "GestorCsv.h"
 #include "GestorCuatrimestre.h"
 #include "GestorConfig.h"
+#include "GestorRespaldos.h"
 ///FALTA GESTORCURSADAMATERIA
 ///FALTAN LOS DIRECTORIOS
 ///FALTA LA CONFIGURACION
@@ -35,6 +36,7 @@ class Sistema
         GestorCsv _gestorCsv; ///VER SI SE INICIALIZA AQUI, O EN GESTOR MATERIAS
         GestorCuatrimestre _gestorCuatrimestre;
         GestorConfig _gestorConfig;
+        GestorRespaldos _gestorRespaldos;
 
         Mensajero _mensajero;
         Archivo <CargaInicial> _cargaInicial;
