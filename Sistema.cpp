@@ -19,10 +19,10 @@ Sistema::Sistema() :
     _gestorCorrelativas("Archivos/datos/materias.dat","Archivos/datos/cursada_materias.dat"),
     _gestorNotasFinales("Archivos/datos/notas.dat", "Archivos/datos/materias.dat", "Archivos/datos/cursada_materias.dat"),
     _cargaInicial("carga_inicial.dat"),
-    _gestorCuatrimestre("Archivos/datos/cuatrimestre.dat"),
     _gestorCsv("archivoImportacion.csv", "Archivos/datos/materias.dat", "carga_inicial.dat"),
     _gestorConfig("Archivos/configuracion/config.dat"),
-    _gestorCursadaMaterias("Archivos/datos/cursada_materias.dat", "Archivos/datos/materias.dat")
+    _gestorCursadaMaterias("Archivos/datos/cursada_materias.dat", "Archivos/datos/materias.dat"),
+    _gestorCuatrimestre("Archivos/datos/cuatrimestre.dat", "Archivos/datos/cursada_materias.dat", "Archivos/datos/materias.dat", "Archivos/datos/notas.dat")
 
 {
     //ctor

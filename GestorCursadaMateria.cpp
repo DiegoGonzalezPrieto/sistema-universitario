@@ -542,9 +542,11 @@ bool GestorCursadaMateria::guardarCursadaMateriaModificada(CursadaMateria cm)
 
 }
 
-bool GestorCursadaMateria::seleccionarEstadoCursadaMateria(EstadoMateria &estado)
+bool GestorCursadaMateria::seleccionarEstadoCursadaMateria(EstadoMateria &estado, string nombreMateria)
 {
-    Menu m({"En curso", "Regularizada", "Aprobada", "Anulada - Eliminada"}, "Seleccionar estado de la cursada.");
+    string titulo = "Seleccionar estado de la cursada";
+    titulo += nombreMateria=="" ? "." : " " + nombreMateria + ".";
+    Menu m({"En curso", "Regularizada", "Aprobada", "Anulada - Eliminada"}, titulo);
     int seleccion = m.mostrar();
     if (seleccion==0) return false;
     switch (seleccion)
