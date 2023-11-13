@@ -5,6 +5,7 @@ using namespace std;
 #include "GestorCursadaMateria.h"
 #include "Fecha.h"
 #include "func_utiles.h"
+#include "GestorDirectorios.h"
 
 GestorCursadaMateria::GestorCursadaMateria(string rutaArchivo, string rutaMaterias):
     _archivo(rutaArchivo),
@@ -194,6 +195,42 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola()
         {
             _mensajero.mensajeInformacion("Cursada guardada correctamente.");
         }
+
+        if(cantUnidades == 0){
+
+        return;
+    }
+
+
+    cout << "Desea generar una estructura de carpetas para la materia?" << endl;
+    cout << "Las estructuras de carpetas se encontrarán dentro de la carpeta 'cursada', dentro del cuatrimestre correspondiente." << endl;
+    cout << "Para su correcto funcionamiento, no deben ser renombradas, eliminadas o movidas a otros directorios." << endl;
+    cout << "Para cada unidad contará con una carpeta 'completado' para colocar los materiales ya trabajados de una unidad." << endl;
+    cout << "Luego podrá acceder a estadisticas como el progreso de la materia en base a los materiales que guarde en las carpetas." << endl;
+    cout << "Respuesta (S/N): " << endl;
+
+    char resp = validar<char>();
+
+    while (resp != 'S' && resp != 's' && resp != 'N' && resp != 'n')
+    {
+        cout << "Respuesta no válida. Por favor, ingrese 'S' o 'N'." << endl;
+        resp = validar<char>();
+    }
+
+    if (resp == 'N' || resp == 'n')
+    {
+        return; // Terminar el bucle si la respuesta es 'N' o 'n'
+    }
+
+    GestorDirectorios gd;
+    bool seCrearonCarpetas = gd.crearDirectoriosCuatrimestre(cursadaMateria, cursadaMateria.getIdCuatrimestreInicio());
+
+    if(seCrearonCarpetas == true){
+
+        _mensajero.mensajeInformacion("Se crearon satisfactoriamente las carpetas para la materia aregada");
+    }
+
+
 }
 
 void GestorCursadaMateria::mostrarTodasCursadaMateria() // TODO

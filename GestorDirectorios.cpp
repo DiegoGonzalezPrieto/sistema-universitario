@@ -13,30 +13,25 @@ bool GestorDirectorios::crearDirectorios(string ruta)
     return filesystem::create_directories(ruta);
 }
 
-bool GestorDirectorios::crearDirectoriosCuatrimestre(vector <CursadaMateria> materiasEnCurso, string idCuatrimestre){
-
-    int cantMaterias = materiasEnCurso.size();
+bool GestorDirectorios::crearDirectoriosCuatrimestre(CursadaMateria materiaEnCurso, string idCuatrimestre){
 
     string ruta = "Archivos/cursada/";
     ruta += idCuatrimestre + "/";
 
-    for(int i = 0; i < cantMaterias; i++){
 
-        if(directoriosMateriasAnualesYaCreados(materiasEnCurso[i].getIdCuatrimestreInicio(), idCuatrimestre) == false && materiasEnCurso[i].getCuatrimestreDeDuracion() == 2){
+    if(directoriosMateriasAnualesYaCreados(materiaEnCurso.getIdCuatrimestreInicio(), idCuatrimestre) == false && materiaEnCurso.getCuatrimestreDeDuracion() == 1){
 
-            string rutaMateria = ruta + materiasEnCurso[i].getNombreMateria() + "/";
+        string rutaMateria = ruta + materiaEnCurso.getNombreMateria() + "/";
 
-            vector<Unidad>auxUnidad;
-            auxUnidad = materiasEnCurso[i].getUnidades();
-            int cantUnidades = auxUnidad.size();
+        vector<Unidad>auxUnidad;
+        auxUnidad = materiaEnCurso.getUnidades();
+        int cantUnidades = auxUnidad.size();
 
-            for(int j = 0; j < cantUnidades; j++){
+        for(int i = 0; i < cantUnidades; i++){
 
-                string rutaUnidad = rutaMateria + auxUnidad[j].getRutaCompletado();
+            string rutaUnidad = rutaMateria + auxUnidad[i].getRutaCompletado();
 
-                crearDirectorios(rutaUnidad);
-            }
-
+            crearDirectorios(rutaUnidad);
         }
 
     }
@@ -124,7 +119,6 @@ void GestorDirectorios::calcularProgresoMateria(CursadaMateria materia, string i
 
         cantElementosCompletados += contarElementosEnDirectorio(rutaUnidadCompletados);
 
-        cout << "Elementos completados: " << cantElementosCompletados << endl;
     }
 
     ///CONTAMOS LOS ELEMENTOS PENDIENTES DE COMPLETAR DE CADA UNIDAD
