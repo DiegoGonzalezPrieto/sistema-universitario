@@ -247,7 +247,7 @@ int GestorNotasFinales::listadoNotasFinales()
     for(int i = 0; i< cantRegistros; i++)
         {
 
-            std:: cout << listaNotas[i].toString() << std::endl;
+            std:: cout << notaToString(listaNotas[i]) << std::endl;
 
         }
 
@@ -311,7 +311,7 @@ int GestorNotasFinales::eliminarNotaFinal()
     for(int i = 0; i < cantNotasIdSolicitado; i++)
         {
 
-            std::cout << "#" << i+1 << ": " << notasIdCursadaMateriaSolicitado[i].toString() << std::endl;
+            std::cout << "#" << i+1 << ": " << notaToString(notasIdCursadaMateriaSolicitado[i]) << std::endl;
 
         }
 
@@ -458,7 +458,7 @@ int GestorNotasFinales::modificarNotaFinal()
     for(int i = 0; i < cantNotasIdSolicitado; i++)
         {
 
-            std::cout << "#" << i+1 << ": " << notasIdCursadaMateriaSolicitado[i].toString() << std::endl;
+            std::cout << "#" << i+1 << ": " << notaToString(notasIdCursadaMateriaSolicitado[i]) << std::endl;
 
         }
 
@@ -642,7 +642,7 @@ bool GestorNotasFinales::seleccionarNotaDeCursadaMateria(std::string idCursadaMa
 
     for (int i=0;i<notasDeCursadaMateria.size();i++)
     {
-            cout << i+1 <<": " << notasDeCursadaMateria[i].toString() << endl;
+            cout << i+1 <<": " << notaToString(notasDeCursadaMateria[i]) << endl;
     }
 
     cout << "Seleccionar la nota deseada: ";
@@ -666,4 +666,20 @@ bool GestorNotasFinales::seleccionarNotaDeCursadaMateria(std::string idCursadaMa
 bool GestorNotasFinales::modificarNota(NotaFinal nota, int pos)
 {
     return _auxArchivo.modificarRegistro(pos, nota);
+}
+
+std::string GestorNotasFinales::notaToString(NotaFinal nf)
+{
+    CursadaMateria cm;
+    gcm.buscarCursadaMateriaPorId(nf.getIdCursadaMateria(), cm);
+
+    std::string aux = "";
+
+    aux += cm.getNombreMateria() + " - Cuatrimestre " + cm.getIdCuatrimestreInicio();
+    aux += " --- Nota: ";
+    aux += std::to_string(nf.getNota());
+    aux += " --- Fecha: ";
+    aux += nf.getFecha().toString();
+
+    return aux;
 }
