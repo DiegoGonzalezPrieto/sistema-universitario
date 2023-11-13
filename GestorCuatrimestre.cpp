@@ -250,7 +250,7 @@ void GestorCuatrimestre::mostrarInformacionCuatrimestreActual()
     limpiarPantallaSinPausa();
     if (!archivoCuatrimestres.archivoExiste())
     {
-        cout << "No hay informacion de cuatrimestres disponible." << endl;
+        msj.mensajeAdvertencia("No hay informacion de cuatrimestres disponible.");
         return;
     }
 
@@ -258,7 +258,7 @@ void GestorCuatrimestre::mostrarInformacionCuatrimestreActual()
 
     if (cantregistros == 0)
     {
-        cout << "No hay cuatrimestres registrados." << endl;
+        msj.mensajeAdvertencia("No hay cuatrimestres registrados.");
         return;
     }
 
@@ -284,7 +284,7 @@ void GestorCuatrimestre::mostrarInformacionCuatrimestreActual()
 
     if (idsMaterias.empty())
     {
-        cout << "No hay materias registradas en este cuatrimestre." << endl;
+        msj.mensajeInformacion("No hay materias registradas en este cuatrimestre.");
     }
     else
     {
@@ -317,7 +317,7 @@ void GestorCuatrimestre::mostrarTodosCuatrimestresCursados()
     limpiarPantallaSinPausa();
     if (!archivoCuatrimestres.archivoExiste())
     {
-        cout << "No hay informacion de cuatrimestres disponible." << endl;
+        msj.mensajeAdvertencia("No hay informacion de cuatrimestres disponible.");
         return;
     }
 
@@ -325,7 +325,7 @@ void GestorCuatrimestre::mostrarTodosCuatrimestresCursados()
 
     if (cantregistros == 0)
     {
-        cout << "No hay cuatrimestres registrados." << endl;
+        msj.mensajeAdvertencia("No hay cuatrimestres registrados.");
         return;
     }
 
@@ -354,7 +354,7 @@ void GestorCuatrimestre::mostrarTodosCuatrimestresCursados()
 
         if (idsMaterias.empty())
         {
-            cout << "No hay materias registradas en este cuatrimestre." << endl;
+            msj.mensajeAdvertencia("No hay materias registradas en este cuatrimestre.");
         }
         else
         {
