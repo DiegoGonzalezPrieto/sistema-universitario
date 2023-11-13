@@ -77,9 +77,6 @@ void GestorCuatrimestre::iniciarGestorCuatrimestre()
             break;
         case 5:
             modificarCuatrimestreActual();
-        default:
-            msj.mensajeError("Opcion no valida. Por favor, ingrese una opcion valida");
-            break;
         }
         std::cout << std::endl;
     }
@@ -90,7 +87,7 @@ void GestorCuatrimestre::iniciarCuatrimestre()
 {
     Cuatrimestre datosCuatrimestre;
     datosCuatrimestre.setFinalizado(true);
-    GestorCursadaMateria cursadaM("Archivos/datos/cursadamateria.dat","Archivos/datos/materias.dat");
+    GestorCursadaMateria cursadaM("Archivos/datos/cursada_materias.dat","Archivos/datos/materias.dat");
     if(archivoCuatrimestres.archivoExiste())
     {
         int cantregistros=archivoCuatrimestres.contarRegistros();
@@ -147,7 +144,7 @@ void GestorCuatrimestre::iniciarCuatrimestre()
 
         if (archivoCuatrimestres.agregarRegistro(nuevocuatrimestre))
         {
-            std::cout << "Cuatrimestre iniciado correctamente." << std::endl;
+            msj.mensajeInformacion("Cuatrimestre iniciado correctamente.");
         }
         else
         {
@@ -168,44 +165,67 @@ void GestorCuatrimestre::cerrarCuatrimestre()
     Cuatrimestre datosCuatrimestre;
     datosCuatrimestre.setFinalizado(true);
     CursadaMateria cursada;
-    if(archivoCuatrimestres.archivoExiste())
+
+    if (!archivoCuatrimestres.archivoExiste())
     {
-        int cantregistros=archivoCuatrimestres.contarRegistros();
-        archivoCuatrimestres.leerRegistro(cantregistros-1,datosCuatrimestre);
-    }
-    else if (!archivoCuatrimestres.archivoExiste() || datosCuatrimestre.getFinalizado()==true)
-    {
-        msj.mensajeError("¡ No posee cuatrimestres Activos Para cerrar ! ");
+        msj.mensajeError(">> No posee cuatrimestres Activos para cerrar.");
         return;
     }
-    Archivo<CursadaMateria> archivoCursada("Archivos/datos/cursadamateria.dat");
-    int cantregistros = archivoCursada.contarRegistros();
-    bool seEstaCursando = false;
 
-    for(int x=0 ; x<cantregistros; x++)
+    int cantRegCuatrimestres = archivoCuatrimestres.contarRegistros();
+    archivoCuatrimestres.leerRegistro(cantRegCuatrimestres - 1, datosCuatrimestre);
+
+    if (datosCuatrimestre.getFinalizado())
     {
-
-        archivoCursada.leerRegistro(x,cursada);
-        if(cursada.getEstado()==MAT_EN_CURSO)
-        {
-
-            seEstaCursando=true;
-            msj.mensajeInformacion("Posee Materias En Curso, no debe poseer materias en curso para cerrar un cuatrimestre ");
-            std::cout<<endl;
-            std::cout<<" Las Materias en curso son: "<<std::endl;
-            break;
-        }
-
+        msj.mensajeError(">> El cuatrimestre ya se encuentra cerrado.");
+        return;
     }
 
-    if(seEstaCursando==true)
+    Archivo<CursadaMateria> archivoCursada("Archivos/datos/cursadamateria.dat");
+    int cantRegCursada = archivoCursada.contarRegistros();
+    bool seEstaCursando = false;
+
+    for (int x = 0; x < cantRegCursada; x++)
     {
+        archivoCursada.leerRegistro(x, cursada);
+        if (cursada.getEstado() == MAT_EN_CURSO && cursada.getCuatrimestreDeDuracion() > 1 && cursada.getIdCuatrimestreInicio() < datosCuatrimestre.getIdCuatrimestre())
+        {
+            seEstaCursando = true;
+            break;
+        }
+    }
+
+    for (int x = 0; x < cantRegCursada; x++)
+    {
+        archivoCursada.leerRegistro(x, cursada);
+        if (cursada.getEstado() == MAT_EN_CURSO && cursada.getCuatrimestreDeDuracion()==1)
+        {
+            seEstaCursando = true;
+            break;
+        }
+    }
+
+
+
+    if (!seEstaCursando)
+    {
+        datosCuatrimestre.setFinalizado(true);
+        archivoCuatrimestres.modificarRegistro(cantRegCuatrimestres - 1, datosCuatrimestre);
+        msj.mensajeInformacion(">> Cuatrimestre cerrado correctamente.");
+    }
+
+
+    if(seEstaCursando==true)
+    {   std::cout<<endl;
+        msj.mensajeAdvertencia("Para cerrar un cuatrimestre no debe tener materias en curso \n Si la materia tiene una duraccion mayor a un cuatrimestre \n Se le dejara cerrar el cuatrimestre y la informacion pasara al siguiente cuatrimestre ");
+
+        int cantregistros=archivoCursada.contarRegistros();
 
         for(int x=0 ; x<cantregistros; x++)
         {
 
             archivoCursada.leerRegistro(x,cursada);
-            if(cursada.getEstado()==MAT_EN_CURSO)
+            if(cursada.getEstado()==MAT_EN_CURSO )
             {
                 std::string aux= "> " + cursada.getIdMateria() + cursada.getNombreMateria();
                 std::cout<<aux<<endl;
@@ -213,17 +233,6 @@ void GestorCuatrimestre::cerrarCuatrimestre()
 
         }
     }
-
-    if(seEstaCursando==false)
-    {
-        int registros;
-        datosCuatrimestre.setFinalizado(true);
-        registros=archivoCuatrimestres.contarRegistros();
-        archivoCuatrimestres.modificarRegistro(registros-1,datosCuatrimestre);
-        msj.mensajeInformacion("Cuatrimestre cerrado exitosamente");
-
-    }
-
 }
 
 void GestorCuatrimestre::modificarCuatrimestreActual()
@@ -231,7 +240,7 @@ void GestorCuatrimestre::modificarCuatrimestreActual()
 
     GestorCursadaMateria cursadaM("Archivos/datos/cursadamateria.dat","Archivos/datos/materias.dat");
     cursadaM.iniciar();
-    actualizarMateriasEnCursoEnCuatrimestre();
+
 
 
 }
@@ -241,7 +250,7 @@ void GestorCuatrimestre::mostrarInformacionCuatrimestreActual()
     limpiarPantallaSinPausa();
     if (!archivoCuatrimestres.archivoExiste())
     {
-        cout << "No hay información de cuatrimestres disponible." << endl;
+        cout << "No hay informacion de cuatrimestres disponible." << endl;
         return;
     }
 

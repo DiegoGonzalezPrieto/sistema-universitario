@@ -8,14 +8,17 @@
 #include "GestorEventos.h"
 #include "GestorCsv.h"
 #include "GestorCuatrimestre.h"
+#include "GestorCorrelativas.h"
 #include "GestorConfig.h"
 #include "GestorRespaldos.h"
+#include "GestorCursadaMateria.h"
 ///FALTA GESTORCURSADAMATERIA
 ///FALTAN LOS DIRECTORIOS
 ///FALTA LA CONFIGURACION
 #include "CargaInicial.h"
 #include "Mensajero.h"
 #include "Archivo.h"
+#include "GestorDirectorios.h"
 
 class Sistema
 {
@@ -23,7 +26,7 @@ class Sistema
         Sistema();
 
         void iniciar();
-        bool preInicio();
+        void preInicio();
         void menuCargaInicial();
         bool cargaInicial();
         void crearDirectoriosEsenciales();
@@ -36,6 +39,8 @@ class Sistema
         GestorCsv _gestorCsv; ///VER SI SE INICIALIZA AQUI, O EN GESTOR MATERIAS
         GestorCuatrimestre _gestorCuatrimestre;
         GestorConfig _gestorConfig;
+        GestorCorrelativas _gestorCorrelativas;
+        GestorCursadaMateria _gestorCursadaMaterias;
         GestorRespaldos _gestorRespaldos;
 
         Mensajero _mensajero;

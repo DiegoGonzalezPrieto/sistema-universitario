@@ -160,7 +160,6 @@ public:
         T aux;
         int cantReg = contarRegistros();
         if (cantReg < 1) return false;
-
         std::string nombreBup = getNombreBackup();
         FILE* pi = fopen(_nombre.c_str(), "rb");
         FILE* po = fopen(nombreBup.c_str(), "wb");

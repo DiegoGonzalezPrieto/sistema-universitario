@@ -1,7 +1,7 @@
 #ifndef MATERIA_H
 #define MATERIA_H
-
 #include <string>
+#include <vector>
 #include "func_utiles.h"
 
 const int CANTMATERIAS = 10;
@@ -22,6 +22,7 @@ class Materia
         std::string getNombreMateria() const;
         std::string getIdMateria() const;
         std::string getIdMateriasRequeridas(int pos) const;
+        std::vector<std::string> getIdMateriasRequeridas();
         int getCuatrimestreSugerido() const;
         int getCuatrimestreDeDuracion() const;
 

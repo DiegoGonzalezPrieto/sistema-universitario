@@ -468,12 +468,12 @@ void GestorRespaldos::restoreTotal()
 
 void GestorRespaldos::menuPorDefecto()
 {
-
+///FALTA IMPLEMENTAR
 }
 
 void GestorRespaldos::porDefectoTotal()
 {
-
+///FALTA IMPLEMENTAR
 }
 
 /// BACKUPS POR ARCHIVOS
@@ -607,3 +607,4 @@ bool GestorRespaldos::restoreConfiguracion()
 
 ///RESTORES POR DEFECTO
 
+///FALTA IMPLEMENTAR

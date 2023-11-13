@@ -59,6 +59,19 @@ std::string Materia::getIdMateriasRequeridas(int pos) const{
     return _idMateriasRequeridas[pos];
 }
 
+std::vector<std::string> Materia::getIdMateriasRequeridas()
+{
+    std::vector<std::string> aux;
+    for (int i=0;i<CANTMATERIAS; i++)
+    {
+        if (getIdMateriasRequeridas(i) != "N/A" && getIdMateriasRequeridas(i) != "")
+        {
+            aux.push_back(getIdMateriasRequeridas(i));
+        }
+    }
+    return aux;
+}
+
 int Materia::getCuatrimestreSugerido() const{
 
     return _cuatrimestreSugerido;
@@ -89,7 +102,7 @@ std::string Materia::toString() const{
 
     for(int i = 0; i < CANTMATERIAS; i++){
 
-        if(getIdMateriasRequeridas(i) != "N/A"){
+        if(getIdMateriasRequeridas(i) != "N/A" && getIdMateriasRequeridas(i) != ""){
 
             if(i != (CANTMATERIAS -1)){
 

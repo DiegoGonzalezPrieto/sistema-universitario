@@ -149,9 +149,9 @@ void GestorMaterias::modificarMaterias()
 void GestorMaterias::mostrarMaterias()
 {
     Materia datosMateria;
-    if (archivoMaterias.leerRegistros(registros))
+    if (archivoMaterias.leerRegistros(materias))
     {
-        if (registros.empty())
+        if (materias.empty())
         {
             msj.mensajeError("No hay materias para mostrar.") ;
         }
@@ -245,13 +245,24 @@ bool GestorMaterias::AgregarUnaMateria()
             cout << "Ingrese la cantidad de materias requeridas: ";
             datoInt=validar<int>();
             ///LA CANTIDAD DE MATERIAS REQUERIDAS NO PUEDE SER MAYOR A LA CANTIDAD DE MATERIAS CARGADAS
-            if (datoInt>0 && datoInt<archivoMaterias.contarRegistros())
+            if (datoInt>0 && datoInt<=archivoMaterias.contarRegistros())
             {
                 mostrarNombresMaterias();
                 if (!guardarIDsMatRequeridas(datoInt,IDPropio, datosMateria))
                 {
                     msj.mensajeError("No se pudieron guardar las correlativas");
                 }
+                valorValido = true;
+            }
+            else if(datoInt==0)
+            {
+                datosMateria.setIdMateriasRequeridas(0,"N/A");
+                valorValido = true;
+            }
+            else
+            {
+                msj.mensajeError("Numero ingresado no valido. Intente de nuevo");
+                valorValido = false;
             }
         }
         while(!valorValido);
@@ -319,8 +330,12 @@ bool GestorMaterias::modificarUnaMateria()
         Materia datosMateria;
         string IDmateria;
 
+        msj.mensajeInformacion("Tanto los IDs de las materias cargadas como su duración ya no se pueden modificar.");
         mostrarNombresMaterias();
         IDmateria = buscarIDMateria();
+
+        cout << endl << IDmateria << endl ;
+        system("pause");
         int pos ;
 
         if (!buscarMateria(IDmateria, datosMateria, pos))
@@ -332,10 +347,8 @@ bool GestorMaterias::modificarUnaMateria()
         std::vector<std::string> opciones =
         {
             "Nombre de la materia",
-            "ID de la materia",
             "IDs de las materias requeridas",
-            "Cuatrimestre sugerido",
-            "Duracion de la materia"
+            "Cuatrimestre sugerido"
         };
 
         Menu MenuMod(opciones,"Seleccione qué dato desea modificar: ");
@@ -357,21 +370,7 @@ bool GestorMaterias::modificarUnaMateria()
                 datosMateria.setNombreMateria(nuevoNombreMateria);
                 break ;
             }
-            break;
             case 2:
-            {
-                /*
-                string nuevoIDmateria;
-                cout << "Ingrese el nuevo ID de la materia: ";
-                getline(cin >> ws, nuevoIDmateria);
-                datosMateria.setIdMateria(nuevoIDmateria);
-                */
-
-                msj.mensajeInformacion("Los IDs de las materias cargadas ya no se pueden modificar");
-                break ;
-            }
-            break;
-            case 3:
             {
 
                 limpiarCorrelativas(pos,datosMateria);
@@ -386,7 +385,7 @@ bool GestorMaterias::modificarUnaMateria()
                 break ;
             }
             break;
-            case 4:
+            case 3:
             {
                 int nuevoCuatrimestreSugerido;
                 cout << "Ingrese el nuevo cuatrimestre sugerido: ";
@@ -394,20 +393,8 @@ bool GestorMaterias::modificarUnaMateria()
                 datosMateria.setCuatrimestreSugerido(nuevoCuatrimestreSugerido);
                 break ;
             }
-            case 5:
-            {
-                /*
-                int nuevoCuatrimestresDuracion;
-                cout << "Ingrese la cantidad de cuatrimestres de duracion: ";
-                cin >> nuevoCuatrimestresDuracion;
-                cin.ignore();
-                datosMateria.setCuatrimestreDeDuracion(nuevoCuatrimestresDuracion);
-                */
-                msj.mensajeInformacion("La duracion de las materias cargadas ya no se pueden modificar");
-                break ;
-            }
+            default:
             break;
-
             }
 
             char op ;
@@ -445,7 +432,7 @@ void GestorMaterias::mostrarNombresMaterias()
 
     Materia datosMateria;
     int cantMat = archivoMaterias.contarRegistros() ;
-    if (archivoMaterias.leerRegistros(registros))
+    if (archivoMaterias.leerRegistros(materias))
     {
         cout << endl << "--- MATERIAS CARGADAS ---" << endl ;
         for (int i=0; i<cantMat; i++)
@@ -468,79 +455,68 @@ void GestorMaterias::mostrarNombresMaterias()
     }
 }
 
-bool GestorMaterias::guardarIDsMatRequeridas(int cant,string _IDpropio, Materia& datosMateria)
+bool GestorMaterias::guardarIDsMatRequeridas(int cant, string _IDpropio, Materia& datosMateria)
 {
-
+    vector<string> vMat(cant, "");
     string nuevoID;
     Materia dataMateria;
-    string *vMat = new string[cant] {};
-    int op ;
-    cout << "Seleccione las materias requeridas" << endl ;
-    for (int i=0; i<cant; i++)
+    int op;
+
+    cout << "Seleccione las materias requeridas" << endl;
+    for (int i = 0; i < cant; i++)
     {
         bool IDvalido;
         do
         {
-
-            op=validar<int>();
+            op = validar<int>();
 
             if (op >= 1 && op <= archivoMaterias.contarRegistros())
             {
-
-                if (archivoMaterias.leerRegistro(op-1,dataMateria))
+                if (archivoMaterias.leerRegistro(op - 1, dataMateria))
                 {
-
-                    nuevoID = dataMateria.getIdMateria() ;
+                    nuevoID = dataMateria.getIdMateria();
 
                     bool repetido = false;
-                    for (int x = 0; x < cant; x++)
+                    for (string& ID : vMat)
                     {
-                        if (nuevoID == vMat[x])
+                        if (ID == nuevoID)
                         {
                             repetido = true;
                             break;
                         }
-
                     }
 
                     if (nuevoID != _IDpropio)
                     {
-
                         if (!repetido)
                         {
-
                             datosMateria.setIdMateriasRequeridas(i, nuevoID);
                             IDvalido = true;
-                            vMat[i]= nuevoID;
+                            vMat[i] = nuevoID;
                         }
                         else
                         {
-                            msj.mensajeError("Esa materia ya fue agregada");
+                            msj.mensajeError("Esa materia ya fue agregada, vuelva a intentarlo");
                             IDvalido = false;
                         }
                     }
                     else
                     {
-                        msj.mensajeError("La materia no puede ser correlativa de si misma, vuelva a intentarlo");
+                        msj.mensajeError("La materia no puede ser correlativa de sí misma, vuelva a intentarlo");
                         IDvalido = false;
                     }
                 }
-
             }
             else
             {
-                msj.mensajeError("Ingreso no valido. Por favor, ingrese un numero valido.");
-                return false ;
+                msj.mensajeError("Ingreso no válido. Por favor, ingrese un número válido.");
+                IDvalido = false;
             }
-        }
-        while(!IDvalido);
-
-
+        } while (!IDvalido);
     }
-    delete[] vMat;
-    return true ;
-}
 
+    return true;
+}
 
 string GestorMaterias::buscarIDMateria()
 {
@@ -572,7 +548,7 @@ string GestorMaterias::mostrarNombrePorID(string IDMateria)
 {
     Materia datosMateria;
     int cantMat = archivoMaterias.contarRegistros() ;
-    if (archivoMaterias.leerRegistros(registros))
+    if (archivoMaterias.leerRegistros(materias))
     {
         for (int i=0; i<cantMat; i++)
         {
@@ -591,20 +567,18 @@ string GestorMaterias::mostrarNombrePorID(string IDMateria)
 
 bool GestorMaterias::buscarMateria(std::string& IDmateria, Materia& datosMateria, int &pos)
 {
-    archivoMaterias.leerRegistros(registros);
+    Materia mat;
     int tam = archivoMaterias.contarRegistros() ;
-
-    for (int i = 0; i < tam; i++)
+    for (int i=0;i<tam;i++)
     {
-        if (registros[i].getIdMateria() == IDmateria)
+        archivoMaterias.leerRegistro(i,mat);
+        if (mat.getIdMateria() == IDmateria)
         {
-
-            datosMateria = registros[i];
+            datosMateria = mat;
             pos = i ;
             return true;
         }
     }
-
     return false;
 
 }
@@ -635,7 +609,7 @@ std::string GestorMaterias::seleccionarIdMateria()
     Materia aux;
     std::string espacioBlanco ="";
     int e;
-    if (archivoMaterias.leerRegistros(registros))
+    if (archivoMaterias.leerRegistros(materias))
     {
         for (int i=0; i<cantMat; i++)
         {
@@ -695,12 +669,12 @@ std::string GestorMaterias::seleccionarIdMateria()
 bool GestorMaterias::nombreExiste(string _nombre)
 {
     ///Chequear si el nombre existe
-    archivoMaterias.leerRegistros(registros);
+    archivoMaterias.leerRegistros(materias);
     int tam = archivoMaterias.contarRegistros() ;
 
     for (int i = 0; i < tam; i++)
     {
-        if (registros[i].getNombreMateria() == _nombre)
+        if (materias[i].getNombreMateria() == _nombre)
         {
             return true;
         }
@@ -714,12 +688,12 @@ bool GestorMaterias::IDExiste(string _ID)
 {
 
     ///Chequear si el ID existe
-    archivoMaterias.leerRegistros(registros);
+    archivoMaterias.leerRegistros(materias);
     int tam = archivoMaterias.contarRegistros() ;
 
     for (int i = 0; i < tam; i++)
     {
-        if (registros[i].getIdMateria() == _ID)
+        if (materias[i].getIdMateria() == _ID)
         {
             return true;
         }
@@ -732,10 +706,11 @@ bool GestorMaterias::IDExiste(string _ID)
 
 void GestorMaterias::limpiarCorrelativas(int pos,Materia& datosMateria)
 {
-        archivoMaterias.leerRegistro(pos,datosMateria);
-        for(int i = 0; i < CANTMATERIAS; i++){
+    archivoMaterias.leerRegistro(pos,datosMateria);
+    for(int i = 0; i < CANTMATERIAS; i++)
+    {
         datosMateria.setIdMateriasRequeridas(i,"N/A");
-        }
+    }
 }
 
 Archivo<Materia> GestorMaterias::getArchivoMaterias()
