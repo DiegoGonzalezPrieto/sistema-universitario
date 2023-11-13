@@ -27,6 +27,8 @@ int DatosCursada::getDiaSemana()
 
 void DatosCursada::setDiaSemana(int d)
     {
+        if (d > 7 || d<1) d=1;
+
         _diaSemana = d;
     }
 
