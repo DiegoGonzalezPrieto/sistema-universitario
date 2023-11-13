@@ -15,6 +15,8 @@ class GestorDirectorios
         bool crearDirectoriosCuatrimestre(CursadaMateria materiaEnCurso, std::string idCuatrimestre);
         bool directoriosMateriasAnualesYaCreados(std::string idCuatrimestreInicio, std::string idCuatrimestreActual);
 
+        string validarCaracteresEspeciales(std::string nombreMateria);
+
         int contarElementosEnDirectorio(std::string ruta);
         float calcularProgresoUnidad(std::string rutaUnidad);
         void calcularProgresoMateria(CursadaMateria materia, std::string idCuatrimestre);

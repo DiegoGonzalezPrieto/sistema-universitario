@@ -1,5 +1,9 @@
 #include "GestorDirectorios.h"
 
+
+#include <algorithm>
+#include <unordered_map>
+
 using namespace std;
 namespace fs = filesystem;
 
@@ -21,7 +25,10 @@ bool GestorDirectorios::crearDirectoriosCuatrimestre(CursadaMateria materiaEnCur
 
     if(directoriosMateriasAnualesYaCreados(materiaEnCurso.getIdCuatrimestreInicio(), idCuatrimestre) == false && materiaEnCurso.getCuatrimestreDeDuracion() == 1){
 
-        string rutaMateria = ruta + materiaEnCurso.getNombreMateria() + "/";
+        string auxNombre = materiaEnCurso.getNombreMateria();
+        string nombreMateria = validarCaracteresEspeciales(auxNombre);
+
+        string rutaMateria = ruta + nombreMateria + "/";
 
         vector<Unidad>auxUnidad;
         auxUnidad = materiaEnCurso.getUnidades();
@@ -99,7 +106,11 @@ float GestorDirectorios::calcularProgresoUnidad(string rutaUnidad){
 void GestorDirectorios::calcularProgresoMateria(CursadaMateria materia, string idCuatrimestre){
 
     string rutaMateria = "Archivos/cursada/";
-    rutaMateria += idCuatrimestre + "/" + materia.getNombreMateria();
+
+    string auxNombre = materia.getNombreMateria();
+    string nombreMateria = validarCaracteresEspeciales(auxNombre);
+
+    rutaMateria += idCuatrimestre + "/" + nombreMateria;
 
     vector<Unidad>auxUnidad;
     auxUnidad = materia.getUnidades();
@@ -149,4 +160,35 @@ void GestorDirectorios::calcularProgresoMateria(CursadaMateria materia, string i
 
         cout << "Le quedan un total de " << cantElementosPendientes << " elementos por completar para alcanzar el 100% de progreso en esta materia" << endl;
     }
+}
+
+string GestorDirectorios::validarCaracteresEspeciales(string nombreMateria){
+
+
+    unordered_map<char, char> caracteresDeReemplazo {
+
+        {'á', 'a'},
+        {'Á', 'A'},
+        {'é', 'e'},
+        {'É', 'E'},
+        {'í', 'i'},
+        {'Í', 'I'},
+        {'ó', 'o'},
+        {'Ó', 'O'},
+        {'ú', 'u'},
+        {'Ú', 'U'},
+        {'ñ', 'n'},
+        {'Ñ', 'N'},
+        {'/', '_'}
+
+    };
+
+
+    for(auto& par : caracteresDeReemplazo){
+
+        replace(nombreMateria.begin(), nombreMateria.end(), par.first, par.second);
+    }
+
+    return nombreMateria;
+
 }
