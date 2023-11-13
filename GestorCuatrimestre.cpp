@@ -227,7 +227,7 @@ void GestorCuatrimestre::cerrarCuatrimestre()
             archivoCursada.leerRegistro(x,cursada);
             if(cursada.getEstado()==MAT_EN_CURSO )
             {
-                std::string aux= "> " + cursada.getIdMateria() + cursada.getNombreMateria();
+                std::string aux= "> " + cursada.getIdMateria() + " " + cursada.getNombreMateria();
                 std::cout<<aux<<endl;
             }
 
