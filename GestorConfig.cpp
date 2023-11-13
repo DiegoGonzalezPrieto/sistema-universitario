@@ -12,7 +12,7 @@ GestorConfig::GestorConfig(string rutaConfig) : _archivo(rutaConfig)
 void GestorConfig::iniciar()
 {
 
-    string tituloMenu = "\n===============================\n** Gestión de Configuración **\n===============================";
+    string tituloMenu = "** Gestión de Configuración **";
     Menu m({"Ver valores de configuración",
             "Editar configuración"},
            tituloMenu);
