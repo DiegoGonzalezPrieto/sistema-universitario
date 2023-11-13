@@ -267,7 +267,7 @@ void GestorCuatrimestre::mostrarInformacionCuatrimestreActual()
     Cuatrimestre ultimoCuatrimestre;
     archivoCuatrimestres.leerRegistro(cantregistros - 1, ultimoCuatrimestre);
 
-    cout << "Anio: " << ultimoCuatrimestre.getAnio() << endl;
+    cout << "Año: " << ultimoCuatrimestre.getAnio() << endl;
     cout << "Periodo: " << ultimoCuatrimestre.getPeriodo() << endl;
     cout << "Finalizado: " << (ultimoCuatrimestre.getFinalizado() ? "Si" : "No") << endl;
 
@@ -338,7 +338,7 @@ void GestorCuatrimestre::mostrarTodosCuatrimestresCursados()
         Cuatrimestre ultimoCuatrimestre;
         archivoCuatrimestres.leerRegistro(i, ultimoCuatrimestre);
 
-        cout << "Anio: " << ultimoCuatrimestre.getAnio() << endl;
+        cout << "Año: " << ultimoCuatrimestre.getAnio() << endl;
         cout << "Periodo: " << ultimoCuatrimestre.getPeriodo() << endl;
         cout << "Finalizado: " << (ultimoCuatrimestre.getFinalizado() ? "Si" : "No") << endl;
 
