@@ -257,3 +257,58 @@ int GestorDirectorios::buscarPosicionExtension(vector <string>& extensiones, str
     ///Nunca llegara a este punto, pues nos aseguramos desde antes que la extension exista
     return -1;
 }
+
+
+///DEVUELVE EL TOTAL DE ELEMENTOS COMPLETADOS DE TODOS LOS CUATRIMESTRES, O DE UN CUATRIMESTRE ESPECIFICO SEGUN LA RUTA
+int GestorDirectorios::contarTotalElementosCompletados(string ruta){
+
+    int cantElementosCompletados = 0;
+
+    string nombreCarpetasBuscadas = "completado";
+
+    for (const auto& entrada : fs::directory_iterator(ruta)) {
+
+        if((entrada.path().filename() == nombreCarpetasBuscadas) && is_directory(entrada) == true){
+
+            cantElementosCompletados += contarElementosEnDirectorio(entrada.path().string());
+        }
+
+        else if(is_regular_file(entrada) == false){
+
+            cantElementosCompletados += contarTotalElementosCompletados(entrada.path().string());
+        }
+    }
+
+    return cantElementosCompletados;
+}
+
+///DEVUELVE EL TOTAL DE ELEMENTOS DE TODOS LOS CUATRIMESTRES, O DE UN CUATRIMESTRE ESPECIFICO SEGUN LA RUTA
+int GestorDirectorios::contarTotalElementos(string ruta){
+
+    int cantElementosTotales = 0;
+
+    for (const auto& entrada : fs::directory_iterator(ruta)) {
+
+        if (is_regular_file(entrada)) {
+
+            cantElementosTotales++;
+
+        } else if (is_directory(entrada)) {
+
+            cantElementosTotales += contarTotalElementos(entrada.path().string());
+        }
+    }
+
+    return cantElementosTotales;
+}
+
+int GestorDirectorios::contarTotalElementosPendientes(string ruta){
+
+    int cantElementosCompletados = contarTotalElementosCompletados(ruta);
+
+    int cantElementosTotales = contarTotalElementos(ruta);
+
+    int cantElementosPendientes = cantElementosTotales - cantElementosCompletados;
+
+    return cantElementosPendientes;
+}

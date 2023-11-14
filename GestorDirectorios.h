@@ -25,6 +25,10 @@ class GestorDirectorios
         bool extensionYaDetectada(vector <string>& extensiones, string tipoArchivo);
         int buscarPosicionExtension(vector <string>& extensiones, string tipoArchivo);
 
+        int contarTotalElementosCompletados(string ruta);
+        int contarTotalElementosPendientes(string ruta);
+        int contarTotalElementos(string ruta);
+
 
     private:
 
