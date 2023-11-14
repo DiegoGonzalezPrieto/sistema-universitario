@@ -4,7 +4,7 @@
 namespace Rutas
 {
     /// Raíces y archivo caga CSV
-const std::string raizSistema = "sistema";
+const std::string raizSistema = "system";
 const std::string raizCursada = "cursada";
 const std::string raizDatos = raizSistema + "/datos";
 const std::string raizConfig = raizSistema + "/configuracion";

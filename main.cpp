@@ -5,7 +5,6 @@ using namespace std;
 int main()
 {
     Sistema sistema;
-    sistema.preInicio();
     sistema.iniciar();
 
     return 0;

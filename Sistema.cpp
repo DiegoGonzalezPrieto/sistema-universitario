@@ -31,6 +31,7 @@ Sistema::Sistema() :
 
 void Sistema::preInicio()
 {
+    crearDirectoriosEsenciales();
     if (!Config::leerConfig(Rutas::config))
     {
         _mensajero.mensajeAdvertencia("No se encuentra el archivo de configuración, se creará uno nuevo y se usarán valores por defecto.");
@@ -47,8 +48,7 @@ void Sistema::preInicio()
 
 void Sistema::iniciar()
 {
-//    system("color B1");
-    crearDirectoriosEsenciales();
+    preInicio();
 
     int datosAgregadoss=0;
     bool materiaCargada = false, carreraCargada =false;
