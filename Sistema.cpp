@@ -108,7 +108,20 @@ void Sistema::iniciar()
                                "Créditos"
                               };
 
-    Menu menu(opcMenu, "Sistema de Gestion de Carrera Universitaria");
+    Archivo<Carrera> ac(Rutas::carrera);
+    Carrera c;
+    ac.leerRegistro(0, c);
+    string nombreUniversidad = c.getNombreUniversidad();
+    string nombreCarrera = c.getNombreCarrera();
+
+    limpiarPantalla();
+    cout << "\n\tBienvenido/a " + c.getNombreEstudiante() + "!" << endl;
+    cout << "\n\tEstás cursando la carrera " << nombreCarrera << " en " << nombreUniversidad << "." << endl;
+    cout << "\n\tTu número de legajo es " << c.getLegajo() << "." << endl;
+    cout << endl;
+    limpiarPantalla();
+
+    Menu menu(opcMenu, "Gestion de Carrera " + nombreCarrera + " en " + nombreUniversidad);
     int opc;
 
     /// Una vez finalizada la carga inicial
