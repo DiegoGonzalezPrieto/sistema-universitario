@@ -27,12 +27,12 @@ void GestorRespaldos::iniciar()
         "Crear copia de seguridad de todos los archivos",
         "Reestablecer un archivo",
         "Reestablecer todos los archivos",
-        "Reestablecer valores por defecto de un archivo",
-        "Reestablecer valores por defecto de todos los archivos"
+        "Borrar datos de un archivo",
+        "Borrar todos los datos de archivos (restaurar programa a estado de fabrica)"
 
     };
 
-    string tituloMenu = "\n=====================================\n    ** Gestión de copias de seguridad **\n=====================================";
+    string tituloMenu = "\n=====================================\n    ** Gestion de copias de seguridad **\n=====================================";
     Menu MenuPrincipal(opciones,tituloMenu);
 
 
@@ -84,7 +84,6 @@ void GestorRespaldos::iniciar()
     while (op != 0);
 }
 
-///OPCIONES DEL MENU
 void GestorRespaldos::menuBackups()
 {
     std::vector<std::string> opciones =
@@ -113,7 +112,7 @@ void GestorRespaldos::menuBackups()
         case 1:
             limpiarPantallaSinPausa();
 
-            if(backupNotaFinal())
+            if(respaldoNotaFinal.crearBackup())
             {
                 msj.mensajeInformacion("Copia de seguridad realizada correctamente");
             }
@@ -125,7 +124,7 @@ void GestorRespaldos::menuBackups()
             break;
         case 2:
             limpiarPantallaSinPausa();
-            if(backupCargaInicial())
+            if(respaldoCargaInicial.crearBackup())
             {
                 msj.mensajeInformacion("Copia de seguridad realizada correctamente");
             }
@@ -137,7 +136,7 @@ void GestorRespaldos::menuBackups()
             break;
         case 3:
             limpiarPantallaSinPausa();
-            if(backupCarrera())
+            if(respaldoCarrera.crearBackup())
             {
                 msj.mensajeInformacion("Copia de seguridad realizada correctamente");
             }
@@ -149,7 +148,7 @@ void GestorRespaldos::menuBackups()
             break;
         case 4:
             limpiarPantallaSinPausa();
-            if(backupCuatrimestre())
+            if(respaldoCuatrimestre.crearBackup())
             {
                 msj.mensajeInformacion("Copia de seguridad realizada correctamente");
             }
@@ -161,7 +160,7 @@ void GestorRespaldos::menuBackups()
             break;
         case 5:
             limpiarPantallaSinPausa();
-            if(backupEventos())
+            if(respaldoEventos.crearBackup())
             {
                 msj.mensajeInformacion("Copia de seguridad realizada correctamente");
             }
@@ -173,7 +172,7 @@ void GestorRespaldos::menuBackups()
             break;
         case 6:
             limpiarPantallaSinPausa();
-            if(backupMaterias())
+            if(respaldoMaterias.crearBackup())
             {
                 msj.mensajeInformacion("Copia de seguridad realizada correctamente");
             }
@@ -185,7 +184,7 @@ void GestorRespaldos::menuBackups()
             break;
         case 7:
             limpiarPantallaSinPausa();
-            if(backupConfiguracion())
+            if(respaldoConfiguracion.crearBackup())
             {
                 msj.mensajeInformacion("Copia de seguridad realizada correctamente");
             }
@@ -210,63 +209,63 @@ void GestorRespaldos::backupTotal()
 
     limpiarPantallaSinPausa();
     cout << "Nota final: " ;
-    if(backupNotaFinal())
+    if(respaldoNotaFinal.crearBackup())
     {
-        msj.mensajeInformacion("OK");
+        msj.mensajeInformacion("La copia de seguridad se realizo correctamente");
     }
     else
     {
         msj.mensajeError("No se pudo realizar la copia de seguridad");
     }
     cout << "Carga Inicial: " ;
-    if(backupCargaInicial())
+    if(respaldoCargaInicial.crearBackup())
     {
-        msj.mensajeInformacion("OK");
+        msj.mensajeInformacion("La copia de seguridad se realizo correctamente");
     }
     else
     {
         msj.mensajeError("No se pudo realizar la copia de seguridad");
     }
     cout << "Carrera: " ;
-    if(backupCarrera())
+    if(respaldoCarrera.crearBackup())
     {
-        msj.mensajeInformacion("OK");
+        msj.mensajeInformacion("La copia de seguridad se realizo correctamente");
     }
     else
     {
         msj.mensajeError("No se pudo realizar la copia de seguridad");
     }
     cout << "Cuatrimestre: " ;
-    if(backupCuatrimestre())
+    if(respaldoCuatrimestre.crearBackup())
     {
-        msj.mensajeInformacion("OK");
+        msj.mensajeInformacion("La copia de seguridad se realizo correctamente");
     }
     else
     {
         msj.mensajeError("No se pudo realizar la copia de seguridad");
     }
     cout << "Eventos: " ;
-    if(backupEventos())
+    if(respaldoEventos.crearBackup())
     {
-        msj.mensajeInformacion("OK");
+        msj.mensajeInformacion("La copia de seguridad se realizo correctamente");
     }
     else
     {
         msj.mensajeError("No se pudo realizar la copia de seguridad");
     }
     cout << "Materias: " ;
-    if(backupMaterias())
+    if(respaldoMaterias.crearBackup())
     {
-        msj.mensajeInformacion("OK");
+        msj.mensajeInformacion("La copia de seguridad se realizo correctamente");
     }
     else
     {
         msj.mensajeError("No se pudo realizar la copia de seguridad");
     }
     cout << "Configuracion: " ;
-    if(!backupConfiguracion())
+    if(respaldoConfiguracion.crearBackup())
     {
-        msj.mensajeInformacion("OK");
+        msj.mensajeInformacion("La copia de seguridad se realizo correctamente");
     }
     else
     {
@@ -304,7 +303,7 @@ void GestorRespaldos::menuRestores()
         case 1:
             limpiarPantallaSinPausa();
 
-            if(restoreNotaFinal())
+            if(respaldoNotaFinal.restoreDesdeBup())
             {
                 msj.mensajeInformacion("Restauracion realizada correctamente");
             }
@@ -316,7 +315,7 @@ void GestorRespaldos::menuRestores()
             break;
         case 2:
             limpiarPantallaSinPausa();
-            if(restoreCargaInicial())
+            if(respaldoCargaInicial.restoreDesdeBup())
             {
                 msj.mensajeInformacion("Restauracion realizada correctamente");
             }
@@ -328,7 +327,7 @@ void GestorRespaldos::menuRestores()
             break;
         case 3:
             limpiarPantallaSinPausa();
-            if(restoreCarrera())
+            if(respaldoCarrera.restoreDesdeBup())
             {
                 msj.mensajeInformacion("Restauracion realizada correctamente");
             }
@@ -340,7 +339,7 @@ void GestorRespaldos::menuRestores()
             break;
         case 4:
             limpiarPantallaSinPausa();
-            if(restoreCuatrimestre())
+            if(respaldoCuatrimestre.restoreDesdeBup())
             {
                 msj.mensajeInformacion("Restauracion realizada correctamente");
             }
@@ -352,7 +351,7 @@ void GestorRespaldos::menuRestores()
             break;
         case 5:
             limpiarPantallaSinPausa();
-            if(restoreEventos())
+            if(respaldoEventos.restoreDesdeBup())
             {
                 msj.mensajeInformacion("Restauracion realizada correctamente");
             }
@@ -364,9 +363,9 @@ void GestorRespaldos::menuRestores()
             break;
         case 6:
             limpiarPantallaSinPausa();
-            if(restoreMaterias())
+            if(respaldoMaterias.restoreDesdeBup())
             {
-                msj.mensajeInformacion("Restauracion realizada correctamente");;
+                msj.mensajeInformacion("Restauracion realizada correctamente");
             }
             else
             {
@@ -376,7 +375,7 @@ void GestorRespaldos::menuRestores()
             break;
         case 7:
             limpiarPantallaSinPausa();
-            if(restoreConfiguracion())
+            if(respaldoConfiguracion.restoreDesdeBup())
             {
                 msj.mensajeInformacion("Restauracion realizada correctamente");
             }
@@ -401,63 +400,63 @@ void GestorRespaldos::restoreTotal()
 
     limpiarPantallaSinPausa();
     cout << "Nota final: " ;
-    if(backupNotaFinal())
+    if(respaldoNotaFinal.restoreDesdeBup())
     {
-        msj.mensajeInformacion("OK");
+        msj.mensajeInformacion("Archivo restaurado correctamente");
     }
     else
     {
         msj.mensajeError("No se pudo restaurar el archivo");
     }
     cout << "Carga Inicial: " ;
-    if(backupCargaInicial())
+    if(respaldoCargaInicial.restoreDesdeBup())
     {
-        msj.mensajeInformacion("OK");
+        msj.mensajeInformacion("Archivo restaurado correctamente");
     }
     else
     {
         msj.mensajeError("No se pudo restaurar el archivo");
     }
     cout << "Carrera: " ;
-    if(backupCarrera())
+    if(respaldoCarrera.restoreDesdeBup())
     {
-        msj.mensajeInformacion("OK");
+        msj.mensajeInformacion("Archivo restaurado correctamente");
     }
     else
     {
         msj.mensajeError("No se pudo restaurar el archivo");
     }
     cout << "Cuatrimestre: " ;
-    if(backupCuatrimestre())
+    if(respaldoCuatrimestre.restoreDesdeBup())
     {
-        msj.mensajeInformacion("OK");
+        msj.mensajeInformacion("Archivo restaurado correctamente");
     }
     else
     {
         msj.mensajeError("No se pudo restaurar el archivo");
     }
     cout << "Eventos: " ;
-    if(backupEventos())
+    if(respaldoEventos.restoreDesdeBup())
     {
-        msj.mensajeInformacion("OK");
+        msj.mensajeInformacion("Archivo restaurado correctamente");
     }
     else
     {
         msj.mensajeError("No se pudo restaurar el archivo");
     }
     cout << "Materias: " ;
-    if(backupMaterias())
+    if(respaldoMaterias.restoreDesdeBup())
     {
-        msj.mensajeInformacion("OK");
+        msj.mensajeInformacion("Archivo restaurado correctamente");
     }
     else
     {
         msj.mensajeError("No se pudo restaurar el archivo");
     }
     cout << "Configuracion: " ;
-    if(!backupConfiguracion())
+    if(Config::crearConfig("Archivos/configuracion/config.dat"))
     {
-        msj.mensajeInformacion("OK");
+        msj.mensajeInformacion("Archivo restaurado correctamente");
     }
     else
     {
@@ -468,143 +467,154 @@ void GestorRespaldos::restoreTotal()
 
 void GestorRespaldos::menuPorDefecto()
 {
-///FALTA IMPLEMENTAR
+    std::vector<std::string> opciones =
+    {
+        "Notas finales",
+        "Cuatrimestre",
+        "Eventos",
+        "Configuracion"
+
+    };
+
+    string tituloMenu = "\n---Seleccione el archivo que quiera vaciar---\n";
+    Menu MRestores(opciones,tituloMenu);
+
+    int op;
+    do
+    {
+        op = MRestores.mostrar();
+        switch(op)
+        {
+        case 0:
+            break;
+        case 1:
+            limpiarPantallaSinPausa();
+
+            if(respaldoNotaFinal.borrarRegistros())
+            {
+                msj.mensajeAdvertencia("Registros borrados correctamente");
+            }
+            else
+            {
+                msj.mensajeError("No se pudieron borrar los registros del archivo");
+            }
+            limpiarPantalla();
+            break;
+        case 2:
+            limpiarPantallaSinPausa();
+            if(respaldoCuatrimestre.borrarRegistros())
+            {
+                msj.mensajeAdvertencia("Registros borrados correctamente");
+            }
+            else
+            {
+                msj.mensajeError("No se pudieron borrar los registros del archivo");
+            }
+            limpiarPantalla();
+            break;
+        case 3:
+            limpiarPantallaSinPausa();
+            if(respaldoEventos.borrarRegistros())
+            {
+                msj.mensajeAdvertencia("Registros borrados correctamente");
+            }
+            else
+            {
+                msj.mensajeError("No se pudieron borrar los registros del archivo");
+            }
+            limpiarPantalla();
+            break;
+        case 4:
+            limpiarPantallaSinPausa();
+            if(Config::crearConfig("Archivos/configuracion/config.dat"))
+            {
+                msj.mensajeAdvertencia("Registros borrados correctamente");
+            }
+            else
+            {
+                msj.mensajeError("No se pudieron borrar los registros del archivo");
+            }
+            limpiarPantalla();
+            break;
+        default:
+            cout << "Opcion no valida. Por favor, ingrese una opcion valida" << endl;
+            break;
+        }
+
+        cout << endl ;
+    }
+    while (op != 0);
 }
 
+
+///BORRAR PROGRAMA
 void GestorRespaldos::porDefectoTotal()
 {
-///FALTA IMPLEMENTAR
-}
 
-/// BACKUPS POR ARCHIVOS
-bool GestorRespaldos::backupNotaFinal()
-{
-    if(respaldoNotaFinal.crearBackup())
+    limpiarPantallaSinPausa();
+    cout << "Nota final: " ;
+    if(respaldoNotaFinal.borrarRegistros())
     {
-        return true;
+        msj.mensajeAdvertencia("Registros borrados correctamente");
     }
-    return false;
-}
-
-bool GestorRespaldos::backupCargaInicial()
-{
-    if(respaldoCargaInicial.crearBackup())
+    else
     {
-        return true;
+        msj.mensajeError("No se pudo restaurar el archivo");
     }
-    return false;
-}
-
-bool GestorRespaldos::backupCarrera()
-{
-    if(respaldoCarrera.crearBackup())
+    cout << "Carga Inicial: " ;
+    if(respaldoCargaInicial.borrarRegistros())
     {
-        return true;
+        msj.mensajeAdvertencia("Registros borrados correctamente");
     }
-    return false;
-}
-
-bool GestorRespaldos::backupCuatrimestre()
-{
-    if(respaldoCuatrimestre.crearBackup())
+    else
     {
-        return true;
+        msj.mensajeError("No se pudo restaurar el archivo");
     }
-    return false;
-}
-
-bool GestorRespaldos::backupEventos()
-{
-    if(respaldoMaterias.crearBackup())
+    cout << "Carrera: " ;
+    if(respaldoCarrera.borrarRegistros())
     {
-        return true;
+        msj.mensajeAdvertencia("Registros borrados correctamente");
     }
-    return false;
-}
-
-bool GestorRespaldos::backupMaterias()
-{
-    if(respaldoMaterias.crearBackup())
+    else
     {
-        return true;
+        msj.mensajeError("No se pudo restaurar el archivo");
     }
-    return false;
-}
-
-bool GestorRespaldos::backupConfiguracion()
-{
-    if(respaldoConfiguracion.crearBackup())
+    cout << "Cuatrimestre: " ;
+    if(respaldoCuatrimestre.borrarRegistros())
     {
-        return true;
+        msj.mensajeAdvertencia("Registros borrados correctamente");
     }
-    return false;
-}
-
-
-///RESTORES POR ARCHIVOS
-bool GestorRespaldos::restoreNotaFinal()
-{
-    if(respaldoNotaFinal.restoreDesdeBup())
+    else
     {
-        return true;
+        msj.mensajeError("No se pudo restaurar el archivo");
     }
-    return false;
-}
-
-bool GestorRespaldos::restoreCargaInicial()
-{
-    if(respaldoCargaInicial.restoreDesdeBup())
+    cout << "Eventos: " ;
+    if(respaldoEventos.borrarRegistros())
     {
-        return true;
+        msj.mensajeAdvertencia("Registros borrados correctamente");
     }
-    return false;
-}
-
-bool GestorRespaldos::restoreCarrera()
-{
-    if(respaldoCarrera.restoreDesdeBup())
+    else
     {
-        return true;
+        msj.mensajeError("No se pudo restaurar el archivo");
     }
-    return false;
-}
-
-bool GestorRespaldos::restoreCuatrimestre()
-{
-    if(respaldoCuatrimestre.restoreDesdeBup())
+    cout << "Materias: " ;
+    if(respaldoMaterias.borrarRegistros())
     {
-        return true;
+        msj.mensajeAdvertencia("Registros borrados correctamente");
     }
-    return false;
-}
-
-bool GestorRespaldos::restoreEventos()
-{
-    if(respaldoMaterias.restoreDesdeBup())
+    else
     {
-        return true;
+        msj.mensajeError("No se pudo restaurar el archivo");
     }
-    return false;
-}
-
-bool GestorRespaldos::restoreMaterias()
-{
-    if(respaldoMaterias.restoreDesdeBup())
+    cout << "Configuracion: " ;
+    if(respaldoConfiguracion.borrarRegistros())
     {
-        return true;
+        msj.mensajeAdvertencia("Registros borrados correctamente");
     }
-    return false;
-}
-
-bool GestorRespaldos::restoreConfiguracion()
-{
-    if(respaldoConfiguracion.restoreDesdeBup())
+    else
     {
-        return true;
+        msj.mensajeError("No se pudo restaurar el archivo");
     }
-    return false;
+    limpiarPantalla();
+
 }
-
-///RESTORES POR DEFECTO
-
-///FALTA IMPLEMENTAR

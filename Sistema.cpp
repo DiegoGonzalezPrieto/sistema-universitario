@@ -128,6 +128,7 @@ void Sistema::iniciar()
             {
                 _gestorMaterias.menuCortoGMaterias();
             }
+            break;
             case 2:
             {
                 _gestorCuatrimestre.iniciarGestorCuatrimestre();

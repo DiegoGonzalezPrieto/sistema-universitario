@@ -3,6 +3,7 @@
 #include <cstring>
 #include <vector>
 #include <cstring>
+#include "Mensajero.h"
 
 template<typename T>
 class Archivo
@@ -156,67 +157,127 @@ public:
         }
     }
 
-    bool crearBackup() {
+    int contarRegistrosBackup() {
+    T aux;
+    int contador = 0;
+
+    std::string nombreBup = getNombreBackup();
+    FILE* p = fopen(nombreBup.c_str(), "rb");
+    if (p == NULL) {
+        msj.mensajeError("Error abriendo archivo de respaldo.");
+        return -1;
+    }
+
+    while (fread(&aux, sizeof(T), 1, p) == 1) {
+        contador++;
+    }
+
+    fclose(p);
+    return contador;
+}
+
+    bool crearBackup()
+    {
         T aux;
         int cantReg = contarRegistros();
-        if (cantReg < 1) return false;
-        std::string nombreBup = getNombreBackup();
-        FILE* pi = fopen(_nombre.c_str(), "rb");
-        FILE* po = fopen(nombreBup.c_str(), "wb");
-
-        if (pi == NULL || po == NULL) {
-            std::cout << "Error abriendo archivos de entrada/salida." << std::endl;
+        if (cantReg < 1)
+        {
+            msj.mensajeError("El archivo no existe o esta vacio");
             return false;
         }
+        else
+        {
+            std::string nombreBup = getNombreBackup();
+            FILE* pi = fopen(_nombre.c_str(), "rb");
+            FILE* po = fopen(nombreBup.c_str(), "wb");
 
-        for (int i = 0; i < cantReg; i++) {
-            fread(&aux, sizeof(T), 1, pi);
-            fwrite(&aux, sizeof(T), 1, po);
+            if (pi == NULL || po == NULL)
+            {
+                std::cout << "Error abriendo archivos de entrada/salida." << std::endl;
+                return false;
+            }
+
+            for (int i = 0; i < cantReg; i++)
+            {
+                fread(&aux, sizeof(T), 1, pi);
+                fwrite(&aux, sizeof(T), 1, po);
+            }
+
+            fclose(po);
+            fclose(pi);
+            return true;
         }
+    }
+
+    bool restoreDesdeBup()
+    {
+        T aux;
+        int cantReg = contarRegistrosBackup();
+        if (!archivoExiste())
+        {
+            msj.mensajeError("El archivo no existe");
+            return false;
+        }
+        else
+        {
+            std::string nombreBup = getNombreBackup();
+
+            FILE* pi = fopen(nombreBup.c_str(), "rb");
+            FILE* po = fopen(_nombre.c_str(), "wb");
+
+            if (pi == NULL || po == NULL)
+            {
+                std::cout << "Error abriendo archivos de entrada/salida." << std::endl;
+                return false;
+            }
+
+            for (int i = 0; i < cantReg; i++)
+            {
+                fread(&aux, sizeof(T), 1, pi);
+                fwrite(&aux, sizeof(T), 1, po);
+            }
+
+            fclose(po);
+            fclose(pi);
+            return true;
+        }
+    }
+
+    bool borrarRegistros()
+    {
+        if (!crearBackup()) return false;
+
+        std::string nombreBup = getNombre();
+        FILE* pi = fopen(nombreBup.c_str(), "rb");
+        FILE* po = fopen(_nombre.c_str(), "wb");
+        if (pi == NULL || po == NULL) return false;
 
         fclose(po);
         fclose(pi);
+
         return true;
     }
 
-    bool restoreDesdeBup() {
-    T aux;
-    int cantReg = contarRegistros();
-    if (cantReg < 1) return false;
-
-    std::string nombreBup = getNombreBackup();
-    FILE* pi = fopen(nombreBup.c_str(), "rb");
-    FILE* po = fopen(_nombre.c_str(), "wb");
-
-    if (pi == NULL || po == NULL) {
-        std::cout << "Error abriendo archivos de entrada/salida." << std::endl;
-        return false;
+    std::string quitarExtension(const std::string& nombreArchivo)
+    {
+        size_t posUltimoPunto = nombreArchivo.rfind('.');
+        if (posUltimoPunto != std::string::npos)
+        {
+            return nombreArchivo.substr(0, posUltimoPunto);
+        }
+        else
+        {
+            return nombreArchivo;
+        }
     }
-
-    for (int i = 0; i < cantReg; i++) {
-        fread(&aux, sizeof(T), 1, pi);
-        fwrite(&aux, sizeof(T), 1, po);
-    }
-
-    fclose(po);
-    fclose(pi);
-    return true;
-}
-
-std::string quitarExtension(const std::string& nombreArchivo) {
-    size_t posUltimoPunto = nombreArchivo.rfind('.');
-    if (posUltimoPunto != std::string::npos) {
-        return nombreArchivo.substr(0, posUltimoPunto);
-    } else {
-        return nombreArchivo;
-    }
-}
 
 
 protected:
 
 private:
     std::string _nombre;
+
+    Mensajero msj;
 
 };
 

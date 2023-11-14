@@ -39,25 +39,6 @@ public:
     void menuPorDefecto();
     void porDefectoTotal();
 
-
-    bool backupNotaFinal();
-    bool backupCargaInicial();
-    bool backupCarrera();
-    bool backupEventos();
-    bool backupMaterias();
-    bool backupCuatrimestre();
-    bool backupConfiguracion();
-
-
-    bool restoreNotaFinal();
-    bool restoreCargaInicial();
-    bool restoreCarrera();
-    bool restoreEventos();
-    bool restoreMaterias();
-    bool restoreCuatrimestre();
-    bool restoreConfiguracion();
-
-
 };
 
 #endif // GESTORRESPALDOS_H
