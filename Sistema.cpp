@@ -6,6 +6,7 @@ using namespace std;
 #include "Menu.h"
 #include "func_utiles.h"
 #include "func_archivos.h"
+#include "rutas.h"
 
 bool crearDirectorios(string ruta)
 {
@@ -13,16 +14,16 @@ bool crearDirectorios(string ruta)
 }
 
 Sistema::Sistema() :
-    _gestorCarrera("Archivos/datos/carrera.dat","carga_inicial.dat"),
-    _gestorEventos("Archivos/datos/eventos.dat", "Archivos/datos/materias.dat", "Archivos/datos/cursada_materias.dat" ),
-    _gestorMaterias("Archivos/datos/materias.dat"),
-    _gestorCorrelativas("Archivos/datos/materias.dat","Archivos/datos/cursada_materias.dat"),
-    _gestorNotasFinales("Archivos/datos/notas.dat", "Archivos/datos/materias.dat", "Archivos/datos/cursada_materias.dat"),
-    _cargaInicial("carga_inicial.dat"),
-    _gestorCuatrimestre("Archivos/datos/cuatrimestre.dat"),
-    _gestorCsv("archivoImportacion.csv", "Archivos/datos/materias.dat", "carga_inicial.dat"),
-    _gestorConfig("Archivos/configuracion/config.dat"),
-    _gestorCursadaMaterias("Archivos/datos/cursada_materias.dat", "Archivos/datos/materias.dat")
+    _gestorCarrera(Rutas::carrera,Rutas::cargaInicial ),
+    _gestorEventos(Rutas::eventos, Rutas::materias, Rutas::cursadas ),
+    _gestorMaterias(Rutas::materias),
+    _gestorCorrelativas(Rutas::materias,Rutas::cursadas),
+    _gestorNotasFinales(Rutas::notas, Rutas::materias, Rutas::cursadas),
+    _cargaInicial(Rutas::cargaInicial ),
+    _gestorCuatrimestre(Rutas::cuatrimestres),
+    _gestorCsv(Rutas::archivoCsv, Rutas::materias, Rutas::cargaInicial ),
+    _gestorConfig(Rutas::config),
+    _gestorCursadaMaterias(Rutas::cursadas, Rutas::materias)
 
 {
     //ctor
@@ -30,10 +31,10 @@ Sistema::Sistema() :
 
 void Sistema::preInicio()
 {
-    if (!Config::leerConfig("Archivos/configuracion/config.dat"))
+    if (!Config::leerConfig(Rutas::config))
     {
         _mensajero.mensajeAdvertencia("No se encuentra el archivo de configuración, se creará uno nuevo y se usarán valores por defecto.");
-        Config::crearConfig("Archivos/configuracion/config.dat");
+        Config::crearConfig(Rutas::config);
     }
 
     // Crea el archivo de eventos, ya que lo revisa para instanciar el menú inicial
@@ -181,9 +182,10 @@ void Sistema::crearDirectoriosEsenciales()
 {
     GestorDirectorios gd;
 
-    gd.crearDirectorios("Archivos/datos");
-    gd.crearDirectorios("Archivos/configuracion");
-    gd.crearDirectorios("Archivos/cursada");
+    gd.crearDirectorios(Rutas::raizSistema);
+    gd.crearDirectorios(Rutas::raizCursada);
+    gd.crearDirectorios(Rutas::raizDatos);
+    gd.crearDirectorios(Rutas::raizConfig);
 
     return;
 }
@@ -285,7 +287,7 @@ void Sistema::menuCargaInicial()
 
                 case 3:
                 {
-                    Archivo<Materia> Materias("Archivos/datos/materias.dat");
+                    Archivo<Materia> Materias(Rutas::materias);
                     if(Materias.archivoExiste())
                         {
                             std::cout<<" Hemos detectado que ya realizo ingresos manuales de materias"<<std::endl;
