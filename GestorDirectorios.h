@@ -21,6 +21,10 @@ class GestorDirectorios
         float calcularProgresoUnidad(std::string rutaUnidad);
         void calcularProgresoMateria(CursadaMateria materia, std::string idCuatrimestre);
 
+        void almacenarExtensionesDetectadas(vector <string>& extensiones, vector <int>& contadorDeExtensiones, string ruta);
+        bool extensionYaDetectada(vector <string>& extensiones, string tipoArchivo);
+        int buscarPosicionExtension(vector <string>& extensiones, string tipoArchivo);
+
 
     private:
 

@@ -162,6 +162,7 @@ void GestorDirectorios::calcularProgresoMateria(CursadaMateria materia, string i
     }
 }
 
+///SE ENCARGA DE CREAR LAS CARPETAS, Y ELIMINAR CARACTERES CONFLICTIVOS PARA FILESYSTEM
 string GestorDirectorios::validarCaracteresEspeciales(string nombreMateria){
 
 
@@ -186,9 +187,73 @@ string GestorDirectorios::validarCaracteresEspeciales(string nombreMateria){
 
     for(auto& par : caracteresDeReemplazo){
 
+        ///Replace recibe 4 parámetros: El inicio y el final del string a recorrer, el valor "viejo" a buscar, y el valor "nuevo" a reemplazar
+        ///También se podría haber pensado con una matriz de char o 2 vectores paralelos para crear los pares de reemplazo
         replace(nombreMateria.begin(), nombreMateria.end(), par.first, par.second);
     }
 
     return nombreMateria;
 
+}
+
+///DADA UNA RUTA, BUSCA LOS TIPOS DE ARCHIVOS PARA IR ALMACENANDOLOS. SI ENCUENTRA UNA CARPETA, SE LLAMA A SI MISMA DE FORMA RECURSIVA
+void GestorDirectorios::almacenarExtensionesDetectadas(vector <string>& extensiones, vector <int>& contadorDeExtensiones, string ruta){
+
+    for (const auto& entrada : fs::directory_iterator(ruta)) {
+
+        string auxTipoArchivo = entrada.path().extension().string();
+
+        if((is_regular_file(entrada) == true)){
+
+            if(extensionYaDetectada(extensiones,auxTipoArchivo) == false){
+
+                extensiones.push_back(auxTipoArchivo);
+                contadorDeExtensiones.push_back(1);
+            }
+            else{
+
+                contadorDeExtensiones[buscarPosicionExtension(extensiones, auxTipoArchivo)]++;
+            }
+
+        }
+        else if(is_directory(entrada)){
+
+            almacenarExtensionesDetectadas(extensiones, contadorDeExtensiones, entrada.path().string());
+        }
+    }
+
+}
+
+///VALIDAMOS SI LA EXTENSION YA FUE ENCONTRADA PREVIAMENTE
+bool GestorDirectorios::extensionYaDetectada(vector <string>& extensiones, string tipoArchivo){
+
+    int tam = extensiones.size();
+
+    for(int i = 0; i < tam; i++){
+
+        if(extensiones[i] == tipoArchivo){
+
+            return true;
+        }
+    }
+
+    return false;
+
+}
+
+///DEVOLVEMOS LA POSICION DE UNA EXTENSION QUE YA SABEMOS FUE ALMACENADA PREVIAMENTE
+int GestorDirectorios::buscarPosicionExtension(vector <string>& extensiones, string tipoArchivo){
+
+    int tam = extensiones.size();
+
+    for(int i = 0; i < tam; i++){
+
+        if(extensiones[i] == tipoArchivo){
+
+            return i;
+        }
+    }
+
+    ///Nunca llegara a este punto, pues nos aseguramos desde antes que la extension exista
+    return -1;
 }
