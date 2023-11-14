@@ -25,7 +25,7 @@ void GestorNotasFinales::iniciar()
     std::vector<std::string> opcMenu = {"Listar notas finales", "Guardar registro nota final", "Eliminar registro nota final", "Modificar registro nota final", "Generar promedio"};
 
 
-    Menu menu(opcMenu);
+    Menu menu(opcMenu, "** Notas Finales **");
     int opcion;
 
     while(true)

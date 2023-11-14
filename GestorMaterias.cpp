@@ -20,7 +20,7 @@ void GestorMaterias::iniciarGestorMaterias()
         "Modificar una materia",
         "Mostrar materias"
     };
-    string tituloMenu = "\n=====================================\n    ** Gestión de Materias **\n=====================================";
+    string tituloMenu = "** Materias **";
 
     Menu menuPrincipal(opciones,tituloMenu) ;
 
@@ -66,7 +66,7 @@ void GestorMaterias::menuCortoGMaterias()
         "Modificar una materia",
         "Mostrar materias",
     };
-    string tituloMenu = "\n=====================================\n    ** Gestión de Materias **\n=====================================";
+    string tituloMenu = "** Materias **";
 
     Menu menuPrincipal(opciones,tituloMenu) ;
 
