@@ -6,15 +6,16 @@ using namespace std;
 #include "Menu.h"
 #include "Mensajero.h"
 #include "func_utiles.h"
+#include "rutas.h"
 
 GestorRespaldos::GestorRespaldos() :
-    respaldoNotaFinal("Archivos/datos/notas.dat"),
-    respaldoCargaInicial("carga_inicial.dat"),
-    respaldoCarrera("Archivos/datos/carrera.dat"),
-    respaldoCuatrimestre("Archivos/backup/cuatrimestre.dat"),
-    respaldoEventos("Archivos/datos/eventos.dat"),
-    respaldoMaterias("Archivos/datos/materias.dat"),
-    respaldoConfiguracion("Archivos/configuracion/config.dat")
+    respaldoNotaFinal(Rutas::notas),
+    respaldoCargaInicial(Rutas::cargaInicial),
+    respaldoCarrera(Rutas::carrera),
+    respaldoCuatrimestre(Rutas::cuatrimestres),
+    respaldoEventos(Rutas::eventos),
+    respaldoMaterias(Rutas::materias),
+    respaldoConfiguracion(Rutas::config)
 
 {}
 
@@ -32,7 +33,7 @@ void GestorRespaldos::iniciar()
 
     };
 
-    string tituloMenu = "\n=====================================\n    ** Gestion de copias de seguridad **\n=====================================";
+    string tituloMenu = "** Gestion de copias de seguridad **";
     Menu MenuPrincipal(opciones,tituloMenu);
 
 
@@ -98,7 +99,7 @@ void GestorRespaldos::menuBackups()
 
     };
 
-    string tituloMenu = "\n---Seleccione el archivo del que quiere crear una copia de seguridad---\n";
+    string tituloMenu = "---Seleccione el archivo del que quiere crear una copia de seguridad---";
     Menu MBackups(opciones,tituloMenu);
 
     int op;
@@ -289,7 +290,7 @@ void GestorRespaldos::menuRestores()
 
     };
 
-    string tituloMenu = "\n---Seleccione el archivo que quiere restaurar desde una copia de seguridad---\n";
+    string tituloMenu = "---Seleccione el archivo que quiere restaurar desde una copia de seguridad---";
     Menu MRestores(opciones,tituloMenu);
 
     int op;
@@ -454,7 +455,7 @@ void GestorRespaldos::restoreTotal()
         msj.mensajeError("No se pudo restaurar el archivo");
     }
     cout << "Configuracion: " ;
-    if(Config::crearConfig("Archivos/configuracion/config.dat"))
+    if(Config::crearConfig(Rutas::config))
     {
         msj.mensajeInformacion("Archivo restaurado correctamente");
     }
@@ -476,7 +477,7 @@ void GestorRespaldos::menuPorDefecto()
 
     };
 
-    string tituloMenu = "\n---Seleccione el archivo que quiera vaciar---\n";
+    string tituloMenu = "---Seleccione el archivo que quiera vaciar---";
     Menu MRestores(opciones,tituloMenu);
 
     int op;
@@ -526,7 +527,7 @@ void GestorRespaldos::menuPorDefecto()
             break;
         case 4:
             limpiarPantallaSinPausa();
-            if(Config::crearConfig("Archivos/configuracion/config.dat"))
+            if(Config::crearConfig(Rutas::config))
             {
                 msj.mensajeAdvertencia("Registros borrados correctamente");
             }
