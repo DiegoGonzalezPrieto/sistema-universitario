@@ -2,7 +2,7 @@
 #include <cstring>
 using namespace std;
 
-#include "gestorRespaldos.h"
+#include "GestorRespaldos.h"
 #include "Menu.h"
 #include "Mensajero.h"
 #include "func_utiles.h"
@@ -12,13 +12,14 @@ GestorRespaldos::GestorRespaldos() :
     respaldoNotaFinal(Rutas::notas),
     respaldoCargaInicial(Rutas::cargaInicial),
     respaldoCarrera(Rutas::carrera),
-    respaldoCuatrimestre(Rutas::cuatrimestres),
     respaldoEventos(Rutas::eventos),
     respaldoMaterias(Rutas::materias),
+    respaldoCuatrimestre(Rutas::cuatrimestres),
     respaldoConfiguracion(Rutas::config)
 
 {}
 
+///MENU PRINCIPAL
 void GestorRespaldos::iniciar()
 {
 
@@ -71,10 +72,18 @@ void GestorRespaldos::iniciar()
             limpiarPantallaSinPausa();
             break;
         case 6:
+            {
             limpiarPantallaSinPausa();
+            Menu m({"Si","No"},"Esta seguro que desea eliminar todos los datos?");
+            int opc = m.mostrar();
+            if(opc==1)
+            {
             porDefectoTotal();
             limpiarPantallaSinPausa();
+            }
+            limpiarPantallaSinPausa();
             break;
+            }
         default:
             cout << "Opcion no valida. Por favor, ingrese una opcion valida" << endl;
             break;
@@ -85,6 +94,7 @@ void GestorRespaldos::iniciar()
     while (op != 0);
 }
 
+///MENU PARA SELECCIONAR UN ARCHIVO PARA HACERLE .BUP
 void GestorRespaldos::menuBackups()
 {
     std::vector<std::string> opciones =
@@ -205,6 +215,7 @@ void GestorRespaldos::menuBackups()
     while (op != 0);
 }
 
+///CREA .BUP DE TODOS LOS ARCHIVOS CON DATOS
 void GestorRespaldos::backupTotal()
 {
 
@@ -276,6 +287,7 @@ void GestorRespaldos::backupTotal()
 
 }
 
+///MENU PARA SELECCIONAR QUE ARCHIVO RESTAURAR DESDE .BUP
 void GestorRespaldos::menuRestores()
 {
     std::vector<std::string> opciones =
@@ -396,6 +408,7 @@ void GestorRespaldos::menuRestores()
     while (op != 0);
 }
 
+///RESTAURA TODOS LOS ARCHIVOS DESDE LOS .BUP
 void GestorRespaldos::restoreTotal()
 {
 
@@ -455,7 +468,7 @@ void GestorRespaldos::restoreTotal()
         msj.mensajeError("No se pudo restaurar el archivo");
     }
     cout << "Configuracion: " ;
-    if(Config::crearConfig(Rutas::config))
+    if(  Config::crearConfig(Rutas::config))
     {
         msj.mensajeInformacion("Archivo restaurado correctamente");
     }
@@ -466,6 +479,7 @@ void GestorRespaldos::restoreTotal()
     limpiarPantalla();
 }
 
+///MENU PARA SELECCIONAR UNA MATERIA Y BORRAR SUS DATOS
 void GestorRespaldos::menuPorDefecto()
 {
     std::vector<std::string> opciones =
@@ -489,6 +503,8 @@ void GestorRespaldos::menuPorDefecto()
         case 0:
             break;
         case 1:
+            {
+
             limpiarPantallaSinPausa();
 
             if(respaldoNotaFinal.borrarRegistros())
@@ -501,7 +517,10 @@ void GestorRespaldos::menuPorDefecto()
             }
             limpiarPantalla();
             break;
+            }
         case 2:
+            {
+
             limpiarPantallaSinPausa();
             if(respaldoCuatrimestre.borrarRegistros())
             {
@@ -513,7 +532,10 @@ void GestorRespaldos::menuPorDefecto()
             }
             limpiarPantalla();
             break;
+            }
         case 3:
+            {
+
             limpiarPantallaSinPausa();
             if(respaldoEventos.borrarRegistros())
             {
@@ -525,9 +547,12 @@ void GestorRespaldos::menuPorDefecto()
             }
             limpiarPantalla();
             break;
+            }
         case 4:
+            {
             limpiarPantallaSinPausa();
-            if(Config::crearConfig(Rutas::config))
+
+            if(respaldoCargaInicial.borrarRegistros() && Config::crearConfig(Rutas::config))
             {
                 msj.mensajeAdvertencia("Registros borrados correctamente");
             }
@@ -537,6 +562,7 @@ void GestorRespaldos::menuPorDefecto()
             }
             limpiarPantalla();
             break;
+            }
         default:
             cout << "Opcion no valida. Por favor, ingrese una opcion valida" << endl;
             break;
@@ -548,7 +574,8 @@ void GestorRespaldos::menuPorDefecto()
 }
 
 
-///BORRAR PROGRAMA
+
+///BORRA TODOS LOS DATOS DE TODOS LOS ARCHIVOS EXISTENTES
 void GestorRespaldos::porDefectoTotal()
 {
 
@@ -608,7 +635,7 @@ void GestorRespaldos::porDefectoTotal()
         msj.mensajeError("No se pudo restaurar el archivo");
     }
     cout << "Configuracion: " ;
-    if(respaldoConfiguracion.borrarRegistros())
+    if(respaldoCargaInicial.borrarRegistros() && Config::crearConfig(Rutas::config))
     {
         msj.mensajeAdvertencia("Registros borrados correctamente");
     }
