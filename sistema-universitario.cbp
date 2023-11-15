@@ -75,8 +75,6 @@
 		<Unit filename="GestorMaterias.h" />
 		<Unit filename="GestorNotasFinales.cpp" />
 		<Unit filename="GestorNotasFinales.h" />
-		<Unit filename="GestorRespaldos.cpp" />
-		<Unit filename="GestorRespaldos.h" />
 		<Unit filename="Horario.cpp" />
 		<Unit filename="Horario.h" />
 		<Unit filename="Materia.cpp" />
