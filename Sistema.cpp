@@ -23,7 +23,8 @@ Sistema::Sistema() :
     _gestorCuatrimestre(Rutas::cuatrimestres),
     _gestorCsv(Rutas::archivoCsv, Rutas::materias, Rutas::cargaInicial ),
     _gestorConfig(Rutas::config),
-    _gestorCursadaMaterias(Rutas::cursadas, Rutas::materias)
+    _gestorCursadaMaterias(Rutas::cursadas, Rutas::materias),
+    _gestorRespaldos()
 
 {
     //ctor
@@ -33,17 +34,17 @@ void Sistema::preInicio()
 {
     crearDirectoriosEsenciales();
     if (!Config::leerConfig(Rutas::config))
-    {
-        _mensajero.mensajeAdvertencia("No se encuentra el archivo de configuración, se creará uno nuevo y se usarán valores por defecto.");
-        Config::crearConfig(Rutas::config);
-    }
+        {
+            _mensajero.mensajeAdvertencia("No se encuentra el archivo de configuración, se creará uno nuevo y se usarán valores por defecto.");
+            Config::crearConfig(Rutas::config);
+        }
 
     // Crea el archivo de eventos, ya que lo revisa para instanciar el menú inicial
     if (!_gestorEventos.getArchivo().archivoExiste())
-    {
-        _mensajero.mensajeAdvertencia("No se encuentra el archivo de eventos, se creará uno nuevo sin registros.");
-        _gestorEventos.getArchivo().crearArchivo();
-    }
+        {
+            _mensajero.mensajeAdvertencia("No se encuentra el archivo de eventos, se creará uno nuevo sin registros.");
+            _gestorEventos.getArchivo().crearArchivo();
+        }
 }
 
 void Sistema::iniciar()
@@ -105,6 +106,7 @@ void Sistema::iniciar()
                                "Notas finales",
                                "Carrera",
                                "Configuracion",
+                               "Backups",
                                "Créditos"
                               };
 
@@ -127,15 +129,13 @@ void Sistema::iniciar()
     /// Una vez finalizada la carga inicial
     while(true)
         {
-
-
             opc = menu.mostrar();
             switch(opc)
                 {
 
+
                 case 0:
                     return;
-                    break;
                 case 1:
                 {
                     _gestorMaterias.menuCortoGMaterias();
@@ -161,6 +161,11 @@ void Sistema::iniciar()
                 }
                 break;
                 case 7:
+                {
+                    _gestorRespaldos.iniciar();
+                }
+                break;
+                case 8:
                     limpiarPantallaSinPausa();
                     cout << "*******************************************************************" << endl;
                     cout << "*                                                                 *" << endl;
@@ -183,15 +188,15 @@ void Sistema::iniciar()
                     cout << "*                                                                 *" << endl;
                     cout << "*                                                                 *" << endl;
                     cout << "*******************************************************************" << endl;
-                break;
+                    break;
                 default:
                     break;
                 }
+
+
+
         }
-
 }
-
-
 void Sistema::crearDirectoriosEsenciales()
 {
     GestorDirectorios gd;
@@ -301,7 +306,7 @@ void Sistema::menuCargaInicial()
 
                 case 3:
                 {
-                    Archivo<Materia> Materias(Rutas::materias);
+                    Archivo<Materia> Materias("Archivos/datos/materias.dat");
                     if(Materias.archivoExiste())
                         {
                             std::cout<<" Hemos detectado que ya realizo ingresos manuales de materias"<<std::endl;
@@ -329,12 +334,9 @@ void Sistema::menuCargaInicial()
                             _gestorCsv.iniciar();
                         }
 
-
                     break;
                 }
-
-                default:
-                    break;
+                break;
                 }
         }
 }

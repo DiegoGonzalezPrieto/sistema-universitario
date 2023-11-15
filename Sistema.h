@@ -10,6 +10,7 @@
 #include "GestorCuatrimestre.h"
 #include "GestorCorrelativas.h"
 #include "GestorConfig.h"
+#include "GestorRespaldos.h"
 #include "GestorCursadaMateria.h"
 ///FALTA GESTORCURSADAMATERIA
 ///FALTAN LOS DIRECTORIOS
@@ -40,6 +41,7 @@ class Sistema
         GestorConfig _gestorConfig;
         GestorCorrelativas _gestorCorrelativas;
         GestorCursadaMateria _gestorCursadaMaterias;
+        GestorRespaldos _gestorRespaldos;
 
         Mensajero _mensajero;
         Archivo <CargaInicial> _cargaInicial;
