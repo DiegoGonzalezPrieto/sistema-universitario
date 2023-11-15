@@ -27,7 +27,7 @@ class GestorNotasFinales
 
         void iniciar();
 
-
+        std::string notaToString(NotaFinal);
     private:
 
         Archivo <NotaFinal> _auxArchivo;

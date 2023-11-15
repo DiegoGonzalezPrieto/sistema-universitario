@@ -38,7 +38,7 @@ void GestorCursadaMateria::iniciar()
         }
 
     // 1. Loop principal
-    string tituloMenu = "\n=====================================\n** Gestión de Cursadas de Materias **\n=====================================";
+    string tituloMenu = "** Cursadas de Materias **";
     Menu m({"Ingresar nueva cursada de materia.",
             "Ver cursadas de materias según su estado (incluye anuladas).",
             "Ver todas las cursadas de materias.",
@@ -97,6 +97,12 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola()
     cout << "***********************" << endl;
     cout << endl;
 
+    // Crear archivo de cursadas en caso de que no exista. (Primera ejecución)
+
+    if (!_archivo.archivoExiste())
+        {
+            _archivo.crearArchivo();
+        }
 
     cout << "Qué materia se va a cursar?" << endl<< endl;
 
@@ -106,7 +112,7 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola()
     string idCuatrimestre = to_string(hoy.getAnio()) + "0" + to_string(periodo);
     string futuroIdCursadaMateria = idMateria + idCuatrimestre;
     string erroresValidacion = "";
-    if (!sePuedeCursar(futuroIdCursadaMateria, erroresValidacion))
+    if (!sePuedeCursar(idMateria, idCuatrimestre, erroresValidacion))
         {
             cout << endl;
             _mensajero.mensajeError("La materia seleccionada no se puede cursar.");
@@ -144,7 +150,7 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola()
                     break;
                 }
         }
-    cout << "\nLas materias correlativas de " << aux.getNombreMateria() << "son: " << endl;
+    cout << "\nLas materias correlativas de " << aux.getNombreMateria() << " son: " << endl;
     gc.mostrarCorrelativas(aux.getIdMateria());
 
 
@@ -344,18 +350,36 @@ CursadaMateria GestorCursadaMateria::buscarCursadaMateria()
     return cursadaElegida;
 }
 
-bool GestorCursadaMateria::sePuedeCursar(string idCursadaMateria, string &mensajeError)
+bool GestorCursadaMateria::sePuedeCursar(string idMateria, string idCuatrimestre, string &mensajeError)
 {
     bool cursable = true;
     CursadaMateria cm;
-    if (buscarCursadaMateriaPorId(idCursadaMateria,cm))
-        {   limpiarPantallaSinPausa();
+    // Hay una cursada con igual id.
+    if (buscarCursadaMateriaPorId(idMateria+idCuatrimestre,cm))
+        {
+            limpiarPantallaSinPausa();
             cursable = false;
             mensajeError += "\n- Ya hay una cursada de de esta materia en este cuatrimestre:\n";
             mensajeError += cm.toString();
         }
 
-    // Otras validaciones posibles
+    // Hay una cursada EN_CURSO de la misma materia
+    vector<CursadaMateria> cursadas;
+    if (!_archivo.leerRegistros(cursadas))
+        {
+            _mensajero.mensajeError("No se pudo leer correctamente el archivo de cursadas.");
+            return false;
+        }
+    for (CursadaMateria c : cursadas)
+    {
+        if (c.getIdMateria() == idMateria && c.getEstado() == MAT_EN_CURSO)
+        {
+            limpiarPantallaSinPausa();
+            cursable = false;
+            mensajeError += "\n- Ya hay una cursada de de esta materia actualmente en curso:\n";
+            mensajeError += c.toString();
+        }
+    }
 
     return cursable;
 }
@@ -725,7 +749,7 @@ bool GestorCursadaMateria::seleccionarCursadaActualmenteEnCurso(CursadaMateria& 
         }
 
 
-        for (int i=0; i<vec.size(); i++)
+    for (int i=0; i<vec.size(); i++)
         {
             if (vec[i].getEstado()== MAT_EN_CURSO)
                 {

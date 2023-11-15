@@ -50,7 +50,7 @@ void GestorEventos::iniciar()
         }
 
     // 1. Loop principal
-    string tituloMenu = "\n========================\n** Gestión de Eventos **\n========================";
+    string tituloMenu = "** Eventos **";
     Menu m({ "Ver eventos próximos." + alertaEventosProximos,
              "Ver eventos de este mes y el siguiente",
              "Ver todos los eventos.",

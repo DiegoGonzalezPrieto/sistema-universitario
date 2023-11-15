@@ -17,15 +17,17 @@ int Menu::mostrar()
     int opcionElegida, tamanio = _opciones.size();
     limpiarPantalla();
     while (true)
-        {
+        {   rlutil::locate(30,3);
             rlutil::saveDefaultColor();
             rlutil::setBackgroundColor(rlutil::WHITE);
             rlutil::setColor(rlutil::LIGHTMAGENTA);
             cout << _titulo << endl << endl;
             rlutil::resetColor();
-
+            rlutil::locate(30,5);
             for (int i = 0; i < tamanio; ++i)
-                {   rlutil::saveDefaultColor();
+                {
+                    rlutil::locate(25,i+8);
+                    rlutil::saveDefaultColor();
                     rlutil::setBackgroundColor(rlutil::WHITE);
                     rlutil::setColor(rlutil::LIGHTMAGENTA);
                     cout << "\t" << i + 1 << ". ";
@@ -34,8 +36,8 @@ int Menu::mostrar()
                     cout<< _opciones[i] << endl;
 
                 }
-
-            cout << "\nSeleccione una opcion (0 para salir/volver): ";
+                    rlutil::locate(30,18);
+            cout << "Seleccione una opcion (0 para salir/volver): ";
 
 
             opcionElegida=validar<int>();

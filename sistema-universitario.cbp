@@ -97,6 +97,7 @@
 		<Unit filename="func_utiles.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="rlutil.h" />
+		<Unit filename="rutas.h" />
 		<Unit filename="sistema-universitario.layout" />
 		<Extensions />
 	</Project>

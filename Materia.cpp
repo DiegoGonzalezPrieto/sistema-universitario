@@ -1,6 +1,7 @@
 #include "Materia.h"
 #include "GestorCorrelativas.h"
 #include "GestorMaterias.h"
+#include "rutas.h"
 
 
 /// Cadenas vacías a NombreMateria e IdMateria
@@ -87,12 +88,12 @@ std::string Materia::toString() const{
 
 
 ///OBSERVACION: Como no hay datos por defecto en el constructor, si no seteamos datos en algún atributo toString() mostrará basura
-    GestorMaterias gMat("Archivos/datos/materias.dat");
+    GestorMaterias gMat(Rutas::materias);
     std::string aux = "";
 
     aux = "Materia: ";
     aux += getNombreMateria();
-    aux += " - ID:";
+    aux += " - ID: ";
     aux += getIdMateria();
 
     bool hayCorrelativas = false;

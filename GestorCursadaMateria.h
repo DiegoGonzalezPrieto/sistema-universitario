@@ -58,7 +58,7 @@ class GestorCursadaMateria
         bool anularRegistroCursadaMateria(std::string idCursadaMateria);
 
         /// Chequea que la materia se pueda cursar en este cuatrimestre (no revisa correlatividades)
-        bool sePuedeCursar(std::string idMateria, std::string &mensajeError);
+        bool sePuedeCursar(std::string idMateria, std::string idCuatrimestre, std::string &mensajeError);
 
         /// Permite al usuario seleccionar un estado de cursada-materia, o cancelar la seleccion (false)
         bool seleccionarEstadoCursadaMateria(EstadoMateria &);

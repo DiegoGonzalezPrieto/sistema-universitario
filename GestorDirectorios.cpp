@@ -1,4 +1,5 @@
 #include "GestorDirectorios.h"
+#include "rutas.h"
 
 
 #include <algorithm>
@@ -19,7 +20,7 @@ bool GestorDirectorios::crearDirectorios(string ruta)
 
 bool GestorDirectorios::crearDirectoriosCuatrimestre(CursadaMateria materiaEnCurso, string idCuatrimestre){
 
-    string ruta = "Archivos/cursada/";
+    string ruta = Rutas::raizCursada;
     ruta += idCuatrimestre + "/";
 
 
@@ -105,7 +106,8 @@ float GestorDirectorios::calcularProgresoUnidad(string rutaUnidad){
 
 void GestorDirectorios::calcularProgresoMateria(CursadaMateria materia, string idCuatrimestre){
 
-    string rutaMateria = "Archivos/cursada/";
+
+    string rutaMateria = Rutas::raizCursada;
 
     string auxNombre = materia.getNombreMateria();
     string nombreMateria = validarCaracteresEspeciales(auxNombre);
@@ -168,18 +170,18 @@ string GestorDirectorios::validarCaracteresEspeciales(string nombreMateria){
 
     unordered_map<char, char> caracteresDeReemplazo {
 
-        {'á', 'a'},
-        {'Á', 'A'},
-        {'é', 'e'},
-        {'É', 'E'},
-        {'í', 'i'},
-        {'Í', 'I'},
-        {'ó', 'o'},
-        {'Ó', 'O'},
-        {'ú', 'u'},
-        {'Ú', 'U'},
-        {'ñ', 'n'},
-        {'Ñ', 'N'},
+        {'ï¿½', 'a'},
+        {'ï¿½', 'A'},
+        {'ï¿½', 'e'},
+        {'ï¿½', 'E'},
+        {'ï¿½', 'i'},
+        {'ï¿½', 'I'},
+        {'ï¿½', 'o'},
+        {'ï¿½', 'O'},
+        {'ï¿½', 'u'},
+        {'ï¿½', 'U'},
+        {'ï¿½', 'n'},
+        {'ï¿½', 'N'},
         {'/', '_'}
 
     };
@@ -187,8 +189,8 @@ string GestorDirectorios::validarCaracteresEspeciales(string nombreMateria){
 
     for(auto& par : caracteresDeReemplazo){
 
-        ///Replace recibe 4 parámetros: El inicio y el final del string a recorrer, el valor "viejo" a buscar, y el valor "nuevo" a reemplazar
-        ///También se podría haber pensado con una matriz de char o 2 vectores paralelos para crear los pares de reemplazo
+        ///Replace recibe 4 parï¿½metros: El inicio y el final del string a recorrer, el valor "viejo" a buscar, y el valor "nuevo" a reemplazar
+        ///Tambiï¿½n se podrï¿½a haber pensado con una matriz de char o 2 vectores paralelos para crear los pares de reemplazo
         replace(nombreMateria.begin(), nombreMateria.end(), par.first, par.second);
     }
 
