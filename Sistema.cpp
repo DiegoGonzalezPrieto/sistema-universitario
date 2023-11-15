@@ -17,10 +17,10 @@ Sistema::Sistema() :
     _gestorCarrera(Rutas::carrera,Rutas::cargaInicial ),
     _gestorEventos(Rutas::eventos, Rutas::materias, Rutas::cursadas ),
     _gestorMaterias(Rutas::materias),
-    _gestorCorrelativas(Rutas::materias,Rutas::cursadas),
+    _gestorCorrelativas(Rutas::materias, Rutas::cursadas),
     _gestorNotasFinales(Rutas::notas, Rutas::materias, Rutas::cursadas),
     _cargaInicial(Rutas::cargaInicial ),
-    _gestorCuatrimestre(Rutas::cuatrimestres),
+    _gestorCuatrimestre(Rutas::cuatrimestres, Rutas::cursadas, Rutas::materias, Rutas::notas),
     _gestorCsv(Rutas::archivoCsv, Rutas::materias, Rutas::cargaInicial ),
     _gestorConfig(Rutas::config),
     _gestorCursadaMaterias(Rutas::cursadas, Rutas::materias),
@@ -306,7 +306,7 @@ void Sistema::menuCargaInicial()
 
                 case 3:
                 {
-                    Archivo<Materia> Materias("Archivos/datos/materias.dat");
+                    Archivo<Materia> Materias(Rutas::materias);
                     if(Materias.archivoExiste())
                         {
                             std::cout<<" Hemos detectado que ya realizo ingresos manuales de materias"<<std::endl;

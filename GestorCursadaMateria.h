@@ -61,7 +61,7 @@ class GestorCursadaMateria
         bool sePuedeCursar(std::string idMateria, std::string idCuatrimestre, std::string &mensajeError);
 
         /// Permite al usuario seleccionar un estado de cursada-materia, o cancelar la seleccion (false)
-        bool seleccionarEstadoCursadaMateria(EstadoMateria &);
+        bool seleccionarEstadoCursadaMateria(EstadoMateria &, std::string nombreMateria="");
         /// Permite al usuario cargar los datos de la cursada (horario día aula), o cancelar la selección (false)
         bool cargarDatosCursada(std::vector<DatosCursada>&, int cantMax);
         /// Permite al usuario seleccionar un cuatrimestre (año + 1|2)

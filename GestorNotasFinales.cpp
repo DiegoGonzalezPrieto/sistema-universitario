@@ -626,19 +626,19 @@ bool GestorNotasFinales::seleccionarNotaDeCursadaMateria(std::string idCursadaMa
 
     if (!_auxArchivo.leerRegistros(notas)) return false;
 
-    for (int i=0; i < notas.size();i++)
-    {
-        if (notas[i].getIdCursadaMateria()==idCursadaMateria)
+    for (int i=0; i < notas.size(); i++)
         {
-            notasDeCursadaMateria.push_back(notas[i]);
-            posicionesEnArchivo.push_back(i);
+            if (notas[i].getIdCursadaMateria()==idCursadaMateria)
+                {
+                    notasDeCursadaMateria.push_back(notas[i]);
+                    posicionesEnArchivo.push_back(i);
+                }
         }
-    }
     if (notasDeCursadaMateria.size()<1)
-    {
-        _mensajero.mensajeInformacion("No hay notas cargadas para la cursada con id " + idCursadaMateria);
-        return false;
-    }
+        {
+            _mensajero.mensajeInformacion("No hay notas cargadas para la cursada con id " + idCursadaMateria);
+            return false;
+        }
 
     for (int i=0;i<notasDeCursadaMateria.size();i++)
     {
@@ -649,10 +649,10 @@ bool GestorNotasFinales::seleccionarNotaDeCursadaMateria(std::string idCursadaMa
     int seleccion = validar<int>();
     int cantOpciones = notasDeCursadaMateria.size();
     while (seleccion < 1 || seleccion> cantOpciones)
-    {
-        cout << "Ingrese un número entre 1 y " << cantOpciones;
-        seleccion = validar<int>();
-    }
+        {
+            cout << "Ingrese un número entre 1 y " << cantOpciones;
+            seleccion = validar<int>();
+        }
     _mensajero.mensajeInformacion("Nota seleccionada correctamente.");
 
     nota = notasDeCursadaMateria[seleccion - 1];
@@ -666,6 +666,47 @@ bool GestorNotasFinales::seleccionarNotaDeCursadaMateria(std::string idCursadaMa
 bool GestorNotasFinales::modificarNota(NotaFinal nota, int pos)
 {
     return _auxArchivo.modificarRegistro(pos, nota);
+}
+
+
+bool GestorNotasFinales::crearNotaFinal(std::string idCursadaMateria)
+{
+    NotaFinal notaCargada;
+    int nota, dia, mes, anio;
+
+    std::cout << "Calificacion: ";
+    nota = validar<int>("Por favor, reingrese la calificacion: ");
+
+    while(nota <= 0 || nota > 10)
+        {
+
+            std::cout << "Opcion no valida, se espera un numero entre 1 y 10: ";
+            nota = validar<int>("Por favor, reingrese la calificacion: ");
+        }
+
+
+
+    std::cout << "Ingrese el dia: ";
+    dia = validar<int>("Por favor, reingrese el dia: ");
+    std::cout << "Ingrese el mes: ";
+    mes = validar<int>("Por favor, reingrese el mes: ");
+    std::cout << "Ingrese el año: ";
+    anio = validar<int>("Por favor, reingrese el año: ");
+
+    ///Llegados a este punto, todos los datos se deberian haber validado
+    ///Verificamos si la fecha es valida, caso contrario se asigna la fecha de hoy
+    Fecha fecha(dia,mes,anio);
+
+    notaCargada.setIdCursadaMateria(idCursadaMateria);
+    notaCargada.setNota(nota);
+
+    if(fecha.esFechaValida() == false)
+        {
+            notaCargada.setFecha(Fecha());
+        }
+
+    return _auxArchivo.agregarRegistro(notaCargada);
+
 }
 
 std::string GestorNotasFinales::notaToString(NotaFinal nf)
@@ -682,4 +723,5 @@ std::string GestorNotasFinales::notaToString(NotaFinal nf)
     aux += nf.getFecha().toString();
 
     return aux;
+
 }
