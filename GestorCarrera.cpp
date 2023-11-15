@@ -113,7 +113,7 @@ void GestorCarrera::iniciar()
     bool a = true;
     while (a)
     {
-        Menu menuiniciador({"Cargar los datos de la universidad y la carrera", "Modificar datos de la universidad o carrera", "Mostrar los datos de la universidad o carrera"}, "Gestionar informacion de la Carrera y la Universidad");
+        Menu menuiniciador({"Cargar los datos de la universidad y la carrera", "Modificar datos de la universidad o carrera", "Mostrar los datos de la universidad o carrera"}, "** Carrera y Universidad **");
 
         switch (menuiniciador.mostrar())
         {

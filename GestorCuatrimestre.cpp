@@ -3,6 +3,7 @@
 #include "CursadaMateria.h"
 #include "Menu.h"
 #include "func_utiles.h"
+#include "rutas.h"
 
 GestorCuatrimestre::GestorCuatrimestre(std::string nombre) : archivoCuatrimestres(nombre) {}
 
@@ -16,7 +17,7 @@ void GestorCuatrimestre::actualizarMateriasEnCursoEnCuatrimestre()
     actualizarcuatrimestre.setAnio(anio);
     actualizarcuatrimestre.setPeriodo(periodo);
 
-    Archivo<CursadaMateria> archivoCursada("Archivos/datos/cursada_materias.dat");
+    Archivo<CursadaMateria> archivoCursada(Rutas::cursadas);
     int cantRegCursada = archivoCursada.contarRegistros();
     for (int j = 0; j < cantRegCursada; ++j)
     {
@@ -53,7 +54,7 @@ void GestorCuatrimestre::iniciarGestorCuatrimestre()
 
     };
 
-    Menu menuPrincipal(opciones, "------ GESTION CUATRIMESTRE ------");
+    Menu menuPrincipal(opciones, "** Cursadas de Cuatrimestre ** ");
 
     int op;
     do
@@ -87,7 +88,7 @@ void GestorCuatrimestre::iniciarCuatrimestre()
 {
     Cuatrimestre datosCuatrimestre;
     datosCuatrimestre.setFinalizado(true);
-    GestorCursadaMateria cursadaM("Archivos/datos/cursada_materias.dat","Archivos/datos/materias.dat");
+    GestorCursadaMateria cursadaM(Rutas::cursadas,Rutas::materias);
     if(archivoCuatrimestres.archivoExiste())
     {
         int cantregistros=archivoCuatrimestres.contarRegistros();
@@ -126,7 +127,7 @@ void GestorCuatrimestre::iniciarCuatrimestre()
         }
         while (!termino);
 
-        Archivo<CursadaMateria> archivoCursada("Archivos/datos/cursada_materias.dat");
+        Archivo<CursadaMateria> archivoCursada(Rutas::cursadas);
         int cantRegCursada = archivoCursada.contarRegistros();
         for (int j = 0; j < cantRegCursada; ++j)
         {
@@ -181,7 +182,7 @@ void GestorCuatrimestre::cerrarCuatrimestre()
         return;
     }
 
-    Archivo<CursadaMateria> archivoCursada("Archivos/datos/cursada_materias.dat");
+    Archivo<CursadaMateria> archivoCursada(Rutas::cursadas);
     int cantRegCursada = archivoCursada.contarRegistros();
     bool seEstaCursando = false;
 
@@ -238,7 +239,7 @@ void GestorCuatrimestre::cerrarCuatrimestre()
 void GestorCuatrimestre::modificarCuatrimestreActual()
 {
 
-    GestorCursadaMateria cursadaM("Archivos/datos/cursada_materias.dat","Archivos/datos/materias.dat");
+    GestorCursadaMateria cursadaM(Rutas::cursadas, Rutas::materias);
     cursadaM.iniciar();
 
 
@@ -289,7 +290,7 @@ void GestorCuatrimestre::mostrarInformacionCuatrimestreActual()
     else
     {
         // Iterar sobre los ids y obtener la información de la materia
-        Archivo<Materia> archivoMaterias("Archivos/datos/materias.dat");
+        Archivo<Materia> archivoMaterias(Rutas::materias);
         int regMaterias = archivoMaterias.contarRegistros();
         Materia materia;
         cout<<"Materias Registradas en el Cuatrimestre : "<<endl;
@@ -360,7 +361,7 @@ void GestorCuatrimestre::mostrarTodosCuatrimestresCursados()
         else
         {
             // Iterar sobre los ids y obtener la información de la materia
-            Archivo<Materia> archivoMaterias("Archivos/datos/materias.dat");
+            Archivo<Materia> archivoMaterias(Rutas::materias);
             int regMaterias = archivoMaterias.contarRegistros();
             Materia materia;
             cout << "Materias Registradas en el Cuatrimestre : "<<endl;

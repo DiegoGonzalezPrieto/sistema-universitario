@@ -1,4 +1,9 @@
 #include "GestorDirectorios.h"
+#include "rutas.h"
+
+
+#include <algorithm>
+#include <unordered_map>
 
 using namespace std;
 namespace fs = filesystem;
@@ -13,30 +18,28 @@ bool GestorDirectorios::crearDirectorios(string ruta)
     return filesystem::create_directories(ruta);
 }
 
-bool GestorDirectorios::crearDirectoriosCuatrimestre(vector <CursadaMateria> materiasEnCurso, string idCuatrimestre){
+bool GestorDirectorios::crearDirectoriosCuatrimestre(CursadaMateria materiaEnCurso, string idCuatrimestre){
 
-    int cantMaterias = materiasEnCurso.size();
-
-    string ruta = "Archivos/cursada/";
+    string ruta = Rutas::raizCursada;
     ruta += idCuatrimestre + "/";
 
-    for(int i = 0; i < cantMaterias; i++){
 
-        if(directoriosMateriasAnualesYaCreados(materiasEnCurso[i].getIdCuatrimestreInicio(), idCuatrimestre) == false && materiasEnCurso[i].getCuatrimestreDeDuracion() == 2){
+    if(directoriosMateriasAnualesYaCreados(materiaEnCurso.getIdCuatrimestreInicio(), idCuatrimestre) == false && materiaEnCurso.getCuatrimestreDeDuracion() == 1){
 
-            string rutaMateria = ruta + materiasEnCurso[i].getNombreMateria() + "/";
+        string auxNombre = materiaEnCurso.getNombreMateria();
+        string nombreMateria = validarCaracteresEspeciales(auxNombre);
 
-            vector<Unidad>auxUnidad;
-            auxUnidad = materiasEnCurso[i].getUnidades();
-            int cantUnidades = auxUnidad.size();
+        string rutaMateria = ruta + nombreMateria + "/";
 
-            for(int j = 0; j < cantUnidades; j++){
+        vector<Unidad>auxUnidad;
+        auxUnidad = materiaEnCurso.getUnidades();
+        int cantUnidades = auxUnidad.size();
 
-                string rutaUnidad = rutaMateria + auxUnidad[j].getRutaCompletado();
+        for(int i = 0; i < cantUnidades; i++){
 
-                crearDirectorios(rutaUnidad);
-            }
+            string rutaUnidad = rutaMateria + auxUnidad[i].getRutaCompletado();
 
+            crearDirectorios(rutaUnidad);
         }
 
     }
@@ -103,8 +106,13 @@ float GestorDirectorios::calcularProgresoUnidad(string rutaUnidad){
 
 void GestorDirectorios::calcularProgresoMateria(CursadaMateria materia, string idCuatrimestre){
 
-    string rutaMateria = "Archivos/cursada/";
-    rutaMateria += idCuatrimestre + "/" + materia.getNombreMateria();
+
+    string rutaMateria = Rutas::raizCursada;
+
+    string auxNombre = materia.getNombreMateria();
+    string nombreMateria = validarCaracteresEspeciales(auxNombre);
+
+    rutaMateria += idCuatrimestre + "/" + nombreMateria;
 
     vector<Unidad>auxUnidad;
     auxUnidad = materia.getUnidades();
@@ -124,7 +132,6 @@ void GestorDirectorios::calcularProgresoMateria(CursadaMateria materia, string i
 
         cantElementosCompletados += contarElementosEnDirectorio(rutaUnidadCompletados);
 
-        cout << "Elementos completados: " << cantElementosCompletados << endl;
     }
 
     ///CONTAMOS LOS ELEMENTOS PENDIENTES DE COMPLETAR DE CADA UNIDAD
@@ -155,4 +162,155 @@ void GestorDirectorios::calcularProgresoMateria(CursadaMateria materia, string i
 
         cout << "Le quedan un total de " << cantElementosPendientes << " elementos por completar para alcanzar el 100% de progreso en esta materia" << endl;
     }
+}
+
+///SE ENCARGA DE CREAR LAS CARPETAS, Y ELIMINAR CARACTERES CONFLICTIVOS PARA FILESYSTEM
+string GestorDirectorios::validarCaracteresEspeciales(string nombreMateria){
+
+
+    unordered_map<char, char> caracteresDeReemplazo {
+
+        {'�', 'a'},
+        {'�', 'A'},
+        {'�', 'e'},
+        {'�', 'E'},
+        {'�', 'i'},
+        {'�', 'I'},
+        {'�', 'o'},
+        {'�', 'O'},
+        {'�', 'u'},
+        {'�', 'U'},
+        {'�', 'n'},
+        {'�', 'N'},
+        {'/', '_'}
+
+    };
+
+
+    for(auto& par : caracteresDeReemplazo){
+
+        ///Replace recibe 4 par�metros: El inicio y el final del string a recorrer, el valor "viejo" a buscar, y el valor "nuevo" a reemplazar
+        ///Tambi�n se podr�a haber pensado con una matriz de char o 2 vectores paralelos para crear los pares de reemplazo
+        replace(nombreMateria.begin(), nombreMateria.end(), par.first, par.second);
+    }
+
+    return nombreMateria;
+
+}
+
+///DADA UNA RUTA, BUSCA LOS TIPOS DE ARCHIVOS PARA IR ALMACENANDOLOS. SI ENCUENTRA UNA CARPETA, SE LLAMA A SI MISMA DE FORMA RECURSIVA
+void GestorDirectorios::almacenarExtensionesDetectadas(vector <string>& extensiones, vector <int>& contadorDeExtensiones, string ruta){
+
+    for (const auto& entrada : fs::directory_iterator(ruta)) {
+
+        string auxTipoArchivo = entrada.path().extension().string();
+
+        if((is_regular_file(entrada) == true)){
+
+            if(extensionYaDetectada(extensiones,auxTipoArchivo) == false){
+
+                extensiones.push_back(auxTipoArchivo);
+                contadorDeExtensiones.push_back(1);
+            }
+            else{
+
+                contadorDeExtensiones[buscarPosicionExtension(extensiones, auxTipoArchivo)]++;
+            }
+
+        }
+        else if(is_directory(entrada)){
+
+            almacenarExtensionesDetectadas(extensiones, contadorDeExtensiones, entrada.path().string());
+        }
+    }
+
+}
+
+///VALIDAMOS SI LA EXTENSION YA FUE ENCONTRADA PREVIAMENTE
+bool GestorDirectorios::extensionYaDetectada(vector <string>& extensiones, string tipoArchivo){
+
+    int tam = extensiones.size();
+
+    for(int i = 0; i < tam; i++){
+
+        if(extensiones[i] == tipoArchivo){
+
+            return true;
+        }
+    }
+
+    return false;
+
+}
+
+///DEVOLVEMOS LA POSICION DE UNA EXTENSION QUE YA SABEMOS FUE ALMACENADA PREVIAMENTE
+int GestorDirectorios::buscarPosicionExtension(vector <string>& extensiones, string tipoArchivo){
+
+    int tam = extensiones.size();
+
+    for(int i = 0; i < tam; i++){
+
+        if(extensiones[i] == tipoArchivo){
+
+            return i;
+        }
+    }
+
+    ///Nunca llegara a este punto, pues nos aseguramos desde antes que la extension exista
+    return -1;
+}
+
+
+///DEVUELVE EL TOTAL DE ELEMENTOS COMPLETADOS DE TODOS LOS CUATRIMESTRES, O DE UN CUATRIMESTRE ESPECIFICO SEGUN LA RUTA
+int GestorDirectorios::contarTotalElementosCompletados(string ruta){
+
+    int cantElementosCompletados = 0;
+
+    string nombreCarpetasBuscadas = "completado";
+
+    for (const auto& entrada : fs::directory_iterator(ruta)) {
+
+        if((entrada.path().filename() == nombreCarpetasBuscadas) && is_directory(entrada) == true){
+
+            cantElementosCompletados += contarElementosEnDirectorio(entrada.path().string());
+        }
+
+        else if(is_regular_file(entrada) == false){
+
+            cantElementosCompletados += contarTotalElementosCompletados(entrada.path().string());
+        }
+    }
+
+    return cantElementosCompletados;
+}
+
+///DEVUELVE EL TOTAL DE ELEMENTOS DE TODOS LOS CUATRIMESTRES, O DE UN CUATRIMESTRE ESPECIFICO SEGUN LA RUTA
+int GestorDirectorios::contarTotalElementos(string ruta){
+
+    int cantElementosTotales = 0;
+
+    for (const auto& entrada : fs::directory_iterator(ruta)) {
+
+        if (is_regular_file(entrada)) {
+
+            cantElementosTotales++;
+
+        } else if (is_directory(entrada)) {
+
+            cantElementosTotales += contarTotalElementos(entrada.path().string());
+        }
+    }
+
+    return cantElementosTotales;
+}
+
+int GestorDirectorios::contarTotalElementosPendientes(string ruta){
+
+    int cantElementosCompletados = contarTotalElementosCompletados(ruta);
+
+    int cantElementosTotales = contarTotalElementos(ruta);
+
+    int cantElementosPendientes = cantElementosTotales - cantElementosCompletados;
+
+    return cantElementosPendientes;
 }
