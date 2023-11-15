@@ -31,6 +31,8 @@ class GestorNotasFinales
         /// Uso de G.Cuatrimestre: da de alta una nota final para una cursada
         bool crearNotaFinal(std::string idCursadaMateria);
 
+        std::string notaToString(NotaFinal);
+
     private:
 
         Archivo <NotaFinal> _auxArchivo;

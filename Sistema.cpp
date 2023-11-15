@@ -6,6 +6,7 @@ using namespace std;
 #include "Menu.h"
 #include "func_utiles.h"
 #include "func_archivos.h"
+#include "rutas.h"
 
 bool crearDirectorios(string ruta)
 {
@@ -13,16 +14,17 @@ bool crearDirectorios(string ruta)
 }
 
 Sistema::Sistema() :
-    _gestorCarrera("Archivos/datos/carrera.dat","carga_inicial.dat"),
-    _gestorEventos("Archivos/datos/eventos.dat", "Archivos/datos/materias.dat", "Archivos/datos/cursada_materias.dat" ),
-    _gestorMaterias("Archivos/datos/materias.dat"),
-    _gestorCorrelativas("Archivos/datos/materias.dat","Archivos/datos/cursada_materias.dat"),
-    _gestorNotasFinales("Archivos/datos/notas.dat", "Archivos/datos/materias.dat", "Archivos/datos/cursada_materias.dat"),
-    _cargaInicial("carga_inicial.dat"),
-    _gestorCsv("archivoImportacion.csv", "Archivos/datos/materias.dat", "carga_inicial.dat"),
-    _gestorConfig("Archivos/configuracion/config.dat"),
-    _gestorCursadaMaterias("Archivos/datos/cursada_materias.dat", "Archivos/datos/materias.dat"),
-    _gestorCuatrimestre("Archivos/datos/cuatrimestre.dat", "Archivos/datos/cursada_materias.dat", "Archivos/datos/materias.dat", "Archivos/datos/notas.dat")
+    _gestorCarrera(Rutas::carrera,Rutas::cargaInicial ),
+    _gestorEventos(Rutas::eventos, Rutas::materias, Rutas::cursadas ),
+    _gestorMaterias(Rutas::materias),
+    _gestorCorrelativas(Rutas::materias, Rutas::cursadas),
+    _gestorNotasFinales(Rutas::notas, Rutas::materias, Rutas::cursadas),
+    _cargaInicial(Rutas::cargaInicial ),
+    _gestorCuatrimestre(Rutas::cuatrimestres, Rutas::cursadas, Rutas::materias, Rutas::notas),
+    _gestorCsv(Rutas::archivoCsv, Rutas::materias, Rutas::cargaInicial ),
+    _gestorConfig(Rutas::config),
+    _gestorCursadaMaterias(Rutas::cursadas, Rutas::materias),
+    _gestorRespaldos()
 
 {
     //ctor
@@ -30,24 +32,24 @@ Sistema::Sistema() :
 
 void Sistema::preInicio()
 {
-    if (!Config::leerConfig("Archivos/configuracion/config.dat"))
-    {
-        _mensajero.mensajeAdvertencia("No se encuentra el archivo de configuración, se creará uno nuevo y se usarán valores por defecto.");
-        Config::crearConfig("Archivos/configuracion/config.dat");
-    }
+    crearDirectoriosEsenciales();
+    if (!Config::leerConfig(Rutas::config))
+        {
+            _mensajero.mensajeAdvertencia("No se encuentra el archivo de configuración, se creará uno nuevo y se usarán valores por defecto.");
+            Config::crearConfig(Rutas::config);
+        }
 
     // Crea el archivo de eventos, ya que lo revisa para instanciar el menú inicial
     if (!_gestorEventos.getArchivo().archivoExiste())
-    {
-        _mensajero.mensajeAdvertencia("No se encuentra el archivo de eventos, se creará uno nuevo sin registros.");
-        _gestorEventos.getArchivo().crearArchivo();
-    }
+        {
+            _mensajero.mensajeAdvertencia("No se encuentra el archivo de eventos, se creará uno nuevo sin registros.");
+            _gestorEventos.getArchivo().crearArchivo();
+        }
 }
 
 void Sistema::iniciar()
 {
-//    system("color B1");
-    crearDirectoriosEsenciales();
+    preInicio();
 
     int datosAgregadoss=0;
     bool materiaCargada = false, carreraCargada =false;
@@ -104,28 +106,41 @@ void Sistema::iniciar()
                                "Notas finales",
                                "Carrera",
                                "Configuracion",
+                               "Backups",
                                "Créditos"
                               };
 
-    Menu menu(opcMenu, "Sistema de Gestion de Carrera Universitaria");
+    Archivo<Carrera> ac(Rutas::carrera);
+    Carrera c;
+    ac.leerRegistro(0, c);
+    string nombreUniversidad = c.getNombreUniversidad();
+    string nombreCarrera = c.getNombreCarrera();
+
+    limpiarPantalla();
+    cout << "\n\tBienvenido/a " + c.getNombreEstudiante() + "!" << endl;
+    cout << "\n\tEstás cursando la carrera " << nombreCarrera << " en " << nombreUniversidad << "." << endl;
+    cout << "\n\tTu número de legajo es " << c.getLegajo() << "." << endl;
+    cout << endl;
+    limpiarPantalla();
+
+    Menu menu(opcMenu, "Gestion de Carrera " + nombreCarrera + " en " + nombreUniversidad);
     int opc;
 
     /// Una vez finalizada la carga inicial
     while(true)
         {
-
-
             opc = menu.mostrar();
             switch(opc)
                 {
 
+
                 case 0:
                     return;
-                    break;
                 case 1:
                 {
                     _gestorMaterias.menuCortoGMaterias();
                 }
+                break;
                 case 2:
                 {
                     _gestorCuatrimestre.iniciarGestorCuatrimestre();
@@ -146,6 +161,11 @@ void Sistema::iniciar()
                 }
                 break;
                 case 7:
+                {
+                    _gestorRespaldos.iniciar();
+                }
+                break;
+                case 8:
                     limpiarPantallaSinPausa();
                     cout << "*******************************************************************" << endl;
                     cout << "*                                                                 *" << endl;
@@ -168,22 +188,23 @@ void Sistema::iniciar()
                     cout << "*                                                                 *" << endl;
                     cout << "*                                                                 *" << endl;
                     cout << "*******************************************************************" << endl;
-                break;
+                    break;
                 default:
                     break;
                 }
+
+
+
         }
-
 }
-
-
 void Sistema::crearDirectoriosEsenciales()
 {
     GestorDirectorios gd;
 
-    gd.crearDirectorios("Archivos/datos");
-    gd.crearDirectorios("Archivos/configuracion");
-    gd.crearDirectorios("Archivos/cursada");
+    gd.crearDirectorios(Rutas::raizSistema);
+    gd.crearDirectorios(Rutas::raizCursada);
+    gd.crearDirectorios(Rutas::raizDatos);
+    gd.crearDirectorios(Rutas::raizConfig);
 
     return;
 }
@@ -285,7 +306,7 @@ void Sistema::menuCargaInicial()
 
                 case 3:
                 {
-                    Archivo<Materia> Materias("Archivos/datos/materias.dat");
+                    Archivo<Materia> Materias(Rutas::materias);
                     if(Materias.archivoExiste())
                         {
                             std::cout<<" Hemos detectado que ya realizo ingresos manuales de materias"<<std::endl;
@@ -313,12 +334,9 @@ void Sistema::menuCargaInicial()
                             _gestorCsv.iniciar();
                         }
 
-
                     break;
                 }
-
-                default:
-                    break;
+                break;
                 }
         }
 }

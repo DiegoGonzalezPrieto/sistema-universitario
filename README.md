@@ -1,3 +1,19 @@
+# Sistema de Gestión de una Carrera universitaria
+
+## Desarrolladores
+
+- José Arias
+- Franco Formía
+- Diego G. Prieto
+- Lucho Santostefano
+
+## Librerías de Terceros
+
+- RLUTIL
+	- Licencia WTFPL
+
+
+------
 
 # Ramas
 

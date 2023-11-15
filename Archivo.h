@@ -3,6 +3,7 @@
 #include <cstring>
 #include <vector>
 #include <cstring>
+#include "Mensajero.h"
 
 template<typename T>
 class Archivo
@@ -23,65 +24,65 @@ public:
 
     std::string getNombreBackup()
     {
-        return getNombre() + ".bup";
+        return quitarExtension(getNombre()) + ".bup";
     }
 
     bool crearArchivo()
     {
         if (FILE* p = fopen(_nombre.c_str(), "wb"))
-            {
-                fclose(p);
-                return true;
-            }
+        {
+            fclose(p);
+            return true;
+        }
         else
-            {
-                return false;
-            }
+        {
+            return false;
+        }
     }
 
     bool archivoExiste()
     {
         if (FILE* p = fopen(_nombre.c_str(), "rb"))
-            {
-                fclose(p);
-                return true;
-            }
+        {
+            fclose(p);
+            return true;
+        }
         else
-            {
-                return false;
-            }
+        {
+            return false;
+        }
     }
 
 
     bool leerRegistro(int pos, T& registro)
     {
         if (FILE* p = fopen(_nombre.c_str(), "rb"))
-            {
-                fseek(p, sizeof(T) * pos, SEEK_SET);
-                fread(&registro, sizeof(T), 1, p);
-                fclose(p);
-                return true;
-            }
+        {
+            fseek(p, sizeof(T) * pos, SEEK_SET);
+            fread(&registro, sizeof(T), 1, p);
+            fclose(p);
+            return true;
+        }
         else
-            {
-                return false;
-            }
+        {
+            return false;
+        }
     }
 
     int contarRegistros()
     {
         int tamanio;
         if (FILE* p = fopen(_nombre.c_str(), "rb"))
-            {
-                fseek(p, 0, SEEK_END);
-                tamanio = ftell(p);
-                fclose(p);
-                return tamanio / sizeof(T);
-            }
+        {
+            fseek(p, 0, SEEK_END);
+            tamanio = ftell(p);
+            fclose(p);
+            return tamanio / sizeof(T);
+        }
         else
-            {
-                return -1;
-            }
+        {
+            return -1;
+        }
     }
 
 
@@ -90,34 +91,34 @@ public:
         T aux;
         int cant = contarRegistros();
         if (FILE* p = fopen(_nombre.c_str(), "rb"))
+        {
+            for (int i=0; i< cant; i++)
             {
-                for (int i=0; i< cant; i++)
-                    {
-                        fread(&aux, sizeof(T), 1, p);
-                        registros.push_back(aux);
-                    }
-                fclose(p);
-                return true;
+                fread(&aux, sizeof(T), 1, p);
+                registros.push_back(aux);
             }
+            fclose(p);
+            return true;
+        }
         else
-            {
-                return false;
-            }
+        {
+            return false;
+        }
     }
 
 
     bool agregarRegistro(T registro)
     {
         if (FILE* p = fopen(_nombre.c_str(), "ab"))
-            {
-                fwrite(&registro, sizeof(T), 1, p);
-                fclose(p);
-                return true;
-            }
+        {
+            fwrite(&registro, sizeof(T), 1, p);
+            fclose(p);
+            return true;
+        }
         else
-            {
-                return false;
-            }
+        {
+            return false;
+        }
     }
 
     bool borrarRegistro(int pos)
@@ -131,11 +132,11 @@ public:
         FILE* po = fopen(_nombre.c_str(), "wb");
         if (pi == NULL || po == NULL) return false;
         for (int i=0; i<cantReg; i++)
-            {
-                fread(&aux, sizeof(T), 1, pi);
-                if (i == pos) continue;
-                fwrite(&aux, sizeof(T), 1, po);
-            }
+        {
+            fread(&aux, sizeof(T), 1, pi);
+            if (i == pos) continue;
+            fwrite(&aux, sizeof(T), 1, po);
+        }
         fclose(po);
         fclose(pi);
         return true;
@@ -144,37 +145,131 @@ public:
     bool modificarRegistro(int pos, T registro)
     {
         if (FILE* p = fopen(_nombre.c_str(), "rb+"))
-            {
-                fseek(p, sizeof(T) * pos, SEEK_SET);
-                fwrite(&registro, sizeof(T), 1, p);
-                fclose(p);
-                return true;
-            }
+        {
+            fseek(p, sizeof(T) * pos, SEEK_SET);
+            fwrite(&registro, sizeof(T), 1, p);
+            fclose(p);
+            return true;
+        }
         else
-            {
-                return false;
-            }
+        {
+            return false;
+        }
     }
+
+    int contarRegistrosBackup() {
+    T aux;
+    int contador = 0;
+
+    std::string nombreBup = getNombreBackup();
+    FILE* p = fopen(nombreBup.c_str(), "rb");
+    if (p == NULL) {
+        msj.mensajeError("Error abriendo archivo de respaldo.");
+        return -1;
+    }
+
+    while (fread(&aux, sizeof(T), 1, p) == 1) {
+        contador++;
+    }
+
+    fclose(p);
+    return contador;
+}
 
     bool crearBackup()
     {
         T aux;
         int cantReg = contarRegistros();
-        if (cantReg < 1) return false;
-        std::string nombreBup = getNombreBackup();
-        FILE* pi = fopen(_nombre.c_str(), "rb");
-        FILE* po = fopen(nombreBup.c_str(), "wb");
-        if (pi == NULL || po == NULL) return false;
-        for (int i=0; i<cantReg; i++)
+        if (cantReg < 1)
+        {
+            msj.mensajeError("El archivo no existe o esta vacio");
+            return false;
+        }
+        else
+        {
+            std::string nombreBup = getNombreBackup();
+            FILE* pi = fopen(_nombre.c_str(), "rb");
+            FILE* po = fopen(nombreBup.c_str(), "wb");
+
+            if (pi == NULL || po == NULL)
+            {
+                std::cout << "Error abriendo archivos de entrada/salida." << std::endl;
+                return false;
+            }
+
+            for (int i = 0; i < cantReg; i++)
             {
                 fread(&aux, sizeof(T), 1, pi);
                 fwrite(&aux, sizeof(T), 1, po);
             }
+
+            fclose(po);
+            fclose(pi);
+            return true;
+        }
+    }
+
+    bool restoreDesdeBup()
+    {
+        T aux;
+        int cantReg = contarRegistrosBackup();
+        if (!archivoExiste())
+        {
+            msj.mensajeError("El archivo no existe");
+            return false;
+        }
+        else
+        {
+            std::string nombreBup = getNombreBackup();
+
+            FILE* pi = fopen(nombreBup.c_str(), "rb");
+            FILE* po = fopen(_nombre.c_str(), "wb");
+
+            if (pi == NULL || po == NULL)
+            {
+                std::cout << "Error abriendo archivos de entrada/salida." << std::endl;
+                return false;
+            }
+
+            for (int i = 0; i < cantReg; i++)
+            {
+                fread(&aux, sizeof(T), 1, pi);
+                fwrite(&aux, sizeof(T), 1, po);
+            }
+
+            fclose(po);
+            fclose(pi);
+            return true;
+        }
+    }
+
+    bool borrarRegistros()
+    {
+        if (!crearBackup()) return false;
+
+        std::string nombreBup = getNombre();
+        FILE* pi = fopen(nombreBup.c_str(), "rb");
+        FILE* po = fopen(_nombre.c_str(), "wb");
+        if (pi == NULL || po == NULL) return false;
+
         fclose(po);
         fclose(pi);
+
         return true;
     }
 
+    std::string quitarExtension(const std::string& nombreArchivo)
+    {
+        size_t posUltimoPunto = nombreArchivo.rfind('.');
+        if (posUltimoPunto != std::string::npos)
+        {
+            return nombreArchivo.substr(0, posUltimoPunto);
+        }
+        else
+        {
+            return nombreArchivo;
+        }
+    }
 
 
 protected:
@@ -182,6 +277,10 @@ protected:
 private:
     std::string _nombre;
 
+    Mensajero msj;
+
 };
+
+
 
 #endif // ARCHIVO_H

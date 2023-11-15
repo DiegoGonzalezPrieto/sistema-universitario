@@ -5,6 +5,7 @@ using namespace std;
 #include "GestorCursadaMateria.h"
 #include "Fecha.h"
 #include "func_utiles.h"
+#include "GestorDirectorios.h"
 
 GestorCursadaMateria::GestorCursadaMateria(string rutaArchivo, string rutaMaterias):
     _archivo(rutaArchivo),
@@ -37,7 +38,7 @@ void GestorCursadaMateria::iniciar()
         }
 
     // 1. Loop principal
-    string tituloMenu = "\n=====================================\n** Gestión de Cursadas de Materias **\n=====================================";
+    string tituloMenu = "** Cursadas de Materias **";
     Menu m({"Ingresar nueva cursada de materia.",
             "Ver cursadas de materias según su estado (incluye anuladas).",
             "Ver todas las cursadas de materias.",
@@ -99,9 +100,9 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola()
     // Crear archivo de cursadas en caso de que no exista. (Primera ejecución)
 
     if (!_archivo.archivoExiste())
-    {
-        _archivo.crearArchivo();
-    }
+        {
+            _archivo.crearArchivo();
+        }
 
     cout << "Qué materia se va a cursar?" << endl<< endl;
 
@@ -111,7 +112,7 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola()
     string idCuatrimestre = to_string(hoy.getAnio()) + "0" + to_string(periodo);
     string futuroIdCursadaMateria = idMateria + idCuatrimestre;
     string erroresValidacion = "";
-    if (!sePuedeCursar(futuroIdCursadaMateria, erroresValidacion))
+    if (!sePuedeCursar(idMateria, idCuatrimestre, erroresValidacion))
         {
             cout << endl;
             _mensajero.mensajeError("La materia seleccionada no se puede cursar.");
@@ -200,6 +201,42 @@ void GestorCursadaMateria::altaCursadaMateriaPorConsola()
         {
             _mensajero.mensajeInformacion("Cursada guardada correctamente.");
         }
+
+        if(cantUnidades == 0){
+
+        return;
+    }
+
+
+    cout << "Desea generar una estructura de carpetas para la materia?" << endl;
+    cout << "Las estructuras de carpetas se encontrarán dentro de la carpeta 'cursada', dentro del cuatrimestre correspondiente." << endl;
+    cout << "Para su correcto funcionamiento, no deben ser renombradas, eliminadas o movidas a otros directorios." << endl;
+    cout << "Para cada unidad contará con una carpeta 'completado' para colocar los materiales ya trabajados de una unidad." << endl;
+    cout << "Luego podrá acceder a estadisticas como el progreso de la materia en base a los materiales que guarde en las carpetas." << endl;
+    cout << "Respuesta (S/N): " << endl;
+
+    char resp = validar<char>();
+
+    while (resp != 'S' && resp != 's' && resp != 'N' && resp != 'n')
+    {
+        cout << "Respuesta no válida. Por favor, ingrese 'S' o 'N'." << endl;
+        resp = validar<char>();
+    }
+
+    if (resp == 'N' || resp == 'n')
+    {
+        return; // Terminar el bucle si la respuesta es 'N' o 'n'
+    }
+
+    GestorDirectorios gd;
+    bool seCrearonCarpetas = gd.crearDirectoriosCuatrimestre(cursadaMateria, cursadaMateria.getIdCuatrimestreInicio());
+
+    if(seCrearonCarpetas == true){
+
+        _mensajero.mensajeInformacion("Se crearon satisfactoriamente las carpetas para la materia aregada");
+    }
+
+
 }
 
 void GestorCursadaMateria::mostrarTodasCursadaMateria() // TODO
@@ -313,18 +350,36 @@ CursadaMateria GestorCursadaMateria::buscarCursadaMateria()
     return cursadaElegida;
 }
 
-bool GestorCursadaMateria::sePuedeCursar(string idCursadaMateria, string &mensajeError)
+bool GestorCursadaMateria::sePuedeCursar(string idMateria, string idCuatrimestre, string &mensajeError)
 {
     bool cursable = true;
     CursadaMateria cm;
-    if (buscarCursadaMateriaPorId(idCursadaMateria,cm))
-        {   limpiarPantallaSinPausa();
+    // Hay una cursada con igual id.
+    if (buscarCursadaMateriaPorId(idMateria+idCuatrimestre,cm))
+        {
+            limpiarPantallaSinPausa();
             cursable = false;
             mensajeError += "\n- Ya hay una cursada de de esta materia en este cuatrimestre:\n";
             mensajeError += cm.toString();
         }
 
-    // Otras validaciones posibles
+    // Hay una cursada EN_CURSO de la misma materia
+    vector<CursadaMateria> cursadas;
+    if (!_archivo.leerRegistros(cursadas))
+        {
+            _mensajero.mensajeError("No se pudo leer correctamente el archivo de cursadas.");
+            return false;
+        }
+    for (CursadaMateria c : cursadas)
+    {
+        if (c.getIdMateria() == idMateria && c.getEstado() == MAT_EN_CURSO)
+        {
+            limpiarPantallaSinPausa();
+            cursable = false;
+            mensajeError += "\n- Ya hay una cursada de de esta materia actualmente en curso:\n";
+            mensajeError += c.toString();
+        }
+    }
 
     return cursable;
 }
@@ -696,7 +751,7 @@ bool GestorCursadaMateria::seleccionarCursadaActualmenteEnCurso(CursadaMateria& 
         }
 
 
-        for (int i=0; i<vec.size(); i++)
+    for (int i=0; i<vec.size(); i++)
         {
             if (vec[i].getEstado()== MAT_EN_CURSO)
                 {
