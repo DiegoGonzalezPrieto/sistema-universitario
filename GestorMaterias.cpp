@@ -335,7 +335,7 @@ bool GestorMaterias::modificarUnaMateria()
         IDmateria = buscarIDMateria();
 
         cout << endl << IDmateria << endl ;
-        system("pause");
+        cin.get();
         int pos ;
 
         if (!buscarMateria(IDmateria, datosMateria, pos))
