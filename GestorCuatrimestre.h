@@ -20,6 +20,7 @@ public:
     void mostrarInformacionCuatrimestreActual();
     void mostrarTodosCuatrimestresCursados();
     void actualizarMateriasEnCursoEnCuatrimestre();
+    void informesCuatrimestres();
 
     /// Chequea si una materia en curso se puede seguir cursando más allá del cuatrimestre de cierre
     bool sePuedeSeguirCursando(CursadaMateria cursada, Cuatrimestre cuatriCierre);
