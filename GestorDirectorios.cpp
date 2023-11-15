@@ -1,4 +1,5 @@
 #include "GestorDirectorios.h"
+#include "rutas.h"
 
 using namespace std;
 namespace fs = filesystem;
@@ -17,7 +18,7 @@ bool GestorDirectorios::crearDirectoriosCuatrimestre(vector <CursadaMateria> mat
 
     int cantMaterias = materiasEnCurso.size();
 
-    string ruta = "Archivos/cursada/";
+    string ruta = Rutas::raizCursada;
     ruta += idCuatrimestre + "/";
 
     for(int i = 0; i < cantMaterias; i++){
@@ -103,7 +104,7 @@ float GestorDirectorios::calcularProgresoUnidad(string rutaUnidad){
 
 void GestorDirectorios::calcularProgresoMateria(CursadaMateria materia, string idCuatrimestre){
 
-    string rutaMateria = "Archivos/cursada/";
+    string rutaMateria = Rutas::raizCursada;
     rutaMateria += idCuatrimestre + "/" + materia.getNombreMateria();
 
     vector<Unidad>auxUnidad;
