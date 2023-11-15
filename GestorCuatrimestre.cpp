@@ -279,14 +279,15 @@ void GestorCuatrimestre::cerrarCuatrimestreYCursadas()
         }
 
     /// 2. Chequear si hay materias EN_CURSO y ofrecer cerrarlas
-    vector<CursadaMateria> cursadasDelCuatrimestre = gcm.buscarCursadasDeMateriaPorCuatrimestre(c.getIdCuatrimestre());
+    vector<CursadaMateria> aux = gcm.buscarCursadasDeMateriaPorCuatrimestre(c.getIdCuatrimestre());
+    vector<CursadaMateria> cursadasDelCuatrimestre;
     bool hayMateriasEnCurso = false;
-    for (CursadaMateria cm : cursadasDelCuatrimestre)
+    for (CursadaMateria cm : aux)
         {
             if (cm.getEstado()==MAT_EN_CURSO)
                 {
                     hayMateriasEnCurso = true;
-                    break;
+                    cursadasDelCuatrimestre.push_back(cm);
                 }
         }
 
