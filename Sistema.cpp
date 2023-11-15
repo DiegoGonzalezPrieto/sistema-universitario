@@ -228,7 +228,7 @@ void Sistema::menuCargaInicial()
 
     _mensajero.mensajeInformacion("Como primer paso, se debe cargar la información de la carrera y de todas las materias de la misma.");
 
-    vector <string> opcMenuInicial = {"> Cargar datos de la carrera ","> Cargar de forma manual las materias", "> Cargar las materias mediante archivo csv "};
+    vector <string> opcMenuInicial = {"> Cargar datos de la carrera ","> Cargar de forma manual las materias", "> Cargar las materias mediante archivo csv","> Gestionar copias de seguridad"};
     Menu menuInicial(opcMenuInicial, "MENU DE CARGA INICIAL");
 
     bool salir=false;
@@ -336,6 +336,11 @@ void Sistema::menuCargaInicial()
 
                     break;
                 }
+                case 4:
+                    {
+                        _gestorRespaldos.PrimerInicio();
+                        break;
+                    }
                 break;
                 }
         }
