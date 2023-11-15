@@ -22,6 +22,11 @@ GestorNotasFinales::~GestorNotasFinales()
 
 void GestorNotasFinales::iniciar()
 {
+    if (!_auxArchivo.archivoExiste())
+        {
+            _auxArchivo.crearArchivo();
+        }
+
     std::vector<std::string> opcMenu = {"Listar notas finales", "Guardar registro nota final", "Eliminar registro nota final", "Modificar registro nota final", "Generar promedio"};
 
 
@@ -52,6 +57,9 @@ void GestorNotasFinales::iniciar()
                             break;
                         case ARCH_ERROR_LECTURA:
                             _mensajero.mensajeError("No se pudo leer el archivo de notas finales");
+                            break;
+                        case ARCH_SIN_REGISTROS:
+                            _mensajero.mensajeAdvertencia("No hay registros en el archivo de notas finales");
                             break;
                         default:
                             break;
@@ -90,6 +98,9 @@ void GestorNotasFinales::iniciar()
                         case CANCELAR_OPERACION:
                             _mensajero.mensajeInformacion("Se ha cancelado la eliminacion del registro");
                             break;
+                        case ARCH_SIN_REGISTROS:
+                            _mensajero.mensajeAdvertencia("No hay registros en el archivo de notas finales");
+                            break;
                         default:
                             _mensajero.mensajeInformacion("Se ha eliminado el registro satisfactoriamente");
                             break;
@@ -117,6 +128,9 @@ void GestorNotasFinales::iniciar()
                             break;
                         case CANCELAR_OPERACION:
                             _mensajero.mensajeInformacion("Se ha cancelado la modificacion del reistro");
+                            break;
+                        case ARCH_SIN_REGISTROS:
+                            _mensajero.mensajeAdvertencia("No hay registros en el archivo de notas finales");
                             break;
                         default:
                             _mensajero.mensajeInformacion("Se ha modificado satisfactoriamente el registro");
@@ -146,7 +160,7 @@ void GestorNotasFinales::iniciar()
                             _mensajero.mensajeError("No se pudo leer el archivo de notas finales");
                             break;
                         case ARCH_SIN_REGISTROS:
-                            _mensajero.mensajeError("No se encontraron registros para calcular el promedio");
+                            _mensajero.mensajeAdvertencia("No se encontraron registros para calcular el promedio");
                             break;
                         default:
                             break;
@@ -173,15 +187,30 @@ bool GestorNotasFinales::altaNotaFinal()
 
     NotaFinal notaCargada;
 
+    if (!gcm.getArchivo().archivoExiste() || gcm.getArchivo().contarRegistros() == 0)
+        {
+            _mensajero.mensajeAdvertencia("No hay cursadas registradas. No puede cargarse una nota final.");
+            return false;
+        }
+
+
     std::string idCursadaMateria = gcm.buscarCursadaMateria().getIdCursadaMateria();
     int nota, dia, mes, anio;
 
-    std::cout << "Calificacion: ";
-    nota = validar<int>("Por favor, reingrese la calificacion: ");
+    if (idCursadaMateria=="")
+        {
+            _mensajero.mensajeAdvertencia("No hay cursadas en el cuatrimestre seleccionado. No puede cargarse una nota final.");
+            return false;
+        }
+
+    std::cout << "Calificacion (0 para cancelar): ";
+    nota = validar<int>("Por favor, reingrese la calificacion (0 para cancelar): ");
+
+    if (nota == 0) return false;
 
     while(nota <= 0 || nota > 10)
         {
-
+            if (nota==0) return false;
             std::cout << "Opcion no valida, se espera un numero entre 1 y 10: ";
             nota = validar<int>("Por favor, reingrese la calificacion: ");
         }
@@ -233,6 +262,11 @@ int GestorNotasFinales::listadoNotasFinales()
             return -1;
         }
 
+    if (_auxArchivo.contarRegistros()==0)
+        {
+            return -5;
+        }
+
     NotaFinal auxRegistro;
     int cantRegistros = _auxArchivo.contarRegistros();
 
@@ -262,6 +296,10 @@ int GestorNotasFinales::eliminarNotaFinal()
         {
 
             return -1;
+        }
+    if (_auxArchivo.contarRegistros()==0)
+        {
+            return -5;
         }
 
     std::string idCursadaMateria = gcm.buscarCursadaMateria().getIdCursadaMateria();
@@ -368,6 +406,10 @@ int GestorNotasFinales::generarPromedio()
 
             return -1;
         }
+        if (_auxArchivo.contarRegistros()==0)
+        {
+            return -5;
+        }
 
     std::vector <NotaFinal> listaNotas;
 
@@ -402,10 +444,14 @@ int GestorNotasFinales::generarPromedio()
 
 int GestorNotasFinales::modificarNotaFinal()
 {
+
     if(_auxArchivo.archivoExiste() == false)
         {
-
             return -1;
+        }
+        if (_auxArchivo.contarRegistros()==0)
+        {
+            return -5;
         }
 
     std::string idCursadaMateria;
@@ -640,10 +686,10 @@ bool GestorNotasFinales::seleccionarNotaDeCursadaMateria(std::string idCursadaMa
             return false;
         }
 
-    for (int i=0;i<notasDeCursadaMateria.size();i++)
-    {
+    for (int i=0; i<notasDeCursadaMateria.size(); i++)
+        {
             cout << i+1 <<": " << notaToString(notasDeCursadaMateria[i]) << endl;
-    }
+        }
 
     cout << "Seleccionar la nota deseada: ";
     int seleccion = validar<int>();
