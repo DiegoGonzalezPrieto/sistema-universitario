@@ -116,7 +116,7 @@ void Sistema::iniciar()
     string nombreUniversidad = c.getNombreUniversidad();
     string nombreCarrera = c.getNombreCarrera();
 
-    limpiarPantalla();
+    limpiarPantallaSinPausa();
     cout << "\n\tBienvenido/a " + c.getNombreEstudiante() + "!" << endl;
     cout << "\n\tEstás cursando la carrera " << nombreCarrera << " en " << nombreUniversidad << "." << endl;
     cout << "\n\tTu número de legajo es " << c.getLegajo() << "." << endl;
