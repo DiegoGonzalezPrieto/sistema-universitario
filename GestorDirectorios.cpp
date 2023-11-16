@@ -36,10 +36,7 @@ bool GestorDirectorios::crearDirectoriosCuatrimestre(CursadaMateria materiaEnCur
         if(validarNombresReservados(nombreMateria) == true)
         {
 
-            Mensajero m;
-
-            m.mensajeError("No se pudo crear la carpeta, el nombre corresponde a una palabra reservada del sistema operativo");
-            return false;
+            nombreMateria = "_" + validarCaracteresEspeciales(auxNombre);
         }
 
         string rutaMateria = ruta + nombreMateria + "/";
@@ -134,7 +131,11 @@ void GestorDirectorios::calcularProgresoMateria(CursadaMateria materia, string i
 
     string auxNombre = materia.getNombreMateria();
     string nombreMateria = validarCaracteresEspeciales(auxNombre);
-    //nombreMateria = validarNombresReservados(nombreMateria);
+    if(validarNombresReservados(nombreMateria) == true){
+
+        nombreMateria = "_" + validarCaracteresEspeciales(auxNombre);
+
+    }
 
     rutaMateria += idCuatrimestre + "/" + nombreMateria;
 
@@ -245,9 +246,6 @@ void GestorDirectorios::mostrarPorcentajeMateria()
             {
                 archivoCursadaMateria.leerRegistro(i, cursadaMateria);
 
-                auxUnidad = cursadaMateria.getUnidades();
-                int cantUnidades = auxUnidad.size();
-
                 if (cursadaMateria.getIdMateria() == idMateria)
                 {
                     calcularProgresoMateria(cursadaMateria, cursadaMateria.getIdCuatrimestreInicio());
@@ -257,11 +255,10 @@ void GestorDirectorios::mostrarPorcentajeMateria()
         }
     }
 
-
-
 }
-std::string reemplazarNoASCII(const std::string& entrada, char caracterReemplazo) {
-    std::string salida = entrada;
+
+string reemplazarNoASCII(const string& entrada, char caracterReemplazo) {
+    string salida = entrada;
 
     for (char& c : salida) {
         // Reemplaza el carácter si no es un carácter ASCII
@@ -277,32 +274,19 @@ std::string reemplazarNoASCII(const std::string& entrada, char caracterReemplazo
 ///SE ENCARGA DE CREAR LAS CARPETAS, Y ELIMINAR CARACTERES CONFLICTIVOS PARA FILESYSTEM
 string GestorDirectorios::validarCaracteresEspeciales(string nombreMateria)
 {
-   return reemplazarNoASCII(nombreMateria,'_');
+   string aux = reemplazarNoASCII(nombreMateria,'_');
 
-   /* unordered_map<char, char> caracteresDeReemplazo
+   unordered_map<char, char> caracteresDeReemplazo
     {
-
-        {'á', 'a'},
-        {'Á', 'A'},
-        {'é', 'e'},
-        {'É', 'E'},
-        {'í', 'i'},
-        {'Í', 'I'},
-        {'ó', 'o'},
-        {'Ó', 'O'},
-        {'ú', 'u'},
-        {'Ú', 'U'},
-        {'ñ', 'n'},
-        {'Ñ', 'N'},
         {'/', '_'},
-        {':', '-'},
-        {'*', '1'},
-        {'?', '2'},
-        {'<', '3'},
-        {'>', '4'},
-        {'|', '5'},
-        {'"', '6'},
-        {'\\', '7'}
+        {':', '_'},
+        {'*', '_'},
+        {'?', '_'},
+        {'<', '_'},
+        {'>', '_'},
+        {'|', '_'},
+        {'"', '_'},
+        {'\\', '_'}
 
     };
 
@@ -312,11 +296,11 @@ string GestorDirectorios::validarCaracteresEspeciales(string nombreMateria)
 
         ///Replace recibe 4 par�metros: El inicio y el final del string a recorrer, el valor "viejo" a buscar, y el valor "nuevo" a reemplazar
         ///Tambi�n se podr�a haber pensado con una matriz de char o 2 vectores paralelos para crear los pares de reemplazo
-        replace(nombreMateria.begin(), nombreMateria.end(), par.first, par.second);
+        replace(aux.begin(), aux.end(), par.first, par.second);
     }
 
 
-    return nombreMateria;*/
+    return aux;
 
 }
 
