@@ -32,17 +32,35 @@ Sistema::Sistema() :
 
 void Sistema::preInicio()
 {
+    cout<<endl;
+    string mensajeBienvenida = "¡Bienvenido al Programa de Gestion de Carrera Universitaria!\n"
+                               "Este programa esta disenado para facilitar la administracion eficiente de tu cursada.\n"
+                               "Aprovecha al maximo las herramientas que te ofrecemos para organizar tus horarios, \ngestionar tus asignaturas y seguir tu progreso academico.\n"
+                               "Nuestra meta es hacer que tu experiencia universitaria sea mas fluida y exitosa.\n"
+                               "Recuerda, estamos aqui para ayudarte en la gestion para que puedas concentrarte en el aprendizaje \ny el desarrollo de tus habilidades.\n";
+
+
+    if (!_gestorEventos.getArchivo().archivoExiste())
+        {
+            _mensajero.mensajeInformacion(mensajeBienvenida);
+
+            cout<<endl<<endl;
+
+             _mensajero.mensajeInformacion("A continuacion evaluaremos el estado de la informacion y te daremos advertencias sobre archivos que se crearan por defecto si no los encontramos  ya que son necesarios para el correcto funcionamiento del programa, la informacion es orientantiva para que comprendas un poco mas el por defecto y no debes preocuparte.");
+
+            limpiarPantalla();
+}
     crearDirectoriosEsenciales();
     if (!Config::leerConfig(Rutas::config))
         {
-            _mensajero.mensajeAdvertencia("No se encuentra el archivo de configuración, se creará uno nuevo y se usarán valores por defecto.");
+            _mensajero.mensajeAdvertencia("No se encuentra el archivo de configuración, se creara uno nuevo y se usarán valores por defecto.");
             Config::crearConfig(Rutas::config);
         }
 
     // Crea el archivo de eventos, ya que lo revisa para instanciar el menú inicial
     if (!_gestorEventos.getArchivo().archivoExiste())
         {
-            _mensajero.mensajeAdvertencia("No se encuentra el archivo de eventos, se creará uno nuevo sin registros.");
+            _mensajero.mensajeAdvertencia("No se encuentra el archivo de eventos, se creara uno nuevo sin registros.");
             _gestorEventos.getArchivo().crearArchivo();
         }
 }
