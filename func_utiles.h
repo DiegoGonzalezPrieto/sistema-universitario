@@ -4,6 +4,8 @@
 #include <limits>
 #include <cstring>
 #include <string>
+#include <locale>
+#include <codecvt>
 
 /// Devuelve true si el input cabe en el output. Trunca el input si es necesario. Agrega terminación nula al final.
 bool cargarCadenaConString(std::string input, char* output, size_t tamanioOutput);
@@ -13,6 +15,10 @@ int obtenerNumeroEntero(std::string mensajeError="Valor incorrecto. Ingrese un n
 
 /// Obtiene un decimal con getline, dejando vacío el buffer de cin
 float obtenerNumeroDecimal(std::string mensajeError="Valor incorrecto. Ingrese un número decimal: ");
+
+
+std::string limpiarCaracteresNoAscii(std::string nombreMateria);
+
 
 /// Valida datos de tipo int y float
 template<typename T>
@@ -84,5 +90,10 @@ T validar()
 }
 void limpiarPantalla();
 void limpiarPantallaSinPausa();
+
+
+
+
+
 
 #endif // FUNC_ARCHIVOS_H_INCLUDED

@@ -60,7 +60,8 @@ float obtenerNumeroDecimal(std::string mensajeError)
             if (salir) return resultado;
         }
 }
-void limpiarPantalla(){
+void limpiarPantalla()
+{
     rlutil::saveDefaultColor();
     rlutil::setBackgroundColor(rlutil::WHITE);
     rlutil::setColor(rlutil::LIGHTMAGENTA);
@@ -80,7 +81,8 @@ void limpiarPantalla(){
 #endif
 
 }
-void limpiarPantallaSinPausa(){
+void limpiarPantallaSinPausa()
+{
 #ifdef _WIN32
 #define SISTEMA "Windows"
 #elif __linux__
@@ -94,4 +96,64 @@ void limpiarPantallaSinPausa(){
 
 }
 
+std::string limpiarCaracteresNoAscii(std::string nombreMateria)
+{
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+
+    std::wstring wideString = converter.from_bytes(nombreMateria);
+
+    std::wstring resultado;
+
+    for (wchar_t wc : wideString)
+        {
+            if (wc>127)
+                {
+                    switch (wc)
+                        {
+                        case L'á':
+                            resultado += L'a';
+                            break;
+                        case L'Á':
+                            resultado += L'A';
+                            break;
+                        case L'ó':
+                            resultado += L'o';
+                            break;
+                        case L'Ó':
+                            resultado += L'O';
+                            break;
+                        case L'é':
+                            resultado += L'e';
+                            break;
+                        case L'É':
+                            resultado += L'E';
+                            break;
+                        case L'í':
+                            resultado += L'i';
+                            break;
+                        case L'Í':
+                            resultado += L'I';
+                            break;
+                        case L'ú':
+                            resultado += L'u';
+                            break;
+                        case L'Ú':
+                            resultado += L'U';
+                            break;
+                        case L'ñ':
+                            resultado += L'n';
+                            break;
+                        case L'Ñ':
+                            resultado += L'N';
+                            break;
+                        }
+                }
+            else
+                {
+                    resultado += wc;
+                }
+        }
+
+    return converter.to_bytes(resultado);
+}
 
