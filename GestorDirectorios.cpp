@@ -134,7 +134,7 @@ void GestorDirectorios::calcularProgresoMateria(CursadaMateria materia, string i
 
     string auxNombre = materia.getNombreMateria();
     string nombreMateria = validarCaracteresEspeciales(auxNombre);
-    nombreMateria = validarNombresReservados(nombreMateria);
+    //nombreMateria = validarNombresReservados(nombreMateria);
 
     rutaMateria += idCuatrimestre + "/" + nombreMateria;
 
@@ -260,14 +260,26 @@ void GestorDirectorios::mostrarPorcentajeMateria()
 
 
 }
+std::string reemplazarNoASCII(const std::string& entrada, char caracterReemplazo) {
+    std::string salida = entrada;
+
+    for (char& c : salida) {
+        // Reemplaza el carácter si no es un carácter ASCII
+        if (static_cast<unsigned char>(c) > 127) {
+            c = caracterReemplazo;
+        }
+    }
+
+    return salida;
+}
 
 
 ///SE ENCARGA DE CREAR LAS CARPETAS, Y ELIMINAR CARACTERES CONFLICTIVOS PARA FILESYSTEM
 string GestorDirectorios::validarCaracteresEspeciales(string nombreMateria)
 {
+   return reemplazarNoASCII(nombreMateria,'_');
 
-
-    unordered_map<char, char> caracteresDeReemplazo
+   /* unordered_map<char, char> caracteresDeReemplazo
     {
 
         {'á', 'a'},
@@ -304,7 +316,7 @@ string GestorDirectorios::validarCaracteresEspeciales(string nombreMateria)
     }
 
 
-    return nombreMateria;
+    return nombreMateria;*/
 
 }
 
