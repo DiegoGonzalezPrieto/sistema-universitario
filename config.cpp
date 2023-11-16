@@ -19,7 +19,7 @@ bool Config::leerConfig(string rutaConfig)
     vector<Config> configuraciones;
     if(!configFile.leerRegistros(configuraciones))
         {
-            m.mensajeError("No se pudo leer el archivo de configuración.");
+            m.mensajeAdvertencia("No se pudo leer el archivo de configuracion.");
             return false;
         }
 
