@@ -17,19 +17,21 @@
 class GestorRespaldos
 {
 private:
-    Archivo<NotaFinal> respaldoNotaFinal;
+    Archivo<Config> respaldoConfiguracion;
     Archivo<CargaInicial> respaldoCargaInicial;
     Archivo<Carrera> respaldoCarrera;
-    Archivo<Evento> respaldoEventos;
     Archivo<Materia> respaldoMaterias;
+    Archivo<CursadaMateria> respaldoCursadaMateria;
     Archivo<Cuatrimestre> respaldoCuatrimestre;
-    Archivo<Config> respaldoConfiguracion;
+    Archivo<Evento> respaldoEventos;
+    Archivo<NotaFinal> respaldoNotaFinal;
 
     Mensajero msj ;
 
 
 public:
     GestorRespaldos();
+    void PrimerInicio();
     void iniciar();
 
     void menuBackups();
@@ -38,6 +40,13 @@ public:
     void restoreTotal();
     void menuPorDefecto();
     void porDefectoTotal();
+
+    void primerInicioMenuBackups();
+    void primerInicioBackupTotal();
+    void primerInicioMenuRestores();
+    void primerInicioRestoreTotal();
+    void primerInicioMenuPorDefecto();
+    void primerInicioPorDefectoTotal();
 
 };
 

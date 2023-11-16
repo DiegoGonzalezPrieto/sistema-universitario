@@ -75,6 +75,8 @@
 		<Unit filename="GestorMaterias.h" />
 		<Unit filename="GestorNotasFinales.cpp" />
 		<Unit filename="GestorNotasFinales.h" />
+		<Unit filename="GestorRespaldos.cpp" />
+		<Unit filename="GestorRespaldos.h" />
 		<Unit filename="Horario.cpp" />
 		<Unit filename="Horario.h" />
 		<Unit filename="Materia.cpp" />
@@ -97,8 +99,6 @@
 		<Unit filename="func_csv.h" />
 		<Unit filename="func_utiles.cpp" />
 		<Unit filename="func_utiles.h" />
-		<Unit filename="gestorRespaldos.cpp" />
-		<Unit filename="gestorRespaldos.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="rlutil.h" />
 		<Unit filename="rutas.h" />
