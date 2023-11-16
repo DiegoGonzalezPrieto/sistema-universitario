@@ -75,12 +75,18 @@ void GestorRespaldos::iniciar()
         case 6:
             {
             limpiarPantallaSinPausa();
-            Menu m({"Si","No"},"Esta seguro que desea eliminar todos los datos?");
-            int opc = m.mostrar();
-            if(opc==1)
+            Menu m1({"Si","No"},"Esta seguro que desea eliminar todos los datos?");
+            int opAux1 = m1.mostrar();
+            if(opAux1==1)
             {
             porDefectoTotal();
             limpiarPantallaSinPausa();
+            Menu m2({"Si","No"},"Para volver a la carga inicial de datos es necesario reiniciar el programa, desea cerrarlo?");
+            int opAux2 = m2.mostrar();
+            if (opAux2 == 1)
+            {
+            exit(0);
+            }
             }
             limpiarPantallaSinPausa();
             break;
@@ -550,16 +556,14 @@ void GestorRespaldos::menuPorDefecto()
     std::vector<std::string> opciones =
     {
         "Configuracion",
-        "Cursada materias",
-        "Cuatrimestre",
-        "Eventos",
-        "Notas finales"
+        "Eventos"
 
     };
 
     string tituloMenu = "---Seleccione el archivo que quiera vaciar---";
     Menu MRestores(opciones,tituloMenu);
     msj.mensajeInformacion("Al borrar los datos de un archivo se creara una copia de seguridad automaticamente");
+    msj.mensajeInformacion("Para continuar con el correcto funcionamiento del programa solo se podran borrar los datos de configuracion y eventos");
     int op;
     do
     {
@@ -585,36 +589,6 @@ void GestorRespaldos::menuPorDefecto()
             }
         case 2:
             {
-            limpiarPantallaSinPausa();
-
-            if(respaldoCursadaMateria.borrarRegistros())
-            {
-                msj.mensajeAdvertencia("Registros borrados correctamente");
-            }
-            else
-            {
-                msj.mensajeError("No se pudieron borrar los registros del archivo");
-            }
-            limpiarPantalla();
-            break;
-            }
-        case 3:
-            {
-
-            limpiarPantallaSinPausa();
-            if(respaldoCuatrimestre.borrarRegistros())
-            {
-                msj.mensajeAdvertencia("Registros borrados correctamente");
-            }
-            else
-            {
-                msj.mensajeError("No se pudieron borrar los registros del archivo");
-            }
-            limpiarPantalla();
-            break;
-            }
-        case 4:
-            {
 
             limpiarPantallaSinPausa();
             if(respaldoEventos.borrarRegistros())
@@ -629,22 +603,6 @@ void GestorRespaldos::menuPorDefecto()
             break;
             }
 
-        case 5:
-            {
-
-            limpiarPantallaSinPausa();
-
-            if(respaldoNotaFinal.borrarRegistros())
-            {
-                msj.mensajeAdvertencia("Registros borrados correctamente");
-            }
-            else
-            {
-                msj.mensajeError("No se pudieron borrar los registros del archivo");
-            }
-            limpiarPantalla();
-            break;
-            }
         default:
             cout << "Opcion no valida. Por favor, ingrese una opcion valida" << endl;
             break;
@@ -1075,7 +1033,7 @@ void GestorRespaldos::primerInicioRestoreTotal()
         msj.mensajeError("No se pudo restaurar el archivo");
     }
     limpiarPantallaSinPausa();
-msj.mensajeInformacion("Reinicie el programa para que sus cambios se vean reflejados");
+msj.mensajeInformacion("Vuelva hasta el menu inicial para que sus cambios se vean reflejados");
     limpiarPantalla();
 }
 
