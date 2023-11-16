@@ -75,12 +75,18 @@ void GestorRespaldos::iniciar()
         case 6:
             {
             limpiarPantallaSinPausa();
-            Menu m({"Si","No"},"Esta seguro que desea eliminar todos los datos?");
-            int opc = m.mostrar();
-            if(opc==1)
+            Menu m1({"Si","No"},"Esta seguro que desea eliminar todos los datos?");
+            int opAux1 = m1.mostrar();
+            if(opAux1==1)
             {
             porDefectoTotal();
             limpiarPantallaSinPausa();
+            Menu m2({"Si","No"},"Para volver a la carga inicial de datos es necesario reiniciar el programa, desea cerrarlo?");
+            int opAux2 = m2.mostrar();
+            if (opAux2 == 1)
+            {
+            exit(0);
+            }
             }
             limpiarPantallaSinPausa();
             break;
@@ -1075,7 +1081,7 @@ void GestorRespaldos::primerInicioRestoreTotal()
         msj.mensajeError("No se pudo restaurar el archivo");
     }
     limpiarPantallaSinPausa();
-msj.mensajeInformacion("Reinicie el programa para que sus cambios se vean reflejados");
+msj.mensajeInformacion("Vuelva hasta el menu inicial para que sus cambios se vean reflejados");
     limpiarPantalla();
 }
 
