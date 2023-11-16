@@ -15,19 +15,22 @@ class GestorDirectorios
         bool crearDirectoriosCuatrimestre(CursadaMateria materiaEnCurso, std::string idCuatrimestre);
         bool directoriosMateriasAnualesYaCreados(std::string idCuatrimestreInicio, std::string idCuatrimestreActual);
 
-        string validarCaracteresEspeciales(std::string nombreMateria);
+        std::string validarCaracteresEspeciales(std::string nombreMateria);
+        bool validarNombresReservados(std::string nombreMateria);
 
         int contarElementosEnDirectorio(std::string ruta);
         float calcularProgresoUnidad(std::string rutaUnidad);
         void calcularProgresoMateria(CursadaMateria materia, std::string idCuatrimestre);
+        void mostrarPorcentajeMateria();
 
-        void almacenarExtensionesDetectadas(vector <string>& extensiones, vector <int>& contadorDeExtensiones, string ruta);
-        bool extensionYaDetectada(vector <string>& extensiones, string tipoArchivo);
-        int buscarPosicionExtension(vector <string>& extensiones, string tipoArchivo);
+        void almacenarExtensionesDetectadas(std::vector <std::string>& extensiones, std::vector <int>& contadorDeExtensiones, std::string ruta);
+        bool extensionYaDetectada(std::vector <std::string>& extensiones, std::string tipoArchivo);
+        int buscarPosicionExtension(std::vector <std::string>& extensiones, std::string tipoArchivo);
+        void mostrarExtensionesArchivos();
 
-        int contarTotalElementosCompletados(string ruta);
-        int contarTotalElementosPendientes(string ruta);
-        int contarTotalElementos(string ruta);
+        int contarTotalElementosCompletados(std::string ruta);
+        int contarTotalElementosPendientes(std::string ruta);
+        int contarTotalElementos(std::string ruta);
 
 
     private:
