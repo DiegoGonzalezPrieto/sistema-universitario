@@ -33,11 +33,12 @@ Sistema::Sistema() :
 void Sistema::preInicio()
 {
     cout<<endl;
-    string mensajeBienvenida = "Bienvenido al Programa de Gestion de Carrera Universitaria!\n"
-                               "Este programa esta disenado para facilitar la administracion eficiente de tu cursada universitaria.\n"
-                               "Aprovecha al maximo las herramientas que te ofrecemos para organizar tus horarios, gestionar tus asignaturas \n y seguir tu progreso academico.\n"
+    string mensajeBienvenida = "¡Bienvenido al Programa de Gestion de Carrera Universitaria!\n"
+                               "Este programa esta disenado para facilitar la administracion eficiente de tu cursada.\n"
+                               "Aprovecha al maximo las herramientas que te ofrecemos para organizar tus horarios, \ngestionar tus asignaturas y seguir tu progreso academico.\n"
                                "Nuestra meta es hacer que tu experiencia universitaria sea mas fluida y exitosa.\n"
-                               "Recuerda, estamos aqui para ayudarte en la gestion para que puedas concentrarte en el aprendizaje \n y el desarrollo de tus habilidades.\n";
+                               "Recuerda, estamos aqui para ayudarte en la gestion para que puedas concentrarte en el aprendizaje \ny el desarrollo de tus habilidades.\n";
+
 
     if (!_gestorEventos.getArchivo().archivoExiste())
         {
