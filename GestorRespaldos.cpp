@@ -556,16 +556,14 @@ void GestorRespaldos::menuPorDefecto()
     std::vector<std::string> opciones =
     {
         "Configuracion",
-        "Cursada materias",
-        "Cuatrimestre",
-        "Eventos",
-        "Notas finales"
+        "Eventos"
 
     };
 
     string tituloMenu = "---Seleccione el archivo que quiera vaciar---";
     Menu MRestores(opciones,tituloMenu);
     msj.mensajeInformacion("Al borrar los datos de un archivo se creara una copia de seguridad automaticamente");
+    msj.mensajeInformacion("Para continuar con el correcto funcionamiento del programa solo se podran borrar los datos de configuracion y eventos");
     int op;
     do
     {
@@ -591,36 +589,6 @@ void GestorRespaldos::menuPorDefecto()
             }
         case 2:
             {
-            limpiarPantallaSinPausa();
-
-            if(respaldoCursadaMateria.borrarRegistros())
-            {
-                msj.mensajeAdvertencia("Registros borrados correctamente");
-            }
-            else
-            {
-                msj.mensajeError("No se pudieron borrar los registros del archivo");
-            }
-            limpiarPantalla();
-            break;
-            }
-        case 3:
-            {
-
-            limpiarPantallaSinPausa();
-            if(respaldoCuatrimestre.borrarRegistros())
-            {
-                msj.mensajeAdvertencia("Registros borrados correctamente");
-            }
-            else
-            {
-                msj.mensajeError("No se pudieron borrar los registros del archivo");
-            }
-            limpiarPantalla();
-            break;
-            }
-        case 4:
-            {
 
             limpiarPantallaSinPausa();
             if(respaldoEventos.borrarRegistros())
@@ -635,22 +603,6 @@ void GestorRespaldos::menuPorDefecto()
             break;
             }
 
-        case 5:
-            {
-
-            limpiarPantallaSinPausa();
-
-            if(respaldoNotaFinal.borrarRegistros())
-            {
-                msj.mensajeAdvertencia("Registros borrados correctamente");
-            }
-            else
-            {
-                msj.mensajeError("No se pudieron borrar los registros del archivo");
-            }
-            limpiarPantalla();
-            break;
-            }
         default:
             cout << "Opcion no valida. Por favor, ingrese una opcion valida" << endl;
             break;
